@@ -38,6 +38,10 @@
       "**/*.(t|j)s"
     ],
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "moduleNameMapper": {
+      "^@app/shared(|/.*)$": "<rootDir>/../../packages/shared/$1",
+      "^@app/web3(|/.*)$": "<rootDir>/../../packages/web3/$1"
+    }
   }
 }
