@@ -4,10 +4,6 @@
   "sourceRoot": "src",
   "entryFile": "./ai-service/src/main.js",
   "compilerOptions": {
-    "deleteOutDir": true,
-    "plugins": [
-      "@nestjs/swagger/plugin"
-    ],
-    "watchAssets": true
+    "deleteOutDir": true
   }
 }

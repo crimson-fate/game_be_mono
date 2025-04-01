@@ -5,7 +5,9 @@
   "entryFile": "./api-service/src/main.js",
   "compilerOptions": {
     "deleteOutDir": true,
-    "plugins": ["@nestjs/swagger/plugin"],
+    "plugins": [
+      "@nestjs/swagger/plugin"
+    ],
     "assets": [
       {
         "include": "public/**/*",
