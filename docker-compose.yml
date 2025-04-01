@@ -57,43 +57,22 @@ services:
       - redis
     ports:
       - 8000:8000
-   
+
+  ai-service:
+    container_name: ai-service
+    build:
+      context: .
+      args:
+        PKG: 'ai-service'
+      dockerfile: Dockerfile
+    networks:
+      - app-network
+    env_file:
+      - .env
+    restart: always
+    depends_on:
+      - mongo
+      - redis
+    ports:
+      - 8001:8001 
   
-  onchain-worker:
-    container_name: onchain-worker
-    build:
-      context: .
-      args:
-        PKG: 'onchain-worker'
-      dockerfile: Dockerfile
-    networks:
-      - app-network
-    env_file:
-      - .env
-    restart: always
-    depends_on:
-      - mongo
-      - redis
-    ports:
-      - 8001:8001
-
-
-  onchain-queue:
-    container_name: onchain-queue
-    build:
-      context: .
-      args:
-        PKG: 'onchain-queue'
-      dockerfile: Dockerfile
-
-    networks:
-      - app-network
-    env_file:
-      - .env
-    restart: always
-    depends_on:
-      - mongo
-      - redis
-    ports:
-      - 8002:8002
-   

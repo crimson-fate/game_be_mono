@@ -1,25 +1,23 @@
 
-FROM node:18-alpine3.18 as prod-lib
+FROM node:22-alpine3.20 as prod-lib
 WORKDIR /app
 COPY package.json package.json
 COPY yarn.lock yarn.lock
 
 COPY packages/api-service/package.json packages/api-service/package.json
-COPY packages/onchain-worker/package.json packages/onchain-worker/package.json
-COPY packages/onchain-queue/package.json packages/onchain-queue/package.json
+COPY packages/ai-service/package.json packages/ai-service/package.json
 COPY packages/shared/package.json packages/shared/package.json
 COPY packages/web3/package.json packages/web3/package.json
 
 RUN yarn install --production  --ignore-scripts --prefer-offline
 
 
-FROM node:18-alpine3.18 as dev-lib
+FROM node:22-alpine3.20 as dev-lib
 WORKDIR /app
 COPY package.json package.json
 COPY yarn.lock yarn.lock
 COPY packages/api-service/package.json packages/api-service/package.json
-COPY packages/onchain-worker/package.json packages/onchain-worker/package.json
-COPY packages/onchain-queue/package.json packages/onchain-queue/package.json
+COPY packages/ai-service/package.json packages/ai-service/package.json
 COPY packages/shared/package.json packages/shared/package.json
 COPY packages/web3/package.json packages/web3/package.json
 
@@ -40,7 +38,7 @@ ARG PKG
 COPY --from=builder /app/packages/${PKG}/dist packages/${PKG}/dist
 RUN find packages/${PKG}/dist -name '*.map' -type f -delete
 
-# RUN mkdir -p /app/uploads && chmod -R 755 /app/uploads
+
 
 RUN chown -R node:node /app
 USER node  

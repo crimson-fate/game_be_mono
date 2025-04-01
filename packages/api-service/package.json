@@ -20,13 +20,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@filebase/sdk": "^1.0.6",
-    "@nestjs/serve-static": "^4.0.2",
-    "fs": "^0.0.1-security",
-    "grapheme-splitter": "^1.0.4",
-    "qrcode-svg": "^1.1.0",
-    "shared": "0.0.1",
-    "sharp": "^0.33.5"
+    "shared": "0.0.1"
   },
   "devDependencies": {},
   "jest": {

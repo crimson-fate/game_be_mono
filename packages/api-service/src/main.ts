@@ -28,14 +28,14 @@ async function bootstrap() {
     allowedHeaders: 'Authorization,Content-Type, Accept',
     credentials: true,
   });
-  app.use(bodyParser.json({ limit: '10mb' })); // Adjust as needed
+  app.use(bodyParser.json({ limit: '10mb' }));
   app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
   configureSwagger(app);
   configureValidation(app);
   app.useGlobalPipes(new ValidationPipe());
   await app.listen(port, () => {
     console.log(
-      `StoryName API Service is running on port ${port} | Doc Run on http://localhost:${port}/docs`,
+      `Game API Service is running on port ${port} | Doc Run on http://localhost:${port}/docs`,
     );
   });
 }
