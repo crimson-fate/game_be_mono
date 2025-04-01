@@ -8,22 +8,15 @@ import { configureValidation } from '@app/shared/config/configValidation';
 
 import configuration from '@app/shared/configuration';
 import * as bodyParser from 'body-parser';
-import { REGEX_MATCH_DOMAIN } from '@app/shared/utils/regex';
+
 mongoose.set('debug', true);
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const port = configuration().PORTS.API_SERVICE;
+  const port = configuration().PORT.API;
 
   app.enableCors({
-    origin: (origin, callback) => {
-      if (REGEX_MATCH_DOMAIN.test(origin) || !origin) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
-
+    origin: '*',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     allowedHeaders: 'Authorization,Content-Type, Accept',
     credentials: true,
