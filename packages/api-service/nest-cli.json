@@ -2,12 +2,10 @@
   "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
   "sourceRoot": "src",
-  "entryFile": "main",
+  "entryFile": "./api-service/src/main.js",
   "compilerOptions": {
     "deleteOutDir": true,
-    "plugins": [
-      "@nestjs/swagger/plugin"
-    ],
+    "plugins": ["@nestjs/swagger/plugin"],
     "assets": [
       {
         "include": "public/**/*",

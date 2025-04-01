@@ -1,24 +1,25 @@
 
-FROM node:23-alpine3.21 as prod-lib
+FROM node:18-alpine3.18 as prod-lib
 WORKDIR /app
 COPY package.json package.json
 COPY yarn.lock yarn.lock
 
 COPY packages/api-service/package.json packages/api-service/package.json
-COPY packages/ai-service/package.json packages/ai-service/package.json
-COPY packages/web3/package.json packages/web3/package.json
+COPY packages/onchain-worker/package.json packages/onchain-worker/package.json
+COPY packages/onchain-queue/package.json packages/onchain-queue/package.json
 COPY packages/shared/package.json packages/shared/package.json
+COPY packages/web3/package.json packages/web3/package.json
 
 RUN yarn install --production  --ignore-scripts --prefer-offline
 
 
-FROM node:23-alpine3.21 as dev-lib
+FROM node:18-alpine3.18 as dev-lib
 WORKDIR /app
 COPY package.json package.json
 COPY yarn.lock yarn.lock
-
 COPY packages/api-service/package.json packages/api-service/package.json
-COPY packages/ai-service/package.json packages/ai-service/package.json
+COPY packages/onchain-worker/package.json packages/onchain-worker/package.json
+COPY packages/onchain-queue/package.json packages/onchain-queue/package.json
 COPY packages/shared/package.json packages/shared/package.json
 COPY packages/web3/package.json packages/web3/package.json
 
@@ -46,3 +47,4 @@ USER node
 
 ENV main=packages/${PKG}/dist/${PKG}/src/main.js
 CMD node $main
+

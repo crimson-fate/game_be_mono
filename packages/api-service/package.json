@@ -4,7 +4,7 @@
   "description": "",
   "author": "",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "Apache-2.0",
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
@@ -20,7 +20,13 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "shared": "0.0.1"
+    "@filebase/sdk": "^1.0.6",
+    "@nestjs/serve-static": "^4.0.2",
+    "fs": "^0.0.1-security",
+    "grapheme-splitter": "^1.0.4",
+    "qrcode-svg": "^1.1.0",
+    "shared": "0.0.1",
+    "sharp": "^0.33.5"
   },
   "devDependencies": {},
   "jest": {
@@ -41,7 +47,8 @@
     "testEnvironment": "node",
     "moduleNameMapper": {
       "^@app/shared(|/.*)$": "<rootDir>/../../packages/shared/$1",
-      "^@app/web3(|/.*)$": "<rootDir>/../../packages/web3/$1"
+      "^@app/web3-service(|/.*)$": "<rootDir>/../../packages/web3-service/$1",
+      "^@app/web3(|/.*)$": "<rootDir>/../../packages/web3/src/$1"
     }
   }
 }
