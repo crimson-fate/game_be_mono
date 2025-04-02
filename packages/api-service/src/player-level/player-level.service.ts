@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { PlayerLevel } from '../../../shared/models/schema/player-level.schema';
+import { PlayerLevel } from '@app/shared/models/schema/player-level.schema';
 
 @Injectable()
 export class PlayerLevelService {

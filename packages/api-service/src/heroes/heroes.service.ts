@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Hero } from '../../../shared/models/schema/hero.schema';
+import { Hero } from '@app/shared/models/schema/hero.schema';
 
 @Injectable()
 export class HeroesService {

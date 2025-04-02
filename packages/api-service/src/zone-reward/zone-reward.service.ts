@@ -4,7 +4,7 @@ import { Model } from 'mongoose';
 import {
   ZoneReward,
   ZoneRewardDocument,
-} from '../../../shared/models/schema/zone-reward.schema';
+} from '@app/shared/models/schema/zone-reward.schema';
 
 @Injectable()
 export class ZoneRewardService {

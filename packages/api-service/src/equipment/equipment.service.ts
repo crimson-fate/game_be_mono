@@ -4,7 +4,7 @@ import { Model } from 'mongoose';
 import {
   Equipment,
   EquipmentDocument,
-} from '../../../shared/models/schema/equipment.schema';
+} from '@app/shared/models/schema/equipment.schema';
 
 @Injectable()
 export class EquipmentService {
