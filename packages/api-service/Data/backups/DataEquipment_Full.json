@@ -1,0 +1,5393 @@
+{
+  "lstSkillVip": [
+    "Bouncing_Thunder",
+    "Lightning_Strike",
+    "Moonlight_Gyro",
+    "Acid_Rain",
+    "Venom_Shot"
+  ],
+  "dicStatsCapital": {
+    "Hp": 0.0,
+    "Armour": 0.0,
+    "Attack": 0.0,
+    "Crit_Rate": 100.0,
+    "Crit_Damage": 0.0,
+    "Move_Speed": 300.0,
+    "Evasion": 90.0,
+    "Hp_Recovery": 50.0,
+    "Armour_Recovery": 100.0,
+    "Damage_Received_Redution": 90.0,
+    "Coin_Increase": 0.0,
+    "Drop_Rate_Increase": 0.0,
+    "Exp_Gain": 0.0,
+    "Skill_Condition_Reduce": 50.0,
+    "Hp_Gain": 0.0,
+    "Armour_Gain": 0.0
+  },
+  "dicUpradeConfig": {
+    "Attack": {
+      "dicBaseAttributeByRarity": {
+        "Common": 50.0,
+        "Great": 75.0,
+        "Rare": 115.0,
+        "Epic": 175.0,
+        "Mythical": 250.0,
+        "Legendary": 375.0
+      },
+      "lstLevelConfig": [
+        {
+          "coinAdd": 100,
+          "soulCost": 1,
+          "valueAdd": 5
+        },
+        {
+          "coinAdd": 200,
+          "soulCost": 10,
+          "valueAdd": 10
+        },
+        {
+          "coinAdd": 300,
+          "soulCost": 20,
+          "valueAdd": 20
+        },
+        {
+          "coinAdd": 400,
+          "soulCost": 30,
+          "valueAdd": 30
+        },
+        {
+          "coinAdd": 500,
+          "soulCost": 40,
+          "valueAdd": 40
+        },
+        {
+          "coinAdd": 600,
+          "soulCost": 50,
+          "valueAdd": 50
+        },
+        {
+          "coinAdd": 700,
+          "soulCost": 60,
+          "valueAdd": 60
+        },
+        {
+          "coinAdd": 800,
+          "soulCost": 70,
+          "valueAdd": 70
+        },
+        {
+          "coinAdd": 900,
+          "soulCost": 80,
+          "valueAdd": 80
+        },
+        {
+          "coinAdd": 1000,
+          "soulCost": 100,
+          "valueAdd": 100
+        }
+      ]
+    },
+    "Hp": {
+      "dicBaseAttributeByRarity": {
+        "Common": 200.0,
+        "Great": 300.0,
+        "Rare": 450.0,
+        "Epic": 700.0,
+        "Mythical": 1000.0,
+        "Legendary": 1500.0
+      },
+      "lstLevelConfig": [
+        {
+          "coinAdd": 100,
+          "soulCost": 1,
+          "valueAdd": 20
+        },
+        {
+          "coinAdd": 200,
+          "soulCost": 10,
+          "valueAdd": 40
+        },
+        {
+          "coinAdd": 300,
+          "soulCost": 20,
+          "valueAdd": 80
+        },
+        {
+          "coinAdd": 400,
+          "soulCost": 30,
+          "valueAdd": 120
+        },
+        {
+          "coinAdd": 500,
+          "soulCost": 40,
+          "valueAdd": 160
+        },
+        {
+          "coinAdd": 600,
+          "soulCost": 50,
+          "valueAdd": 200
+        },
+        {
+          "coinAdd": 700,
+          "soulCost": 60,
+          "valueAdd": 240
+        },
+        {
+          "coinAdd": 800,
+          "soulCost": 70,
+          "valueAdd": 280
+        },
+        {
+          "coinAdd": 900,
+          "soulCost": 80,
+          "valueAdd": 320
+        },
+        {
+          "coinAdd": 1000,
+          "soulCost": 100,
+          "valueAdd": 400
+        }
+      ]
+    },
+    "Armour": {
+      "dicBaseAttributeByRarity": {
+        "Common": 40.0,
+        "Great": 60.0,
+        "Rare": 90.0,
+        "Epic": 140.0,
+        "Mythical": 200.0,
+        "Legendary": 300.0
+      },
+      "lstLevelConfig": [
+        {
+          "coinAdd": 100,
+          "soulCost": 1,
+          "valueAdd": 4
+        },
+        {
+          "coinAdd": 200,
+          "soulCost": 10,
+          "valueAdd": 8
+        },
+        {
+          "coinAdd": 300,
+          "soulCost": 20,
+          "valueAdd": 16
+        },
+        {
+          "coinAdd": 400,
+          "soulCost": 30,
+          "valueAdd": 24
+        },
+        {
+          "coinAdd": 500,
+          "soulCost": 40,
+          "valueAdd": 32
+        },
+        {
+          "coinAdd": 600,
+          "soulCost": 50,
+          "valueAdd": 40
+        },
+        {
+          "coinAdd": 700,
+          "soulCost": 60,
+          "valueAdd": 48
+        },
+        {
+          "coinAdd": 800,
+          "soulCost": 70,
+          "valueAdd": 56
+        },
+        {
+          "coinAdd": 900,
+          "soulCost": 80,
+          "valueAdd": 64
+        },
+        {
+          "coinAdd": 1000,
+          "soulCost": 100,
+          "valueAdd": 80
+        }
+      ]
+    }
+  },
+  "dicMaxLevelUpgrade": {
+    "Common": 10,
+    "Great": 20,
+    "Rare": 30,
+    "Epic": 50,
+    "Mythical": 70,
+    "Legendary": 100
+  },
+  "lstEquipmentSetConfig": [
+    {
+      "setType": "ElementSet",
+      "equipmentElement": "Mechanic",
+      "attributeBonus": "Armour",
+      "dicStackValue": {
+        "2": 10.0,
+        "4": 10.0,
+        "6": 30.0
+      }
+    },
+    {
+      "setType": "ElementSet",
+      "equipmentElement": "Fire",
+      "attributeBonus": "Attack",
+      "dicStackValue": {
+        "2": 10.0,
+        "4": 20.0,
+        "6": 30.0
+      }
+    },
+    {
+      "setType": "ElementSet",
+      "equipmentElement": "Lightning",
+      "attributeBonus": "Crit_Rate",
+      "dicStackValue": {
+        "2": 3.0,
+        "4": 6.0,
+        "6": 9.0
+      }
+    },
+    {
+      "setType": "ElementSet",
+      "equipmentElement": "Mythic",
+      "attributeBonus": "Hp",
+      "dicStackValue": {
+        "2": 10.0,
+        "4": 20.0,
+        "6": 30.0
+      }
+    },
+    {
+      "setType": "ElementSet",
+      "equipmentElement": "Pollute",
+      "attributeBonus": "Damage_Received_Redution",
+      "dicStackValue": {
+        "2": 3.0,
+        "4": 6.0,
+        "6": 9.0
+      }
+    },
+    {
+      "setType": "AttributeSet",
+      "equipmentElement": "Mechanic",
+      "attributeBonus": "Attack",
+      "dicStackValue": {
+        "3": 20.0,
+        "6": 40.0
+      }
+    },
+    {
+      "setType": "AttributeSet",
+      "equipmentElement": "Mechanic",
+      "attributeBonus": "Hp",
+      "dicStackValue": {
+        "3": 20.0,
+        "6": 40.0
+      }
+    },
+    {
+      "setType": "AttributeSet",
+      "equipmentElement": "Mechanic",
+      "attributeBonus": "Armour",
+      "dicStackValue": {
+        "3": 20.0,
+        "6": 40.0
+      }
+    }
+  ],
+  "dicEquipmentSubStatsByRarity": {
+    "Common": [
+      "(Percent_Attribute_Add)(Hp)(Common)(0)(0)(0)(5)",
+      "(Percent_Attribute_Add)(Armour)(Common)(0)(0)(0)(5)",
+      "(Percent_Attribute_Add)(Attack)(Common)(0)(0)(0)(5)",
+      "(Percent_Attribute_Add)(Crit_Rate)(Common)(0)(0)(0)(1)",
+      "(Percent_Attribute_Add)(Crit_Damage)(Common)(0)(0)(0)(10)",
+      "(Percent_Attribute_Add)(Coin_Increase)(Common)(0)(0)(0)(5)",
+      "(Percent_Attribute_Add)(Drop_Rate_Increase)(Common)(0)(0)(0)(5)",
+      "(Percent_Attribute_Add)(Exp_Gain)(Common)(0)(0)(0)(5)",
+      "(Raw_Attribute_Add)(Hp)(Common)(0)(0)(0)(100)",
+      "(Raw_Attribute_Add)(Armour)(Common)(0)(0)(0)(20)",
+      "(Raw_Attribute_Add)(Attack)(Common)(0)(0)(0)(25)"
+    ],
+    "Great": [
+      "(Percent_Attribute_Add)(Hp)(Great)(0)(0)(0)(10)",
+      "(Percent_Attribute_Add)(Armour)(Great)(0)(0)(0)(10)",
+      "(Percent_Attribute_Add)(Attack)(Great)(0)(0)(0)(10)",
+      "(Percent_Attribute_Add)(Crit_Rate)(Great)(0)(0)(0)(2)",
+      "(Percent_Attribute_Add)(Crit_Damage)(Great)(0)(0)(0)(20)",
+      "(Percent_Attribute_Add)(Coin_Increase)(Great)(0)(0)(0)(10)",
+      "(Percent_Attribute_Add)(Drop_Rate_Increase)(Great)(0)(0)(0)(10)",
+      "(Percent_Attribute_Add)(Exp_Gain)(Great)(0)(0)(0)(10)",
+      "(Raw_Attribute_Add)(Hp)(Great)(0)(0)(0)(150)",
+      "(Raw_Attribute_Add)(Armour)(Great)(0)(0)(0)(30)",
+      "(Raw_Attribute_Add)(Attack)(Great)(0)(0)(0)(35)"
+    ],
+    "Rare": [
+      "(Percent_Attribute_Add)(Hp)(Rare)(0)(0)(0)(15)",
+      "(Percent_Attribute_Add)(Armour)(Rare)(0)(0)(0)(15)",
+      "(Percent_Attribute_Add)(Attack)(Rare)(0)(0)(0)(15)",
+      "(Percent_Attribute_Add)(Crit_Rate)(Rare)(0)(0)(0)(3)",
+      "(Percent_Attribute_Add)(Crit_Damage)(Rare)(0)(0)(0)(30)",
+      "(Percent_Attribute_Add)(Coin_Increase)(Rare)(0)(0)(0)(15)",
+      "(Percent_Attribute_Add)(Drop_Rate_Increase)(Rare)(0)(0)(0)(15)",
+      "(Percent_Attribute_Add)(Exp_Gain)(Rare)(0)(0)(0)(15)",
+      "(Raw_Attribute_Add)(Hp)(Rare)(0)(0)(0)(200)",
+      "(Raw_Attribute_Add)(Armour)(Rare)(0)(0)(0)(40)",
+      "(Raw_Attribute_Add)(Attack)(Rare)(0)(0)(0)(50)"
+    ],
+    "Epic": [
+      "(Percent_Attribute_Add)(Hp)(Epic)(0)(0)(0)(20)",
+      "(Percent_Attribute_Add)(Armour)(Epic)(0)(0)(0)(20)",
+      "(Percent_Attribute_Add)(Attack)(Epic)(0)(0)(0)(20)",
+      "(Percent_Attribute_Add)(Crit_Rate)(Epic)(0)(0)(0)(5)",
+      "(Percent_Attribute_Add)(Crit_Damage)(Epic)(0)(0)(0)(50)",
+      "(Percent_Attribute_Add)(Coin_Increase)(Epic)(0)(0)(0)(20)",
+      "(Percent_Attribute_Add)(Drop_Rate_Increase)(Epic)(0)(0)(0)(20)",
+      "(Percent_Attribute_Add)(Exp_Gain)(Epic)(0)(0)(0)(20)",
+      "(Raw_Attribute_Add)(Hp)(Epic)(0)(0)(0)(350)",
+      "(Raw_Attribute_Add)(Armour)(Epic)(0)(0)(0)(70)",
+      "(Raw_Attribute_Add)(Attack)(Epic)(0)(0)(0)(85)"
+    ],
+    "Mythical": [
+      "(Percent_Attribute_Add)(Hp)(Mythical)(0)(0)(0)(30)",
+      "(Percent_Attribute_Add)(Armour)(Mythical)(0)(0)(0)(30)",
+      "(Percent_Attribute_Add)(Attack)(Mythical)(0)(0)(0)(30)",
+      "(Percent_Attribute_Add)(Crit_Rate)(Mythical)(0)(0)(0)(7)",
+      "(Percent_Attribute_Add)(Crit_Damage)(Mythical)(0)(0)(0)(70)",
+      "(Percent_Attribute_Add)(Coin_Increase)(Mythical)(0)(0)(0)(30)",
+      "(Percent_Attribute_Add)(Drop_Rate_Increase)(Mythical)(0)(0)(0)(30)",
+      "(Percent_Attribute_Add)(Exp_Gain)(Mythical)(0)(0)(0)(30)",
+      "(Raw_Attribute_Add)(Hp)(Mythical)(0)(0)(0)(650)",
+      "(Raw_Attribute_Add)(Armour)(Mythical)(0)(0)(0)(130)",
+      "(Raw_Attribute_Add)(Attack)(Mythical)(0)(0)(0)(185)"
+    ],
+    "Legendary": [
+      "(Percent_Attribute_Add)(Hp)(Legendary)(0)(0)(0)(50)",
+      "(Percent_Attribute_Add)(Armour)(Legendary)(0)(0)(0)(50)",
+      "(Percent_Attribute_Add)(Attack)(Legendary)(0)(0)(0)(50)",
+      "(Percent_Attribute_Add)(Crit_Rate)(Legendary)(0)(0)(0)(10)",
+      "(Percent_Attribute_Add)(Crit_Damage)(Legendary)(0)(0)(0)(100)",
+      "(Percent_Attribute_Add)(Coin_Increase)(Legendary)(0)(0)(0)(50)",
+      "(Percent_Attribute_Add)(Drop_Rate_Increase)(Legendary)(0)(0)(0)(50)",
+      "(Percent_Attribute_Add)(Exp_Gain)(Legendary)(0)(0)(0)(50)",
+      "(Raw_Attribute_Add)(Hp)(Legendary)(0)(0)(0)(1500)",
+      "(Raw_Attribute_Add)(Armour)(Legendary)(0)(0)(0)(300)",
+      "(Raw_Attribute_Add)(Attack)(Legendary)(0)(0)(0)(375)"
+    ],
+    "Super": [
+      "(Percent_Attribute_Add)(Move_Speed)(Legendary)(0)(0)(0)(10)",
+      "(Percent_Attribute_Add)(Evasion)(Legendary)(0)(0)(0)(10)",
+      "(Percent_Attribute_Add)(Hp_Recovery)(Legendary)(0)(0)(0)(3)",
+      "(Percent_Attribute_Add)(Armour_Recovery)(Legendary)(0)(0)(0)(10)",
+      "(Percent_Attribute_Add)(Damage_Received_Redution)(Legendary)(0)(0)(0)(10)",
+      "(Percent_Attribute_Add)(Skill_Condition_Reduce)(Legendary)(0)(0)(0)(10)",
+      "(Cooldown)(Attack)(Legendary)(1)(5)(20)(80)",
+      "(Cooldown)(Crit_Rate)(Legendary)(1)(5)(20)(15)",
+      "(Cooldown)(Crit_Damage)(Legendary)(1)(5)(20)(200)",
+      "(Cooldown)(Move_Speed)(Legendary)(1)(5)(20)(15)",
+      "(Cooldown)(Evasion)(Legendary)(1)(5)(20)(15)",
+      "(Cooldown)(Damage_Received_Redution)(Legendary)(1)(5)(20)(15)",
+      "(Cooldown)(Coin_Increase)(Legendary)(1)(5)(20)(80)",
+      "(Cooldown)(Drop_Rate_Increase)(Legendary)(1)(5)(20)(80)",
+      "(Cooldown)(Exp_Gain)(Legendary)(1)(5)(20)(80)",
+      "(Chance_On_Hit)(Attack)(Legendary)(5)(5)(5)(15)",
+      "(Chance_On_Hit)(Attack)(Legendary)(50)(10)(100)(1,5)",
+      "(Chance_On_Hit)(Crit_Rate)(Legendary)(5)(5)(5)(3)",
+      "(Chance_On_Hit)(Crit_Rate)(Legendary)(50)(10)(5)(0,3)",
+      "(Chance_On_Hit)(Crit_Damage)(Legendary)(5)(5)(5)(40)",
+      "(Chance_On_Hit)(Crit_Damage)(Legendary)(50)(10)(5)(4)",
+      "(Chance_On_Hit)(Hp_Gain)(Legendary)(1)(0)(10)(200)",
+      "(Chance_On_Hit)(Hp_Gain)(Legendary)(1)(0)(100)(20)",
+      "(Chance_On_Skill_Excute)(Attack)(Legendary)(5)(5)(10)(15)",
+      "(Chance_On_Skill_Excute)(Crit_Rate)(Legendary)(5)(5)(10)(3)",
+      "(Chance_On_Skill_Excute)(Crit_Damage)(Legendary)(5)(5)(10)(40)",
+      "(Chance_On_Skill_Excute)(Move_Speed)(Legendary)(5)(5)(10)(3)",
+      "(Chance_On_Skill_Excute)(Evasion)(Legendary)(5)(5)(10)(3)",
+      "(Chance_On_Kill)(Attack)(Legendary)(10)(5)(100)(8)",
+      "(Chance_On_Kill)(Crit_Rate)(Legendary)(10)(5)(100)(1,5)",
+      "(Chance_On_Kill)(Crit_Damage)(Legendary)(10)(5)(100)(20)",
+      "(Chance_On_Kill)(Damage_Received_Redution)(Legendary)(10)(5)(100)(1,5)",
+      "(Chance_On_Kill)(Coin_Increase)(Legendary)(10)(5)(100)(8)",
+      "(Chance_On_Kill)(Drop_Rate_Increase)(Legendary)(10)(5)(100)(8)",
+      "(Chance_On_Kill)(Exp_Gain)(Legendary)(10)(5)(100)(8)",
+      "(Chance_On_Crit)(Crit_Damage)(Legendary)(5)(5)(100)(40)",
+      "(Chance_On_Crit)(Move_Speed)(Legendary)(5)(5)(100)(2)",
+      "(Chance_On_Crit)(Coin_Increase)(Legendary)(5)(5)(100)(15)",
+      "(Chance_On_Crit)(Hp_Gain)(Legendary)(1)(0)(100)(200)",
+      "(When_Moving)(Crit_Rate)(Legendary)(5)(8)(3)(3)",
+      "(When_Moving)(Crit_Damage)(Legendary)(5)(8)(3)(40)",
+      "(When_Moving)(Evasion)(Legendary)(5)(8)(3)(2)",
+      "(Moving_Distance)(Move_Speed)(Legendary)(5)(8)(500)(2)",
+      "(Moving_Distance)(Evasion)(Legendary)(5)(8)(500)(2)",
+      "(When_Static)(Attack)(Legendary)(5)(10)(3)(15)",
+      "(When_Static)(Crit_Rate)(Legendary)(5)(8)(3)(3)",
+      "(When_Static)(Crit_Damage)(Legendary)(5)(8)(3)(40)",
+      "(When_Static)(Damage_Received_Redution)(Legendary)(5)(8)(3)(3)",
+      "(Chance_When_Hit)(Evasion)(Legendary)(5)(8)(100)(3)",
+      "(Chance_When_Hit)(Damage_Received_Redution)(Legendary)(5)(8)(100)(3)",
+      "(Chance_When_Hit)(Hp_Gain)(Legendary)(1)(0)(100)(20)",
+      "(Chance_When_Hit)(Hp_Gain)(Legendary)(1)(0)(10)(200)",
+      "(Chance_On_Evade)(Crit_Rate)(Legendary)(5)(5)(100)(3)",
+      "(Chance_On_Evade)(Crit_Damage)(Legendary)(5)(5)(100)(40)",
+      "(Chance_On_Evade)(Move_Speed)(Legendary)(5)(5)(100)(3)",
+      "(Chance_On_Evade)(Hp_Gain)(Legendary)(1)(0)(100)(200)",
+      "(When_Revive)(Attack)(Legendary)(1)(10)(0)(150)",
+      "(When_Revive)(Crit_Rate)(Legendary)(1)(10)(0)(30)",
+      "(When_Revive)(Crit_Damage)(Legendary)(1)(10)(0)(400)",
+      "(When_Revive)(Move_Speed)(Legendary)(1)(10)(0)(30)",
+      "(When_High_Armour)(Attack)(Legendary)(1)(0)(0)(60)",
+      "(When_High_Armour)(Crit_Rate)(Legendary)(1)(0)(0)(12)",
+      "(When_High_Armour)(Crit_Damage)(Legendary)(1)(0)(0)(160)",
+      "(When_High_Armour)(Evasion)(Legendary)(1)(0)(0)(12)",
+      "(When_High_Armour)(Damage_Received_Redution)(Legendary)(1)(0)(0)(12)",
+      "(When_High_Armour)(Coin_Increase)(Legendary)(1)(0)(0)(60)",
+      "(When_High_Armour)(Drop_Rate_Increase)(Legendary)(1)(0)(0)(60)",
+      "(When_High_Armour)(Exp_Gain)(Legendary)(1)(0)(0)(60)",
+      "(When_Armour_Broke)(Attack)(Legendary)(1)(5)(0)(100)",
+      "(When_Armour_Broke)(Crit_Rate)(Legendary)(1)(5)(0)(20)",
+      "(When_Armour_Broke)(Crit_Damage)(Legendary)(1)(5)(0)(200)",
+      "(When_Armour_Broke)(Move_Speed)(Legendary)(1)(5)(0)(20)",
+      "(When_Armour_Broke)(Evasion)(Legendary)(1)(5)(0)(20)",
+      "(When_Armour_Broke)(Damage_Received_Redution)(Legendary)(1)(5)(0)(20)",
+      "(When_Lost_Percentage_Of_Hp)(Attack)(Legendary)(100)(0)(3)(3)",
+      "(When_Lost_Percentage_Of_Hp)(Attack)(Legendary)(1)(0)(75)(60)",
+      "(When_Lost_Percentage_Of_Hp)(Crit_Rate)(Legendary)(100)(0)(3)(0,3)",
+      "(When_Lost_Percentage_Of_Hp)(Crit_Rate)(Legendary)(1)(0)(75)(12)",
+      "(When_Lost_Percentage_Of_Hp)(Crit_Damage)(Legendary)(1)(0)(0)(160)",
+      "(When_Lost_Percentage_Of_Hp)(Move_Speed)(Legendary)(1)(0)(75)(12)",
+      "(When_Lost_Percentage_Of_Hp)(Evasion)(Legendary)(100)(0)(3)(0,5)",
+      "(When_Lost_Percentage_Of_Hp)(Evasion)(Legendary)(1)(0)(75)(12)",
+      "(When_Lost_Percentage_Of_Hp)(Hp_Recovery)(Legendary)(100)(0)(3)(0,3)",
+      "(When_Lost_Percentage_Of_Hp)(Armour_Recovery)(Legendary)(100)(0)(3)(3)",
+      "(When_Lost_Percentage_Of_Hp)(Damage_Received_Redution)(Legendary)(100)(0)(3)(0,5)",
+      "(When_Lost_Percentage_Of_Hp)(Damage_Received_Redution)(Legendary)(1)(0)(75)(12)"
+    ]
+  },
+  "_dicEquipmentSubStatsByRarity": {
+    "Common": [
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Hp",
+        "statsRarity": "Common",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 5.0
+      },
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Armour",
+        "statsRarity": "Common",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 5.0
+      },
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Attack",
+        "statsRarity": "Common",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 5.0
+      },
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Crit_Rate",
+        "statsRarity": "Common",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 1.0
+      },
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Crit_Damage",
+        "statsRarity": "Common",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 10.0
+      },
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Coin_Increase",
+        "statsRarity": "Common",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 5.0
+      },
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Drop_Rate_Increase",
+        "statsRarity": "Common",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 5.0
+      },
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Exp_Gain",
+        "statsRarity": "Common",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 5.0
+      },
+      {
+        "excuteCondition": "Raw_Attribute_Add",
+        "effectAttribute": "Hp",
+        "statsRarity": "Common",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 100.0
+      },
+      {
+        "excuteCondition": "Raw_Attribute_Add",
+        "effectAttribute": "Armour",
+        "statsRarity": "Common",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 20.0
+      },
+      {
+        "excuteCondition": "Raw_Attribute_Add",
+        "effectAttribute": "Attack",
+        "statsRarity": "Common",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 25.0
+      }
+    ],
+    "Great": [
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Hp",
+        "statsRarity": "Great",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 10.0
+      },
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Armour",
+        "statsRarity": "Great",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 10.0
+      },
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Attack",
+        "statsRarity": "Great",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 10.0
+      },
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Crit_Rate",
+        "statsRarity": "Great",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 2.0
+      },
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Crit_Damage",
+        "statsRarity": "Great",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 20.0
+      },
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Coin_Increase",
+        "statsRarity": "Great",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 10.0
+      },
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Drop_Rate_Increase",
+        "statsRarity": "Great",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 10.0
+      },
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Exp_Gain",
+        "statsRarity": "Great",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 10.0
+      },
+      {
+        "excuteCondition": "Raw_Attribute_Add",
+        "effectAttribute": "Hp",
+        "statsRarity": "Great",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 150.0
+      },
+      {
+        "excuteCondition": "Raw_Attribute_Add",
+        "effectAttribute": "Armour",
+        "statsRarity": "Great",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 30.0
+      },
+      {
+        "excuteCondition": "Raw_Attribute_Add",
+        "effectAttribute": "Attack",
+        "statsRarity": "Great",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 35.0
+      }
+    ],
+    "Rare": [
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Hp",
+        "statsRarity": "Rare",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 15.0
+      },
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Armour",
+        "statsRarity": "Rare",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 15.0
+      },
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Attack",
+        "statsRarity": "Rare",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 15.0
+      },
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Crit_Rate",
+        "statsRarity": "Rare",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 3.0
+      },
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Crit_Damage",
+        "statsRarity": "Rare",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 30.0
+      },
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Coin_Increase",
+        "statsRarity": "Rare",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 15.0
+      },
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Drop_Rate_Increase",
+        "statsRarity": "Rare",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 15.0
+      },
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Exp_Gain",
+        "statsRarity": "Rare",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 15.0
+      },
+      {
+        "excuteCondition": "Raw_Attribute_Add",
+        "effectAttribute": "Hp",
+        "statsRarity": "Rare",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 200.0
+      },
+      {
+        "excuteCondition": "Raw_Attribute_Add",
+        "effectAttribute": "Armour",
+        "statsRarity": "Rare",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 40.0
+      },
+      {
+        "excuteCondition": "Raw_Attribute_Add",
+        "effectAttribute": "Attack",
+        "statsRarity": "Rare",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 50.0
+      }
+    ],
+    "Epic": [
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Hp",
+        "statsRarity": "Epic",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 20.0
+      },
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Armour",
+        "statsRarity": "Epic",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 20.0
+      },
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Attack",
+        "statsRarity": "Epic",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 20.0
+      },
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Crit_Rate",
+        "statsRarity": "Epic",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 5.0
+      },
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Crit_Damage",
+        "statsRarity": "Epic",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 50.0
+      },
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Coin_Increase",
+        "statsRarity": "Epic",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 20.0
+      },
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Drop_Rate_Increase",
+        "statsRarity": "Epic",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 20.0
+      },
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Exp_Gain",
+        "statsRarity": "Epic",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 20.0
+      },
+      {
+        "excuteCondition": "Raw_Attribute_Add",
+        "effectAttribute": "Hp",
+        "statsRarity": "Epic",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 350.0
+      },
+      {
+        "excuteCondition": "Raw_Attribute_Add",
+        "effectAttribute": "Armour",
+        "statsRarity": "Epic",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 70.0
+      },
+      {
+        "excuteCondition": "Raw_Attribute_Add",
+        "effectAttribute": "Attack",
+        "statsRarity": "Epic",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 85.0
+      }
+    ],
+    "Mythical": [
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Hp",
+        "statsRarity": "Mythical",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 30.0
+      },
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Armour",
+        "statsRarity": "Mythical",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 30.0
+      },
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Attack",
+        "statsRarity": "Mythical",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 30.0
+      },
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Crit_Rate",
+        "statsRarity": "Mythical",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 7.0
+      },
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Crit_Damage",
+        "statsRarity": "Mythical",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 70.0
+      },
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Coin_Increase",
+        "statsRarity": "Mythical",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 30.0
+      },
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Drop_Rate_Increase",
+        "statsRarity": "Mythical",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 30.0
+      },
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Exp_Gain",
+        "statsRarity": "Mythical",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 30.0
+      },
+      {
+        "excuteCondition": "Raw_Attribute_Add",
+        "effectAttribute": "Hp",
+        "statsRarity": "Mythical",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 650.0
+      },
+      {
+        "excuteCondition": "Raw_Attribute_Add",
+        "effectAttribute": "Armour",
+        "statsRarity": "Mythical",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 130.0
+      },
+      {
+        "excuteCondition": "Raw_Attribute_Add",
+        "effectAttribute": "Attack",
+        "statsRarity": "Mythical",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 185.0
+      }
+    ],
+    "Legendary": [
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Hp",
+        "statsRarity": "Legendary",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 50.0
+      },
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Armour",
+        "statsRarity": "Legendary",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 50.0
+      },
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Attack",
+        "statsRarity": "Legendary",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 50.0
+      },
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Crit_Rate",
+        "statsRarity": "Legendary",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 10.0
+      },
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Crit_Damage",
+        "statsRarity": "Legendary",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 100.0
+      },
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Coin_Increase",
+        "statsRarity": "Legendary",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 50.0
+      },
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Drop_Rate_Increase",
+        "statsRarity": "Legendary",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 50.0
+      },
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Exp_Gain",
+        "statsRarity": "Legendary",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 50.0
+      },
+      {
+        "excuteCondition": "Raw_Attribute_Add",
+        "effectAttribute": "Hp",
+        "statsRarity": "Legendary",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 1500.0
+      },
+      {
+        "excuteCondition": "Raw_Attribute_Add",
+        "effectAttribute": "Armour",
+        "statsRarity": "Legendary",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 300.0
+      },
+      {
+        "excuteCondition": "Raw_Attribute_Add",
+        "effectAttribute": "Attack",
+        "statsRarity": "Legendary",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 375.0
+      }
+    ],
+    "Super": [
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Move_Speed",
+        "statsRarity": "Legendary",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 10.0
+      },
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Evasion",
+        "statsRarity": "Legendary",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 10.0
+      },
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Hp_Recovery",
+        "statsRarity": "Legendary",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 3.0
+      },
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Armour_Recovery",
+        "statsRarity": "Legendary",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 10.0
+      },
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Damage_Received_Redution",
+        "statsRarity": "Legendary",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 10.0
+      },
+      {
+        "excuteCondition": "Percent_Attribute_Add",
+        "effectAttribute": "Skill_Condition_Reduce",
+        "statsRarity": "Legendary",
+        "maxStack": 0,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 10.0
+      },
+      {
+        "excuteCondition": "Cooldown",
+        "effectAttribute": "Attack",
+        "statsRarity": "Legendary",
+        "maxStack": 1,
+        "stackDuration": 5.0,
+        "conditionValue": 20.0,
+        "statsValue": 80.0
+      },
+      {
+        "excuteCondition": "Cooldown",
+        "effectAttribute": "Crit_Rate",
+        "statsRarity": "Legendary",
+        "maxStack": 1,
+        "stackDuration": 5.0,
+        "conditionValue": 20.0,
+        "statsValue": 15.0
+      },
+      {
+        "excuteCondition": "Cooldown",
+        "effectAttribute": "Crit_Damage",
+        "statsRarity": "Legendary",
+        "maxStack": 1,
+        "stackDuration": 5.0,
+        "conditionValue": 20.0,
+        "statsValue": 200.0
+      },
+      {
+        "excuteCondition": "Cooldown",
+        "effectAttribute": "Move_Speed",
+        "statsRarity": "Legendary",
+        "maxStack": 1,
+        "stackDuration": 5.0,
+        "conditionValue": 20.0,
+        "statsValue": 15.0
+      },
+      {
+        "excuteCondition": "Cooldown",
+        "effectAttribute": "Evasion",
+        "statsRarity": "Legendary",
+        "maxStack": 1,
+        "stackDuration": 5.0,
+        "conditionValue": 20.0,
+        "statsValue": 15.0
+      },
+      {
+        "excuteCondition": "Cooldown",
+        "effectAttribute": "Damage_Received_Redution",
+        "statsRarity": "Legendary",
+        "maxStack": 1,
+        "stackDuration": 5.0,
+        "conditionValue": 20.0,
+        "statsValue": 15.0
+      },
+      {
+        "excuteCondition": "Cooldown",
+        "effectAttribute": "Coin_Increase",
+        "statsRarity": "Legendary",
+        "maxStack": 1,
+        "stackDuration": 5.0,
+        "conditionValue": 20.0,
+        "statsValue": 80.0
+      },
+      {
+        "excuteCondition": "Cooldown",
+        "effectAttribute": "Drop_Rate_Increase",
+        "statsRarity": "Legendary",
+        "maxStack": 1,
+        "stackDuration": 5.0,
+        "conditionValue": 20.0,
+        "statsValue": 80.0
+      },
+      {
+        "excuteCondition": "Cooldown",
+        "effectAttribute": "Exp_Gain",
+        "statsRarity": "Legendary",
+        "maxStack": 1,
+        "stackDuration": 5.0,
+        "conditionValue": 20.0,
+        "statsValue": 80.0
+      },
+      {
+        "excuteCondition": "Chance_On_Hit",
+        "effectAttribute": "Attack",
+        "statsRarity": "Legendary",
+        "maxStack": 5,
+        "stackDuration": 5.0,
+        "conditionValue": 5.0,
+        "statsValue": 15.0
+      },
+      {
+        "excuteCondition": "Chance_On_Hit",
+        "effectAttribute": "Attack",
+        "statsRarity": "Legendary",
+        "maxStack": 50,
+        "stackDuration": 10.0,
+        "conditionValue": 100.0,
+        "statsValue": 1.5
+      },
+      {
+        "excuteCondition": "Chance_On_Hit",
+        "effectAttribute": "Crit_Rate",
+        "statsRarity": "Legendary",
+        "maxStack": 5,
+        "stackDuration": 5.0,
+        "conditionValue": 5.0,
+        "statsValue": 3.0
+      },
+      {
+        "excuteCondition": "Chance_On_Hit",
+        "effectAttribute": "Crit_Rate",
+        "statsRarity": "Legendary",
+        "maxStack": 50,
+        "stackDuration": 10.0,
+        "conditionValue": 5.0,
+        "statsValue": 0.3
+      },
+      {
+        "excuteCondition": "Chance_On_Hit",
+        "effectAttribute": "Crit_Damage",
+        "statsRarity": "Legendary",
+        "maxStack": 5,
+        "stackDuration": 5.0,
+        "conditionValue": 5.0,
+        "statsValue": 40.0
+      },
+      {
+        "excuteCondition": "Chance_On_Hit",
+        "effectAttribute": "Crit_Damage",
+        "statsRarity": "Legendary",
+        "maxStack": 50,
+        "stackDuration": 10.0,
+        "conditionValue": 5.0,
+        "statsValue": 4.0
+      },
+      {
+        "excuteCondition": "Chance_On_Hit",
+        "effectAttribute": "Hp_Gain",
+        "statsRarity": "Legendary",
+        "maxStack": 1,
+        "stackDuration": 0.0,
+        "conditionValue": 10.0,
+        "statsValue": 200.0
+      },
+      {
+        "excuteCondition": "Chance_On_Hit",
+        "effectAttribute": "Hp_Gain",
+        "statsRarity": "Legendary",
+        "maxStack": 1,
+        "stackDuration": 0.0,
+        "conditionValue": 100.0,
+        "statsValue": 20.0
+      },
+      {
+        "excuteCondition": "Chance_On_Skill_Excute",
+        "effectAttribute": "Attack",
+        "statsRarity": "Legendary",
+        "maxStack": 5,
+        "stackDuration": 5.0,
+        "conditionValue": 10.0,
+        "statsValue": 15.0
+      },
+      {
+        "excuteCondition": "Chance_On_Skill_Excute",
+        "effectAttribute": "Crit_Rate",
+        "statsRarity": "Legendary",
+        "maxStack": 5,
+        "stackDuration": 5.0,
+        "conditionValue": 10.0,
+        "statsValue": 3.0
+      },
+      {
+        "excuteCondition": "Chance_On_Skill_Excute",
+        "effectAttribute": "Crit_Damage",
+        "statsRarity": "Legendary",
+        "maxStack": 5,
+        "stackDuration": 5.0,
+        "conditionValue": 10.0,
+        "statsValue": 40.0
+      },
+      {
+        "excuteCondition": "Chance_On_Skill_Excute",
+        "effectAttribute": "Move_Speed",
+        "statsRarity": "Legendary",
+        "maxStack": 5,
+        "stackDuration": 5.0,
+        "conditionValue": 10.0,
+        "statsValue": 3.0
+      },
+      {
+        "excuteCondition": "Chance_On_Skill_Excute",
+        "effectAttribute": "Evasion",
+        "statsRarity": "Legendary",
+        "maxStack": 5,
+        "stackDuration": 5.0,
+        "conditionValue": 10.0,
+        "statsValue": 3.0
+      },
+      {
+        "excuteCondition": "Chance_On_Kill",
+        "effectAttribute": "Attack",
+        "statsRarity": "Legendary",
+        "maxStack": 10,
+        "stackDuration": 5.0,
+        "conditionValue": 100.0,
+        "statsValue": 8.0
+      },
+      {
+        "excuteCondition": "Chance_On_Kill",
+        "effectAttribute": "Crit_Rate",
+        "statsRarity": "Legendary",
+        "maxStack": 10,
+        "stackDuration": 5.0,
+        "conditionValue": 100.0,
+        "statsValue": 1.5
+      },
+      {
+        "excuteCondition": "Chance_On_Kill",
+        "effectAttribute": "Crit_Damage",
+        "statsRarity": "Legendary",
+        "maxStack": 10,
+        "stackDuration": 5.0,
+        "conditionValue": 100.0,
+        "statsValue": 20.0
+      },
+      {
+        "excuteCondition": "Chance_On_Kill",
+        "effectAttribute": "Damage_Received_Redution",
+        "statsRarity": "Legendary",
+        "maxStack": 10,
+        "stackDuration": 5.0,
+        "conditionValue": 100.0,
+        "statsValue": 1.5
+      },
+      {
+        "excuteCondition": "Chance_On_Kill",
+        "effectAttribute": "Coin_Increase",
+        "statsRarity": "Legendary",
+        "maxStack": 10,
+        "stackDuration": 5.0,
+        "conditionValue": 100.0,
+        "statsValue": 8.0
+      },
+      {
+        "excuteCondition": "Chance_On_Kill",
+        "effectAttribute": "Drop_Rate_Increase",
+        "statsRarity": "Legendary",
+        "maxStack": 10,
+        "stackDuration": 5.0,
+        "conditionValue": 100.0,
+        "statsValue": 8.0
+      },
+      {
+        "excuteCondition": "Chance_On_Kill",
+        "effectAttribute": "Exp_Gain",
+        "statsRarity": "Legendary",
+        "maxStack": 10,
+        "stackDuration": 5.0,
+        "conditionValue": 100.0,
+        "statsValue": 8.0
+      },
+      {
+        "excuteCondition": "Chance_On_Crit",
+        "effectAttribute": "Crit_Damage",
+        "statsRarity": "Legendary",
+        "maxStack": 5,
+        "stackDuration": 5.0,
+        "conditionValue": 100.0,
+        "statsValue": 40.0
+      },
+      {
+        "excuteCondition": "Chance_On_Crit",
+        "effectAttribute": "Move_Speed",
+        "statsRarity": "Legendary",
+        "maxStack": 5,
+        "stackDuration": 5.0,
+        "conditionValue": 100.0,
+        "statsValue": 2.0
+      },
+      {
+        "excuteCondition": "Chance_On_Crit",
+        "effectAttribute": "Coin_Increase",
+        "statsRarity": "Legendary",
+        "maxStack": 5,
+        "stackDuration": 5.0,
+        "conditionValue": 100.0,
+        "statsValue": 15.0
+      },
+      {
+        "excuteCondition": "Chance_On_Crit",
+        "effectAttribute": "Hp_Gain",
+        "statsRarity": "Legendary",
+        "maxStack": 1,
+        "stackDuration": 0.0,
+        "conditionValue": 100.0,
+        "statsValue": 200.0
+      },
+      {
+        "excuteCondition": "When_Moving",
+        "effectAttribute": "Crit_Rate",
+        "statsRarity": "Legendary",
+        "maxStack": 5,
+        "stackDuration": 8.0,
+        "conditionValue": 3.0,
+        "statsValue": 3.0
+      },
+      {
+        "excuteCondition": "When_Moving",
+        "effectAttribute": "Crit_Damage",
+        "statsRarity": "Legendary",
+        "maxStack": 5,
+        "stackDuration": 8.0,
+        "conditionValue": 3.0,
+        "statsValue": 40.0
+      },
+      {
+        "excuteCondition": "When_Moving",
+        "effectAttribute": "Evasion",
+        "statsRarity": "Legendary",
+        "maxStack": 5,
+        "stackDuration": 8.0,
+        "conditionValue": 3.0,
+        "statsValue": 2.0
+      },
+      {
+        "excuteCondition": "Moving_Distance",
+        "effectAttribute": "Move_Speed",
+        "statsRarity": "Legendary",
+        "maxStack": 5,
+        "stackDuration": 8.0,
+        "conditionValue": 500.0,
+        "statsValue": 2.0
+      },
+      {
+        "excuteCondition": "Moving_Distance",
+        "effectAttribute": "Evasion",
+        "statsRarity": "Legendary",
+        "maxStack": 5,
+        "stackDuration": 8.0,
+        "conditionValue": 500.0,
+        "statsValue": 2.0
+      },
+      {
+        "excuteCondition": "When_Static",
+        "effectAttribute": "Attack",
+        "statsRarity": "Legendary",
+        "maxStack": 5,
+        "stackDuration": 10.0,
+        "conditionValue": 3.0,
+        "statsValue": 15.0
+      },
+      {
+        "excuteCondition": "When_Static",
+        "effectAttribute": "Crit_Rate",
+        "statsRarity": "Legendary",
+        "maxStack": 5,
+        "stackDuration": 8.0,
+        "conditionValue": 3.0,
+        "statsValue": 3.0
+      },
+      {
+        "excuteCondition": "When_Static",
+        "effectAttribute": "Crit_Damage",
+        "statsRarity": "Legendary",
+        "maxStack": 5,
+        "stackDuration": 8.0,
+        "conditionValue": 3.0,
+        "statsValue": 40.0
+      },
+      {
+        "excuteCondition": "When_Static",
+        "effectAttribute": "Damage_Received_Redution",
+        "statsRarity": "Legendary",
+        "maxStack": 5,
+        "stackDuration": 8.0,
+        "conditionValue": 3.0,
+        "statsValue": 3.0
+      },
+      {
+        "excuteCondition": "Chance_When_Hit",
+        "effectAttribute": "Evasion",
+        "statsRarity": "Legendary",
+        "maxStack": 5,
+        "stackDuration": 8.0,
+        "conditionValue": 100.0,
+        "statsValue": 3.0
+      },
+      {
+        "excuteCondition": "Chance_When_Hit",
+        "effectAttribute": "Damage_Received_Redution",
+        "statsRarity": "Legendary",
+        "maxStack": 5,
+        "stackDuration": 8.0,
+        "conditionValue": 100.0,
+        "statsValue": 3.0
+      },
+      {
+        "excuteCondition": "Chance_When_Hit",
+        "effectAttribute": "Hp_Gain",
+        "statsRarity": "Legendary",
+        "maxStack": 1,
+        "stackDuration": 0.0,
+        "conditionValue": 100.0,
+        "statsValue": 20.0
+      },
+      {
+        "excuteCondition": "Chance_When_Hit",
+        "effectAttribute": "Hp_Gain",
+        "statsRarity": "Legendary",
+        "maxStack": 1,
+        "stackDuration": 0.0,
+        "conditionValue": 10.0,
+        "statsValue": 200.0
+      },
+      {
+        "excuteCondition": "Chance_On_Evade",
+        "effectAttribute": "Crit_Rate",
+        "statsRarity": "Legendary",
+        "maxStack": 5,
+        "stackDuration": 5.0,
+        "conditionValue": 100.0,
+        "statsValue": 3.0
+      },
+      {
+        "excuteCondition": "Chance_On_Evade",
+        "effectAttribute": "Crit_Damage",
+        "statsRarity": "Legendary",
+        "maxStack": 5,
+        "stackDuration": 5.0,
+        "conditionValue": 100.0,
+        "statsValue": 40.0
+      },
+      {
+        "excuteCondition": "Chance_On_Evade",
+        "effectAttribute": "Move_Speed",
+        "statsRarity": "Legendary",
+        "maxStack": 5,
+        "stackDuration": 5.0,
+        "conditionValue": 100.0,
+        "statsValue": 3.0
+      },
+      {
+        "excuteCondition": "Chance_On_Evade",
+        "effectAttribute": "Hp_Gain",
+        "statsRarity": "Legendary",
+        "maxStack": 1,
+        "stackDuration": 0.0,
+        "conditionValue": 100.0,
+        "statsValue": 200.0
+      },
+      {
+        "excuteCondition": "When_Revive",
+        "effectAttribute": "Attack",
+        "statsRarity": "Legendary",
+        "maxStack": 1,
+        "stackDuration": 10.0,
+        "conditionValue": 0.0,
+        "statsValue": 150.0
+      },
+      {
+        "excuteCondition": "When_Revive",
+        "effectAttribute": "Crit_Rate",
+        "statsRarity": "Legendary",
+        "maxStack": 1,
+        "stackDuration": 10.0,
+        "conditionValue": 0.0,
+        "statsValue": 30.0
+      },
+      {
+        "excuteCondition": "When_Revive",
+        "effectAttribute": "Crit_Damage",
+        "statsRarity": "Legendary",
+        "maxStack": 1,
+        "stackDuration": 10.0,
+        "conditionValue": 0.0,
+        "statsValue": 400.0
+      },
+      {
+        "excuteCondition": "When_Revive",
+        "effectAttribute": "Move_Speed",
+        "statsRarity": "Legendary",
+        "maxStack": 1,
+        "stackDuration": 10.0,
+        "conditionValue": 0.0,
+        "statsValue": 30.0
+      },
+      {
+        "excuteCondition": "When_High_Armour",
+        "effectAttribute": "Attack",
+        "statsRarity": "Legendary",
+        "maxStack": 1,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 60.0
+      },
+      {
+        "excuteCondition": "When_High_Armour",
+        "effectAttribute": "Crit_Rate",
+        "statsRarity": "Legendary",
+        "maxStack": 1,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 12.0
+      },
+      {
+        "excuteCondition": "When_High_Armour",
+        "effectAttribute": "Crit_Damage",
+        "statsRarity": "Legendary",
+        "maxStack": 1,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 160.0
+      },
+      {
+        "excuteCondition": "When_High_Armour",
+        "effectAttribute": "Evasion",
+        "statsRarity": "Legendary",
+        "maxStack": 1,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 12.0
+      },
+      {
+        "excuteCondition": "When_High_Armour",
+        "effectAttribute": "Damage_Received_Redution",
+        "statsRarity": "Legendary",
+        "maxStack": 1,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 12.0
+      },
+      {
+        "excuteCondition": "When_High_Armour",
+        "effectAttribute": "Coin_Increase",
+        "statsRarity": "Legendary",
+        "maxStack": 1,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 60.0
+      },
+      {
+        "excuteCondition": "When_High_Armour",
+        "effectAttribute": "Drop_Rate_Increase",
+        "statsRarity": "Legendary",
+        "maxStack": 1,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 60.0
+      },
+      {
+        "excuteCondition": "When_High_Armour",
+        "effectAttribute": "Exp_Gain",
+        "statsRarity": "Legendary",
+        "maxStack": 1,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 60.0
+      },
+      {
+        "excuteCondition": "When_Armour_Broke",
+        "effectAttribute": "Attack",
+        "statsRarity": "Legendary",
+        "maxStack": 1,
+        "stackDuration": 5.0,
+        "conditionValue": 0.0,
+        "statsValue": 100.0
+      },
+      {
+        "excuteCondition": "When_Armour_Broke",
+        "effectAttribute": "Crit_Rate",
+        "statsRarity": "Legendary",
+        "maxStack": 1,
+        "stackDuration": 5.0,
+        "conditionValue": 0.0,
+        "statsValue": 20.0
+      },
+      {
+        "excuteCondition": "When_Armour_Broke",
+        "effectAttribute": "Crit_Damage",
+        "statsRarity": "Legendary",
+        "maxStack": 1,
+        "stackDuration": 5.0,
+        "conditionValue": 0.0,
+        "statsValue": 200.0
+      },
+      {
+        "excuteCondition": "When_Armour_Broke",
+        "effectAttribute": "Move_Speed",
+        "statsRarity": "Legendary",
+        "maxStack": 1,
+        "stackDuration": 5.0,
+        "conditionValue": 0.0,
+        "statsValue": 20.0
+      },
+      {
+        "excuteCondition": "When_Armour_Broke",
+        "effectAttribute": "Evasion",
+        "statsRarity": "Legendary",
+        "maxStack": 1,
+        "stackDuration": 5.0,
+        "conditionValue": 0.0,
+        "statsValue": 20.0
+      },
+      {
+        "excuteCondition": "When_Armour_Broke",
+        "effectAttribute": "Damage_Received_Redution",
+        "statsRarity": "Legendary",
+        "maxStack": 1,
+        "stackDuration": 5.0,
+        "conditionValue": 0.0,
+        "statsValue": 20.0
+      },
+      {
+        "excuteCondition": "When_Lost_Percentage_Of_Hp",
+        "effectAttribute": "Attack",
+        "statsRarity": "Legendary",
+        "maxStack": 100,
+        "stackDuration": 0.0,
+        "conditionValue": 3.0,
+        "statsValue": 3.0
+      },
+      {
+        "excuteCondition": "When_Lost_Percentage_Of_Hp",
+        "effectAttribute": "Attack",
+        "statsRarity": "Legendary",
+        "maxStack": 1,
+        "stackDuration": 0.0,
+        "conditionValue": 75.0,
+        "statsValue": 60.0
+      },
+      {
+        "excuteCondition": "When_Lost_Percentage_Of_Hp",
+        "effectAttribute": "Crit_Rate",
+        "statsRarity": "Legendary",
+        "maxStack": 100,
+        "stackDuration": 0.0,
+        "conditionValue": 3.0,
+        "statsValue": 0.3
+      },
+      {
+        "excuteCondition": "When_Lost_Percentage_Of_Hp",
+        "effectAttribute": "Crit_Rate",
+        "statsRarity": "Legendary",
+        "maxStack": 1,
+        "stackDuration": 0.0,
+        "conditionValue": 75.0,
+        "statsValue": 12.0
+      },
+      {
+        "excuteCondition": "When_Lost_Percentage_Of_Hp",
+        "effectAttribute": "Crit_Damage",
+        "statsRarity": "Legendary",
+        "maxStack": 1,
+        "stackDuration": 0.0,
+        "conditionValue": 0.0,
+        "statsValue": 160.0
+      },
+      {
+        "excuteCondition": "When_Lost_Percentage_Of_Hp",
+        "effectAttribute": "Move_Speed",
+        "statsRarity": "Legendary",
+        "maxStack": 1,
+        "stackDuration": 0.0,
+        "conditionValue": 75.0,
+        "statsValue": 12.0
+      },
+      {
+        "excuteCondition": "When_Lost_Percentage_Of_Hp",
+        "effectAttribute": "Evasion",
+        "statsRarity": "Legendary",
+        "maxStack": 100,
+        "stackDuration": 0.0,
+        "conditionValue": 3.0,
+        "statsValue": 0.5
+      },
+      {
+        "excuteCondition": "When_Lost_Percentage_Of_Hp",
+        "effectAttribute": "Evasion",
+        "statsRarity": "Legendary",
+        "maxStack": 1,
+        "stackDuration": 0.0,
+        "conditionValue": 75.0,
+        "statsValue": 12.0
+      },
+      {
+        "excuteCondition": "When_Lost_Percentage_Of_Hp",
+        "effectAttribute": "Hp_Recovery",
+        "statsRarity": "Legendary",
+        "maxStack": 100,
+        "stackDuration": 0.0,
+        "conditionValue": 3.0,
+        "statsValue": 0.3
+      },
+      {
+        "excuteCondition": "When_Lost_Percentage_Of_Hp",
+        "effectAttribute": "Armour_Recovery",
+        "statsRarity": "Legendary",
+        "maxStack": 100,
+        "stackDuration": 0.0,
+        "conditionValue": 3.0,
+        "statsValue": 3.0
+      },
+      {
+        "excuteCondition": "When_Lost_Percentage_Of_Hp",
+        "effectAttribute": "Damage_Received_Redution",
+        "statsRarity": "Legendary",
+        "maxStack": 100,
+        "stackDuration": 0.0,
+        "conditionValue": 3.0,
+        "statsValue": 0.5
+      },
+      {
+        "excuteCondition": "When_Lost_Percentage_Of_Hp",
+        "effectAttribute": "Damage_Received_Redution",
+        "statsRarity": "Legendary",
+        "maxStack": 1,
+        "stackDuration": 0.0,
+        "conditionValue": 75.0,
+        "statsValue": 12.0
+      }
+    ]
+  },
+  "dicDescIncrease": {
+    "(Percent_Attribute_Add)": "Increase {3}% {2}",
+    "(Raw_Attribute_Add)": "Add {3} {2}",
+    "(Cooldown)": "Every {0} seconds, create a {1}-second lasting buff that increases {2} by {3}%",
+    "(Chance_On_Hit)": "When any skill hits its target, there is a {0}% chance to create a {1}-second lasting buff that increases {2} by {3}%, up to a maximum of {4} stacks.",
+    "(Chance_On_Skill_Excute)": "When any skill is executed, there is a {0}% chance to create a {1}-second lasting buff that increases {2} by {3}%, up to a maximum of {4} stacks.",
+    "(Chance_On_Kill)": "Whenever an enemy is killed, there is a {0}% chance to create a {1}-second lasting buff that increases {2} by {3}%, up to a maximum of {4} stacks.",
+    "(Chance_On_Crit)": "Whenever a critical hit is dealt, there is a {0}% chance to create a {1}-second lasting buff that increases {2} by {3}%, up to a maximum of {4} stacks.",
+    "(When_Moving)": "Every {0} seconds while moving, create a {1}-second lasting buff that increases {2} by {3}%, up to a maximum of {4} stacks.",
+    "(Moving_Distance)": "After moving a distance of {0}, create a {1}-second lasting buff that increases {2} by {3}%, up to a maximum of {4} stacks.",
+    "(When_Static)": "Every {0} seconds of standing still, create a {1}-second lasting buff that increases {2} by {3}%, up to a maximum of {4} stacks.",
+    "(Chance_When_Hit)": "Whenever hit by an attack, there is a {0}% chance to create a {1}-second lasting buff that increases {2} by {3}%, up to a maximum of {4} stacks.",
+    "(Chance_On_Evade)": "Whenever successfully dodging an attack, there is a {0}% chance to create a {1}-second lasting buff that increases {2} by {3}%, up to a maximum of {4} stacks.",
+    "(When_Revive)": "After reviving, create a {1}-second lasting buff that increases {2} by {3}%",
+    "(When_Armour_Recovering)": "Every {0} seconds while regenerating armour, create a {1}-second lasting buff that increases {2} by {3}%, up to a maximum of {4} stacks.",
+    "(When_High_Armour)": "When armor is above 50%, create a buff that increases {2} by {3}%",
+    "(When_Armour_Broke)": "When the armor is broken, create a {1}-second lasting buff that increases {2} by {3}%, up to a maximum of {4} stacks.",
+    "(When_Lost_Percentage_Of_Hp)": "Whenever health drops by {0}%, receive a layer of buff that increases {2} by {3}%.",
+    "(When_Take_Deadly_Strike)": "When Take Deadly Strike, create a {1}-second lasting buff that increases {2} by {3}%",
+    "(On_Receive_Coin)": "Whenever gold is collected, there is a {0}% chance to create a {1}-second lasting buff that increases {2} by {3}%, up to a maximum of {4} stacks."
+  },
+  "dicDescGain": {
+    "(Percent_Attribute_Add)": "0",
+    "(Raw_Attribute_Add)": "0",
+    "(Cooldown)": "Every {0} seconds, recovery {3} {2}",
+    "(Chance_On_Hit)": "When any skill hits its target, there is a {0}% chance to recovery {3} {2}",
+    "(Chance_On_Skill_Excute)": "When any skill is executed, there is a {0}% chance to recovery {3} {2}",
+    "(Chance_On_Kill)": "Whenever an enemy is killed, there is a {0}% chance to recovery {3} {2}",
+    "(Chance_On_Crit)": "Whenever a critical hit is dealt, there is a {0}% chance to recovery {3} {2}",
+    "(When_Moving)": "Every {0} seconds while moving, recovery {3} {2}",
+    "(Moving_Distance)": "After moving a distance of {0}, recovery {3} {2}",
+    "(When_Static)": "Every {0} seconds of standing still, recovery {3} {2}",
+    "(Chance_When_Hit)": "Whenever hit by an attack, there is a {0}% chance to recovery {3} {2}",
+    "(Chance_On_Evade)": "Whenever successfully dodging an attack, there is a {0}% chance to recovery {3} {2}",
+    "(When_Revive)": "After reviving, recovery {3} {2}",
+    "(When_Armour_Recovering)": "Every {0} seconds while regenerating armour, recovery {3} {2}",
+    "(When_High_Armour)": "When armor is above 50%, create a buff that recovery {3} {2}",
+    "(When_Armour_Broke)": "When the armor is broken, there is a {0}% chance to recovery {3} {2}",
+    "(When_Lost_Percentage_Of_Hp)": "Whenever health drops by {0}%, recovery {3} {2}",
+    "(When_Take_Deadly_Strike)": "When Take Deadly Strike, recovery {3} {2}",
+    "(On_Receive_Coin)": "Whenever gold is collected, there is a {0}% chance to recovery {3} {2}"
+  },
+  "dicSkillConfig": {
+    "Machine_Gun": {
+      "skillId": "Machine_Gun",
+      "skillName": "Machine Gun",
+      "skillDesc": "Shot <color=#00FF00>{2}</color> machine gun bullet to enemy deal <color=#00FF00>{1}%</color> damage each <color=#00FF00>{0}</color> second(s).",
+      "excuteCondition": "Cooldown",
+      "conditionValue": 0.9,
+      "damageMulti": 155.0,
+      "bulletNumb": 1,
+      "bulletSpeed": 6.0,
+      "areaScale": 0.0,
+      "duration": 0.0,
+      "interval": 0.0,
+      "subEffectDamageMulti": 0.0,
+      "subEffectNumber": 0,
+      "subEffectAreaScale": 0.0,
+      "lstUpgrade": [
+        [
+          {
+            "upgradeType": "Add_Projectile",
+            "valueUpgrade": 1.0
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": -30.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Add_Projectile",
+            "valueUpgrade": 1.0
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": -10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Add_Projectile",
+            "valueUpgrade": 1.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 20.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Add_Projectile",
+            "valueUpgrade": 2.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Add_Projectile",
+            "valueUpgrade": 1.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Add_Projectile",
+            "valueUpgrade": 2.0
+          }
+        ]
+      ]
+    },
+    "Shotgun": {
+      "skillId": "Shotgun",
+      "skillName": "Shotgun",
+      "skillDesc": "Shot <color=#00FF00>{2}</color> machine gun bullet to enemy deal <color=#00FF00>{1}%</color> damage each <color=#00FF00>{0}</color> second(s).",
+      "excuteCondition": "Cooldown",
+      "conditionValue": 0.5,
+      "damageMulti": 50.0,
+      "bulletNumb": 4,
+      "bulletSpeed": 13.0,
+      "areaScale": 0.0,
+      "duration": 0.0,
+      "interval": 0.0,
+      "subEffectDamageMulti": 0.0,
+      "subEffectNumber": 0,
+      "subEffectAreaScale": 0.0,
+      "lstUpgrade": [
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Add_Projectile",
+            "valueUpgrade": 2.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 5.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Add_Projectile",
+            "valueUpgrade": 2.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 5.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Add_Projectile",
+            "valueUpgrade": 2.0
+          }
+        ]
+      ]
+    },
+    "Flame_Arrow": {
+      "skillId": "Flame_Arrow",
+      "skillName": "Flame Arrow",
+      "skillDesc": "Firing <color=#00FF00>{2}</color>  piercing arrows at enemies every <color=#00FF00>{0}</color>  second(s), each arrow deals <color=#00FF00>{1}%</color> damage and leaves a trail of fire for <color=#00FF00>{5}</color> second(s), burning enemies for <color=#00FF00>{7}%</color> arrow damage.",
+      "excuteCondition": "Cooldown",
+      "conditionValue": 2.5,
+      "damageMulti": 70.0,
+      "bulletNumb": 1,
+      "bulletSpeed": 12.0,
+      "areaScale": 35.0,
+      "duration": 3.0,
+      "interval": 1.0,
+      "subEffectDamageMulti": 15.0,
+      "subEffectNumber": 0,
+      "subEffectAreaScale": 50.0,
+      "lstUpgrade": [
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_SubEffect_Damage_Multi",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_SubEffect_Damage_Multi",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Add_Projectile",
+            "valueUpgrade": 2.0
+          },
+          {
+            "upgradeType": "Increase_SubEffect_Damage_Multi",
+            "valueUpgrade": 15.0
+          }
+        ]
+      ]
+    },
+    "Bouncing_Thunder": {
+      "skillId": "Bouncing_Thunder",
+      "skillName": "Bouncing Thunder",
+      "skillDesc": "Firing <color=#00FF00>{2}</color> bouncing thunder every <color=#00FF00>{0}</color> second(s), deals <color=#00FF00>{1}%</color> damage, penetrate through all enemies and randomly bounce to the next position for a total of <color=#00FF00>{8}</color> times",
+      "excuteCondition": "Cooldown",
+      "conditionValue": 1.0,
+      "damageMulti": 45.0,
+      "bulletNumb": 1,
+      "bulletSpeed": 15.0,
+      "areaScale": 0.0,
+      "duration": 0.0,
+      "interval": 0.0,
+      "subEffectDamageMulti": 0.0,
+      "subEffectNumber": 2,
+      "subEffectAreaScale": 0.0,
+      "lstUpgrade": [
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Add_Projectile",
+            "valueUpgrade": 1.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 5.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Add_Projectile",
+            "valueUpgrade": 1.0
+          },
+          {
+            "upgradeType": "Add_Projectile",
+            "valueUpgrade": 1.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 5.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Add_Projectile",
+            "valueUpgrade": 1.0
+          },
+          {
+            "upgradeType": "Add_Projectile",
+            "valueUpgrade": 1.0
+          }
+        ]
+      ]
+    },
+    "Radiance": {
+      "skillId": "Radiance",
+      "skillName": "Radiance",
+      "skillDesc": "Creating a radiation zone around oneself, dealing <color=#00FF00>{1}%</color> damage to enemies  within a radius of <color=#00FF00>{4}</color> every <color=#00FF00>{0}</color> second(s).",
+      "excuteCondition": "Cooldown",
+      "conditionValue": 0.3,
+      "damageMulti": 35.0,
+      "bulletNumb": 0,
+      "bulletSpeed": 0.0,
+      "areaScale": 150.0,
+      "duration": 0.0,
+      "interval": 0.0,
+      "subEffectDamageMulti": 0.0,
+      "subEffectNumber": 0,
+      "subEffectAreaScale": 0.0,
+      "lstUpgrade": [
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 5.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Effect_Radius",
+            "valueUpgrade": 20.0
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 5.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Effect_Radius",
+            "valueUpgrade": 25.0
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 5.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Effect_Radius",
+            "valueUpgrade": 50.0
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ]
+      ]
+    },
+    "Lightning_Explose": {
+      "skillId": "Lightning_Explose",
+      "skillName": "Ligtning Explose",
+      "skillDesc": "Creating an electromagnetic explosion around oneself, dealing <color=#00FF00>{1}%</color> damage within a radius of <color=#00FF00>{4}</color> after every <color=#00FF00>{0}</color> units of movement.",
+      "excuteCondition": "When_Moving",
+      "conditionValue": 5.0,
+      "damageMulti": 250.0,
+      "bulletNumb": 1,
+      "bulletSpeed": 0.0,
+      "areaScale": 250.0,
+      "duration": 1.0,
+      "interval": 0.0,
+      "subEffectDamageMulti": 0.0,
+      "subEffectNumber": 0,
+      "subEffectAreaScale": 0.0,
+      "lstUpgrade": [
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 30.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 30.0
+          },
+          {
+            "upgradeType": "Increase_Effect_Radius",
+            "valueUpgrade": 25.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 25.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 30.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Effect_Radius",
+            "valueUpgrade": 35.0
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 30.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 30.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 30.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Effect_Radius",
+            "valueUpgrade": 30.0
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 30.0
+          }
+        ]
+      ]
+    },
+    "Fire_Explose": {
+      "skillId": "Fire_Explose",
+      "skillName": "Fire Explose",
+      "skillDesc": "Creating an explosive blast around oneself, dealing <color=#00FF00>{1}%</color> damage within a radius of <color=#00FF00>{4}</color> every <color=#00FF00>{0}</color> second(s) and causing enemies to burn for <color=#00FF00>{7}%</color> of the explosion's damage over <color=#00FF00>{5}</color> second(s).",
+      "excuteCondition": "Cooldown",
+      "conditionValue": 7.0,
+      "damageMulti": 200.0,
+      "bulletNumb": 1,
+      "bulletSpeed": 0.0,
+      "areaScale": 280.0,
+      "duration": 5.0,
+      "interval": 1.0,
+      "subEffectDamageMulti": 35.0,
+      "subEffectNumber": 0,
+      "subEffectAreaScale": 0.0,
+      "lstUpgrade": [
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 30.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_SubEffect_Damage_Multi",
+            "valueUpgrade": 15.0
+          },
+          {
+            "upgradeType": "Increase_Effect_Radius",
+            "valueUpgrade": 20.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 25.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 30.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Effect_Radius",
+            "valueUpgrade": 35.0
+          },
+          {
+            "upgradeType": "Increase_SubEffect_Damage_Multi",
+            "valueUpgrade": 15.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 50.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 50.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_SubEffect_Damage_Multi",
+            "valueUpgrade": 15.0
+          },
+          {
+            "upgradeType": "Increase_Effect_Radius",
+            "valueUpgrade": 50.0
+          }
+        ]
+      ]
+    },
+    "Toxic_Explose": {
+      "skillId": "Toxic_Explose",
+      "skillName": "Toxic Explose",
+      "skillDesc": "Creating a toxic explosion around oneself, dealing <color=#00FF00>{1}%</color> damage within a radius of <color=#00FF00>{4}</color> every <color=#00FF00>{0}</color> second(s) poisoning enemies for <color=#00FF00>{7}%</color> of the explosion's damage over <color=#00FF00>{5}</color> second(s).",
+      "excuteCondition": "Cooldown",
+      "conditionValue": 7.0,
+      "damageMulti": 100.0,
+      "bulletNumb": 1,
+      "bulletSpeed": 0.0,
+      "areaScale": 200.0,
+      "duration": 10.0,
+      "interval": 1.0,
+      "subEffectDamageMulti": 35.0,
+      "subEffectNumber": 0,
+      "subEffectAreaScale": 0.0,
+      "lstUpgrade": [
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 15.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_SubEffect_Damage_Multi",
+            "valueUpgrade": 15.0
+          },
+          {
+            "upgradeType": "Increase_Effect_Radius",
+            "valueUpgrade": 25.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 15.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 15.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Effect_Radius",
+            "valueUpgrade": 35.0
+          },
+          {
+            "upgradeType": "Increase_SubEffect_Damage_Multi",
+            "valueUpgrade": 15.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 50.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 50.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_SubEffect_Damage_Multi",
+            "valueUpgrade": 15.0
+          },
+          {
+            "upgradeType": "Increase_Effect_Radius",
+            "valueUpgrade": 50.0
+          }
+        ]
+      ]
+    },
+    "Meteor": {
+      "skillId": "Meteor",
+      "skillName": "Meteor",
+      "skillDesc": "Calling down <color=#00FF00>{2}</color> meteorites to random ground positions every <color=#00FF00>{0}</color> second(s) while standing still, dealing <color=#00FF00>{1}%</color> damage to enemies within a radius of <color=#00FF00>{4}</color> at the impact location.",
+      "excuteCondition": "When_Static",
+      "conditionValue": 5.0,
+      "damageMulti": 200.0,
+      "bulletNumb": 5,
+      "bulletSpeed": 20.0,
+      "areaScale": 150.0,
+      "duration": 0.0,
+      "interval": 0.0,
+      "subEffectDamageMulti": 0.0,
+      "subEffectNumber": 0,
+      "subEffectAreaScale": 0.0,
+      "lstUpgrade": [
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 50.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Add_Projectile",
+            "valueUpgrade": 5.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 25.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 50.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Effect_Radius",
+            "valueUpgrade": 25.0
+          },
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 25.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 50.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 25.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Add_Projectile",
+            "valueUpgrade": 5.0
+          }
+        ]
+      ]
+    },
+    "Lightning_Strike": {
+      "skillId": "Lightning_Strike",
+      "skillName": "Lightning Strike",
+      "skillDesc": "Calling down <color=#00FF00>{2}</color> lightning bolts to the enemy's position every <color=#00FF00>{0}</color> second(s), dealing <color=#00FF00>{1}%</color> damage to enemies within a radius of <color=#00FF00>{4}</color> at the location.",
+      "excuteCondition": "Cooldown",
+      "conditionValue": 5.0,
+      "damageMulti": 150.0,
+      "bulletNumb": 10,
+      "bulletSpeed": 0.0,
+      "areaScale": 35.0,
+      "duration": 0.0,
+      "interval": 0.0,
+      "subEffectDamageMulti": 0.0,
+      "subEffectNumber": 0,
+      "subEffectAreaScale": 0.0,
+      "lstUpgrade": [
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 50.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Effect_Radius",
+            "valueUpgrade": 15.0
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 15.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 25.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 50.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Effect_Radius",
+            "valueUpgrade": 15.0
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 25.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 50.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 25.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Effect_Radius",
+            "valueUpgrade": 15.0
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 25.0
+          }
+        ]
+      ]
+    },
+    "Rotate_Saw_Blade": {
+      "skillId": "Rotate_Saw_Blade",
+      "skillName": "Rotate Saw Blade",
+      "skillDesc": "Summoning a chainsaw spinning around oneself for <color=#00FF00>{5}</color> seconds every <color=#00FF00>{0}</color> seconds while standing still, dealing <color=#00FF00>{1}%</color> damage, with a maximum of <color=#00FF00>{2}</color> chainsaws.",
+      "excuteCondition": "When_Static",
+      "conditionValue": 3.0,
+      "damageMulti": 130.0,
+      "bulletNumb": 3,
+      "bulletSpeed": 150.0,
+      "areaScale": 350.0,
+      "duration": 8.0,
+      "interval": 0.0,
+      "subEffectDamageMulti": 0.0,
+      "subEffectNumber": 0,
+      "subEffectAreaScale": 50.0,
+      "lstUpgrade": [
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 20.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Add_Projectile",
+            "valueUpgrade": 1.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 20.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 20.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Add_Projectile",
+            "valueUpgrade": 1.0
+          },
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 15.0
+          },
+          {
+            "upgradeType": "Increase_Effect_Radius",
+            "valueUpgrade": 25.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 20.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 20.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Add_Projectile",
+            "valueUpgrade": 2.0
+          },
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 15.0
+          },
+          {
+            "upgradeType": "Increase_Effect_Radius",
+            "valueUpgrade": 25.0
+          }
+        ]
+      ]
+    },
+    "Rotate_Lightning_Ball": {
+      "skillId": "Rotate_Lightning_Ball",
+      "skillName": "Rotate Lightning Ball",
+      "skillDesc": "Summoning a lightning sphere spinning around oneself for <color=#00FF00>{5}</color> seconds every <color=#00FF00>{0}</color> seconds while standing still, dealing <color=#00FF00>{1}%</color> damage within a radius of <color=#00FF00>{9}</color> every <color=#00FF00>{6}</color> seconds, with a maximum of <color=#00FF00>{2}</color> spheres.",
+      "excuteCondition": "When_Moving",
+      "conditionValue": 5.0,
+      "damageMulti": 60.0,
+      "bulletNumb": 3,
+      "bulletSpeed": 60.0,
+      "areaScale": 350.0,
+      "duration": 5.0,
+      "interval": 0.5,
+      "subEffectDamageMulti": 0.0,
+      "subEffectNumber": 0,
+      "subEffectAreaScale": 100.0,
+      "lstUpgrade": [
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Add_Projectile",
+            "valueUpgrade": 1.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 20.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Add_Projectile",
+            "valueUpgrade": 1.0
+          },
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 15.0
+          },
+          {
+            "upgradeType": "Increase_Effect_Radius",
+            "valueUpgrade": 25.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Add_Projectile",
+            "valueUpgrade": 2.0
+          },
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 15.0
+          },
+          {
+            "upgradeType": "Increase_Effect_Radius",
+            "valueUpgrade": 25.0
+          }
+        ]
+      ]
+    },
+    "Groundfire": {
+      "skillId": "Groundfire",
+      "skillName": "Ground Fire",
+      "skillDesc": "Whenever an enemy is killed, there is a <color=#00FF00>{0}%</color> chance to summon <color=#00FF00>{2}</color> random pillars of fire from the ground, dealing <color=#00FF00>{1}%</color> damage and burning enemies for <color=#00FF00>{5}</color>  seconds, causes <color=#00FF00>{7}%</color> of the initial damage every <color=#00FF00>{6}</color> second.",
+      "excuteCondition": "Chance_On_Kill",
+      "conditionValue": 10.0,
+      "damageMulti": 100.0,
+      "bulletNumb": 3,
+      "bulletSpeed": 0.0,
+      "areaScale": 75.0,
+      "duration": 3.0,
+      "interval": 1.0,
+      "subEffectDamageMulti": 50.0,
+      "subEffectNumber": 0,
+      "subEffectAreaScale": 0.0,
+      "lstUpgrade": [
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 15.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Add_Projectile",
+            "valueUpgrade": 2.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 15.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 15.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Add_Projectile",
+            "valueUpgrade": 1.0
+          },
+          {
+            "upgradeType": "Increase_SubEffect_Damage_Multi",
+            "valueUpgrade": 50.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 15.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 15.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Add_Projectile",
+            "valueUpgrade": 3.0
+          },
+          {
+            "upgradeType": "Increase_Effect_Radius",
+            "valueUpgrade": 25.0
+          }
+        ]
+      ]
+    },
+    "Static_Saw": {
+      "skillId": "Static_Saw",
+      "skillName": "Static Saw",
+      "skillDesc": "Whenever an enemy is killed, there is a <color=#00FF00>{0}%</color> chance to summon a rotating chainsaw at a random position for <color=#00FF00>{5}</color> seconds, dealing <color=#00FF00>{1}%</color> damage.",
+      "excuteCondition": "Chance_On_Kill",
+      "conditionValue": 10.0,
+      "damageMulti": 50.0,
+      "bulletNumb": 1,
+      "bulletSpeed": 0.0,
+      "areaScale": 75.0,
+      "duration": 5.0,
+      "interval": 0.3,
+      "subEffectDamageMulti": 0.0,
+      "subEffectNumber": 0,
+      "subEffectAreaScale": 0.0,
+      "lstUpgrade": [
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Effect_Radius",
+            "valueUpgrade": 20.0
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Effect_Radius",
+            "valueUpgrade": 20.0
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_Effect_Duration",
+            "valueUpgrade": 2.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_Effect_Duration",
+            "valueUpgrade": 2.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Effect_Radius",
+            "valueUpgrade": 20.0
+          },
+          {
+            "upgradeType": "Add_Projectile",
+            "valueUpgrade": 1.0
+          }
+        ]
+      ]
+    },
+    "Static_Lightning_Ball": {
+      "skillId": "Static_Lightning_Ball",
+      "skillName": "Static Lightning Ball",
+      "skillDesc": "Whenever an enemy is killed, there is a <color=#00FF00>{0}%</color> chance to summon a lightning orb at a random position for <color=#00FF00>{5}</color> seconds, dealing <color=#00FF00>{1}%</color> damage to enemies within a <color=#00FF00>{4}</color> radius every <color=#00FF00>{6}</color> seconds.",
+      "excuteCondition": "Chance_On_Kill",
+      "conditionValue": 10.0,
+      "damageMulti": 50.0,
+      "bulletNumb": 1,
+      "bulletSpeed": 0.0,
+      "areaScale": 100.0,
+      "duration": 5.0,
+      "interval": 1.0,
+      "subEffectDamageMulti": 0.0,
+      "subEffectNumber": 0,
+      "subEffectAreaScale": 0.0,
+      "lstUpgrade": [
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Effect_Radius",
+            "valueUpgrade": 20.0
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Effect_Radius",
+            "valueUpgrade": 20.0
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_Effect_Duration",
+            "valueUpgrade": 2.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_Effect_Duration",
+            "valueUpgrade": 2.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Effect_Radius",
+            "valueUpgrade": 25.0
+          },
+          {
+            "upgradeType": "Add_Projectile",
+            "valueUpgrade": 1.0
+          }
+        ]
+      ]
+    },
+    "Flame_Orb": {
+      "skillId": "Flame_Orb",
+      "skillName": "Flame Orb",
+      "skillDesc": "Whenever an enemy is killed, there is a <color=#00FF00>{0}%</color> chance to summon a flame orb at a random position for <color=#00FF00>{5}</color> seconds, dealing <color=#00FF00>{1}%</color> damage to enemies within a <color=#00FF00>{4}</color> radius every <color=#00FF00>{6}</color> seconds.",
+      "excuteCondition": "Chance_On_Kill",
+      "conditionValue": 10.0,
+      "damageMulti": 120.0,
+      "bulletNumb": 1,
+      "bulletSpeed": 0.0,
+      "areaScale": 125.0,
+      "duration": 5.0,
+      "interval": 1.0,
+      "subEffectDamageMulti": 0.0,
+      "subEffectNumber": 0,
+      "subEffectAreaScale": 0.0,
+      "lstUpgrade": [
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 15.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Effect_Radius",
+            "valueUpgrade": 20.0
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 20.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 20.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 20.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Effect_Radius",
+            "valueUpgrade": 20.0
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 20.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 20.0
+          },
+          {
+            "upgradeType": "Increase_Effect_Duration",
+            "valueUpgrade": 2.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 20.0
+          },
+          {
+            "upgradeType": "Increase_Effect_Duration",
+            "valueUpgrade": 2.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Effect_Radius",
+            "valueUpgrade": 30.0
+          },
+          {
+            "upgradeType": "Add_Projectile",
+            "valueUpgrade": 1.0
+          }
+        ]
+      ]
+    },
+    "Light_Gun_Drone": {
+      "skillId": "Light_Gun_Drone",
+      "skillName": "Light Gun Drone",
+      "skillDesc": "Utilizing a combat-support drone that fires <color=#00FF00>{2}</color> light bullets, each dealing <color=#00FF00>{1}%</color> damage every <color=#00FF00>{0}</color> seconds.",
+      "excuteCondition": "Cooldown",
+      "conditionValue": 0.3,
+      "damageMulti": 75.0,
+      "bulletNumb": 1,
+      "bulletSpeed": 12.0,
+      "areaScale": 0.0,
+      "duration": 0.0,
+      "interval": 0.0,
+      "subEffectDamageMulti": 0.0,
+      "subEffectNumber": 0,
+      "subEffectAreaScale": 0.0,
+      "lstUpgrade": [
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 15.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Add_Projectile",
+            "valueUpgrade": 1.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 15.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Add_Projectile",
+            "valueUpgrade": 2.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Add_Projectile",
+            "valueUpgrade": 2.0
+          }
+        ]
+      ]
+    },
+    "Rocket_Drone": {
+      "skillId": "Rocket_Drone",
+      "skillName": "Rocket Drone",
+      "skillDesc": "Utilizing a combat-support drone that fires <color=#00FF00>{2}</color> rocket bullets, each dealing <color=#00FF00>{1}%</color> damage within a <color=#00FF00>{4}</color> radius every <color=#00FF00>{0}</color> seconds.",
+      "excuteCondition": "Cooldown",
+      "conditionValue": 0.5,
+      "damageMulti": 75.0,
+      "bulletNumb": 1,
+      "bulletSpeed": 11.0,
+      "areaScale": 50.0,
+      "duration": 0.0,
+      "interval": 0.0,
+      "subEffectDamageMulti": 0.0,
+      "subEffectNumber": 0,
+      "subEffectAreaScale": 0.0,
+      "lstUpgrade": [
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 15.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Add_Projectile",
+            "valueUpgrade": 1.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 15.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Add_Projectile",
+            "valueUpgrade": 2.0
+          }
+        ]
+      ]
+    },
+    "Flame_Trail": {
+      "skillId": "Flame_Trail",
+      "skillName": "Flame Trail",
+      "skillDesc": "Creating a burning area beneath the feet after every <color=#00FF00>{0}</color> of distance traveled, where the flames persist for <color=#00FF00>{5}</color> seconds and deal <color=#00FF00>{1}%</color>damage to enemies every <color=#00FF00>{6}</color> seconds.",
+      "excuteCondition": "Moving_Distance",
+      "conditionValue": 50.0,
+      "damageMulti": 50.0,
+      "bulletNumb": 1,
+      "bulletSpeed": 0.0,
+      "areaScale": 35.0,
+      "duration": 3.0,
+      "interval": 1.0,
+      "subEffectDamageMulti": 0.0,
+      "subEffectNumber": 0,
+      "subEffectAreaScale": 0.0,
+      "lstUpgrade": [
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_Effect_Duration",
+            "valueUpgrade": 1.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_Effect_Duration",
+            "valueUpgrade": 1.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 25.0
+          },
+          {
+            "upgradeType": "Increase_Effect_Radius",
+            "valueUpgrade": 20.0
+          }
+        ]
+      ]
+    },
+    "Ground_Stamp": {
+      "skillId": "Ground_Stamp",
+      "skillName": "Ground Stamping",
+      "skillDesc": "Performing a powerful stomp on the ground, causing an explosion within a <color=#00FF00>{4}</color> radius, dealing <color=#00FF00>{1}%</color> damage to enemies for every <color=#00FF00>{0}</color> of distance traveled.",
+      "excuteCondition": "Moving_Distance",
+      "conditionValue": 500.0,
+      "damageMulti": 180.0,
+      "bulletNumb": 1,
+      "bulletSpeed": 0.0,
+      "areaScale": 200.0,
+      "duration": 0.0,
+      "interval": 0.0,
+      "subEffectDamageMulti": 0.0,
+      "subEffectNumber": 0,
+      "subEffectAreaScale": 0.0,
+      "lstUpgrade": [
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 25.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 25.0
+          },
+          {
+            "upgradeType": "Increase_Effect_Radius",
+            "valueUpgrade": 35.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 25.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 25.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 25.0
+          },
+          {
+            "upgradeType": "Increase_Effect_Radius",
+            "valueUpgrade": 30.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 25.0
+          },
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 15.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 25.0
+          },
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 15.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 25.0
+          }
+        ]
+      ]
+    },
+    "Magic_Burst": {
+      "skillId": "Magic_Burst",
+      "skillName": "Magic Burst",
+      "skillDesc": "Creating a barrage of <color=#00FF00>{2}</color> homing magic arrows that chase the enemy for every <color=#00FF00>{0}</color> of distance traveled. Each arrow deals <color=#00FF00>{1}</color> damage upon impact.",
+      "excuteCondition": "Moving_Distance",
+      "conditionValue": 650.0,
+      "damageMulti": 100.0,
+      "bulletNumb": 8,
+      "bulletSpeed": 11.0,
+      "areaScale": 0.0,
+      "duration": 2.0,
+      "interval": 0.0,
+      "subEffectDamageMulti": 0.0,
+      "subEffectNumber": 0,
+      "subEffectAreaScale": 0.0,
+      "lstUpgrade": [
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 15.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 15.0
+          },
+          {
+            "upgradeType": "Add_Projectile",
+            "valueUpgrade": 4.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 15.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 15.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 15.0
+          },
+          {
+            "upgradeType": "Add_Projectile",
+            "valueUpgrade": 4.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 15.0
+          },
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 15.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 15.0
+          },
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 15.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 15.0
+          },
+          {
+            "upgradeType": "Add_Projectile",
+            "valueUpgrade": 8.0
+          }
+        ]
+      ]
+    },
+    "Immune_Shield": {
+      "skillId": "Immune_Shield",
+      "skillName": "Immune Shield",
+      "skillDesc": "Creating a shield that blocks all incoming damage for <color=#00FF00>{5}</color> seconds, with a cooldown of <color=#00FF00>{0}</color> seconds.",
+      "excuteCondition": "Cooldown",
+      "conditionValue": 20.0,
+      "damageMulti": 0.0,
+      "bulletNumb": 1,
+      "bulletSpeed": 0.0,
+      "areaScale": 0.0,
+      "duration": 2.0,
+      "interval": 0.0,
+      "subEffectDamageMulti": 0.0,
+      "subEffectNumber": 0,
+      "subEffectAreaScale": 0.0,
+      "lstUpgrade": [
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 5.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Effect_Duration",
+            "valueUpgrade": 1.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 7.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 7.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Effect_Duration",
+            "valueUpgrade": 1.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 7.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 7.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Effect_Duration",
+            "valueUpgrade": 1.0
+          }
+        ]
+      ]
+    },
+    "Lightning_Shield": {
+      "skillId": "Lightning_Shield",
+      "skillName": "Lightning Shield",
+      "skillDesc": "When hit, there is a <color=#00FF00>{0}%</color> chance to create a lightning shield that blocks damage equivalent to  <color=#00FF00>{1}%</color>  of the attack power. When the shield breaks, it releases <color=#00FF00>{2}</color> lightning bolts that deal damage equal to the amount blocked. The lightning bolts can bounce up to <color=#00FF00>{8}</color> times to other enemies.",
+      "excuteCondition": "Chance_When_Hit",
+      "conditionValue": 5.0,
+      "damageMulti": 150.0,
+      "bulletNumb": 1,
+      "bulletSpeed": 15.0,
+      "areaScale": 0.0,
+      "duration": 0.0,
+      "interval": 0.0,
+      "subEffectDamageMulti": 0.0,
+      "subEffectNumber": 3,
+      "subEffectAreaScale": 0.0,
+      "lstUpgrade": [
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 20.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Add_Projectile",
+            "valueUpgrade": 1.0
+          },
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 20.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 20.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 15.0
+          },
+          {
+            "upgradeType": "Add_Projectile",
+            "valueUpgrade": 1.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 20.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 20.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 15.0
+          },
+          {
+            "upgradeType": "Add_Projectile",
+            "valueUpgrade": 2.0
+          },
+          {
+            "upgradeType": "Add_SubEffect_Number",
+            "valueUpgrade": 2.0
+          }
+        ]
+      ]
+    },
+    "Fire_Shield": {
+      "skillId": "Fire_Shield",
+      "skillName": "Fire Shield",
+      "skillDesc": "When hit, there is a <color=#00FF00>{0}%</color> chance to create a fire shield that blocks  damage equivalent to <color=#00FF00>{1}%</color> of the attack power. When the shield breaks, it generates a wave of fire that spreads within a <color=#00FF00>{4}</color> radius, dealing damage equal to the amount blocked.",
+      "excuteCondition": "Chance_When_Hit",
+      "conditionValue": 5.0,
+      "damageMulti": 150.0,
+      "bulletNumb": 1,
+      "bulletSpeed": 0.0,
+      "areaScale": 250.0,
+      "duration": 0.0,
+      "interval": 0.0,
+      "subEffectDamageMulti": 0.0,
+      "subEffectNumber": 0,
+      "subEffectAreaScale": 0.0,
+      "lstUpgrade": [
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 20.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_Effect_Radius",
+            "valueUpgrade": 35.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 20.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 20.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_Effect_Radius",
+            "valueUpgrade": 35.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 20.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 20.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_Effect_Radius",
+            "valueUpgrade": 50.0
+          }
+        ]
+      ]
+    },
+    "Moonlight_Gyro": {
+      "skillId": "Moonlight_Gyro",
+      "skillName": "Moonlight Gyro",
+      "skillDesc": "Fires <color=#00FF00>{2}</color> penetrating moonlight bullets every <color=#00FF00>{0}</color> second(s) dealing <color=#00FF00>{1}%</color> damage,  damge reduce to <color=#00FF00>{2}</color> each time passes through.",
+      "excuteCondition": "Cooldown",
+      "conditionValue": 0.5,
+      "damageMulti": 70.0,
+      "bulletNumb": 1,
+      "bulletSpeed": 8.0,
+      "areaScale": 0.0,
+      "duration": 0.0,
+      "interval": 0.0,
+      "subEffectDamageMulti": 50.0,
+      "subEffectNumber": 0,
+      "subEffectAreaScale": 0.0,
+      "lstUpgrade": [
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Add_Projectile",
+            "valueUpgrade": 1.0
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": -20.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_SubEffect_Damage_Multi",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_SubEffect_Damage_Multi",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_SubEffect_Damage_Multi",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_SubEffect_Damage_Multi",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_SubEffect_Damage_Multi",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Add_Projectile",
+            "valueUpgrade": 2.0
+          }
+        ]
+      ]
+    },
+    "Holy_Light": {
+      "skillId": "Holy_Light",
+      "skillName": "Holy Light",
+      "skillDesc": "Every <color=#00FF00>{0}</color> second(s), summon a divine beam that heals the player for an amount of HP equal to <color=#00FF00>{1}%</color> of attack.",
+      "excuteCondition": "Cooldown",
+      "conditionValue": 30.0,
+      "damageMulti": 10.0,
+      "bulletNumb": 1,
+      "bulletSpeed": 0.0,
+      "areaScale": 0.0,
+      "duration": 0.0,
+      "interval": 0.0,
+      "subEffectDamageMulti": 0.0,
+      "subEffectNumber": 0,
+      "subEffectAreaScale": 0.0,
+      "lstUpgrade": [
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 3.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 3.0
+          },
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 3.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 3.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 3.0
+          },
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 3.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 3.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 3.0
+          },
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 10.0
+          }
+        ]
+      ]
+    },
+    "Toxic_Swamp": {
+      "skillId": "Toxic_Swamp",
+      "skillName": "Toxic Swamp",
+      "skillDesc": "Killing an enemy has a <color=#00FF00>{0}%</color> chance to summon a toxic swamp with <color=#00FF00>{4}</color> radius at a random location that lasts for <color=#00FF00>{5}</color> seconds. It deals <color=#00FF00>{1}%</color> damage to enemies standing on it every <color=#00FF00>{6}</color> seconds.",
+      "excuteCondition": "Chance_On_Kill",
+      "conditionValue": 10.0,
+      "damageMulti": 50.0,
+      "bulletNumb": 1,
+      "bulletSpeed": 0.0,
+      "areaScale": 85.0,
+      "duration": 5.0,
+      "interval": 0.7,
+      "subEffectDamageMulti": 0.0,
+      "subEffectNumber": 0,
+      "subEffectAreaScale": 0.0,
+      "lstUpgrade": [
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Effect_Radius",
+            "valueUpgrade": 20.0
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Effect_Radius",
+            "valueUpgrade": 20.0
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_Effect_Duration",
+            "valueUpgrade": 2.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_Effect_Duration",
+            "valueUpgrade": 2.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Effect_Radius",
+            "valueUpgrade": 20.0
+          },
+          {
+            "upgradeType": "Increase_Effect_Duration",
+            "valueUpgrade": 2.0
+          }
+        ]
+      ]
+    },
+    "Acid_Rain": {
+      "skillId": "Acid_Rain",
+      "skillName": "Acid Rain",
+      "skillDesc": "Summon an acid rain when equipped with this skill. All visible enemies receive <color=#00FF00>{1}%</color> damage every <color=#00FF00>{6}</color> seconds",
+      "excuteCondition": "Cooldown",
+      "conditionValue": 1.5,
+      "damageMulti": 35.0,
+      "bulletNumb": 0,
+      "bulletSpeed": 0.0,
+      "areaScale": 0.0,
+      "duration": 0.0,
+      "interval": 0.0,
+      "subEffectDamageMulti": 0.0,
+      "subEffectNumber": 0,
+      "subEffectAreaScale": 0.0,
+      "lstUpgrade": [
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 5.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 5.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 5.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ]
+      ]
+    },
+    "Venom_Shot": {
+      "skillId": "Venom_Shot",
+      "skillName": "Venom Shot",
+      "skillDesc": "Fires <color=#00FF00>{2}</color> explosing venom bullets every <color=#00FF00>{0}</color> second(s) dealing <color=#00FF00>{1}%</color> damage, the explosion cause <color=#00FF00>{2}</color> of bullet damage whithin a radius of <color=#00FF00>{9}</color>",
+      "excuteCondition": "Cooldown",
+      "conditionValue": 0.7,
+      "damageMulti": 100.0,
+      "bulletNumb": 1,
+      "bulletSpeed": 8.0,
+      "areaScale": 100.0,
+      "duration": 0.0,
+      "interval": 0.0,
+      "subEffectDamageMulti": 25.0,
+      "subEffectNumber": 0,
+      "subEffectAreaScale": 75.0,
+      "lstUpgrade": [
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 20.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Add_Projectile",
+            "valueUpgrade": 1.0
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": -20.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_SubEffect_Damage_Multi",
+            "valueUpgrade": 15.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_SubEffect_Damage_Multi",
+            "valueUpgrade": 15.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 20.0
+          },
+          {
+            "upgradeType": "Increase_SubEffect_Damage_Multi",
+            "valueUpgrade": 15.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_SubEffect_Damage_Multi",
+            "valueUpgrade": 15.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_SubEffect_Damage_Multi",
+            "valueUpgrade": 15.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Add_Projectile",
+            "valueUpgrade": 2.0
+          }
+        ]
+      ]
+    },
+    "Plague_Ward": {
+      "skillId": "Plague_Ward",
+      "skillName": "Plague Ward",
+      "skillDesc": "Killing an enemy has a <color=#00FF00>{0}%</color> chance to summon an immobile creature that lasts for <color=#00FF00>{5}</color> seconds, firing shots at the enemy, dealing <color=#00FF00>{1}%</color> damage every <color=#00FF00>{6}</color> seconds.",
+      "excuteCondition": "Chance_On_Kill",
+      "conditionValue": 10.0,
+      "damageMulti": 50.0,
+      "bulletNumb": 1,
+      "bulletSpeed": 10.0,
+      "areaScale": 0.0,
+      "duration": 7.0,
+      "interval": 1.0,
+      "subEffectDamageMulti": 0.0,
+      "subEffectNumber": 0,
+      "subEffectAreaScale": 0.0,
+      "lstUpgrade": [
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Interval",
+            "valueUpgrade": 0.2
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 5.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Interval",
+            "valueUpgrade": 0.2
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Condition",
+            "valueUpgrade": 10.0
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 5.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Reduce_Interval",
+            "valueUpgrade": 0.2
+          },
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ]
+      ]
+    },
+    "Cloak": {
+      "skillId": "Cloak",
+      "skillName": "Cloak",
+      "skillDesc": "Cloak",
+      "excuteCondition": "When_Static",
+      "conditionValue": 0.0,
+      "damageMulti": 0.0,
+      "bulletNumb": 0,
+      "bulletSpeed": 0.0,
+      "areaScale": 0.0,
+      "duration": 0.0,
+      "interval": 0.0,
+      "subEffectDamageMulti": 0.0,
+      "subEffectNumber": 0,
+      "subEffectAreaScale": 0.0,
+      "lstUpgrade": [
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ]
+      ]
+    },
+    "Pants": {
+      "skillId": "Pants",
+      "skillName": "Pants",
+      "skillDesc": "Pants",
+      "excuteCondition": "When_Static",
+      "conditionValue": 0.0,
+      "damageMulti": 0.0,
+      "bulletNumb": 0,
+      "bulletSpeed": 0.0,
+      "areaScale": 0.0,
+      "duration": 0.0,
+      "interval": 0.0,
+      "subEffectDamageMulti": 0.0,
+      "subEffectNumber": 0,
+      "subEffectAreaScale": 0.0,
+      "lstUpgrade": [
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ]
+      ]
+    },
+    "Gloves": {
+      "skillId": "Gloves",
+      "skillName": "Gloves",
+      "skillDesc": "Gloves",
+      "excuteCondition": "When_Static",
+      "conditionValue": 0.0,
+      "damageMulti": 0.0,
+      "bulletNumb": 0,
+      "bulletSpeed": 0.0,
+      "areaScale": 0.0,
+      "duration": 0.0,
+      "interval": 0.0,
+      "subEffectDamageMulti": 0.0,
+      "subEffectNumber": 0,
+      "subEffectAreaScale": 0.0,
+      "lstUpgrade": [
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ]
+      ]
+    },
+    "Boots": {
+      "skillId": "Boots",
+      "skillName": "Boots",
+      "skillDesc": "Boots",
+      "excuteCondition": "When_Static",
+      "conditionValue": 0.0,
+      "damageMulti": 0.0,
+      "bulletNumb": 0,
+      "bulletSpeed": 0.0,
+      "areaScale": 0.0,
+      "duration": 0.0,
+      "interval": 0.0,
+      "subEffectDamageMulti": 0.0,
+      "subEffectNumber": 0,
+      "subEffectAreaScale": 0.0,
+      "lstUpgrade": [
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ]
+      ]
+    },
+    "Magic_Ring": {
+      "skillId": "Magic_Ring",
+      "skillName": "Magic ring",
+      "skillDesc": "Magic ring",
+      "excuteCondition": "When_Static",
+      "conditionValue": 0.0,
+      "damageMulti": 0.0,
+      "bulletNumb": 0,
+      "bulletSpeed": 0.0,
+      "areaScale": 0.0,
+      "duration": 0.0,
+      "interval": 0.0,
+      "subEffectDamageMulti": 0.0,
+      "subEffectNumber": 0,
+      "subEffectAreaScale": 0.0,
+      "lstUpgrade": [
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ],
+        [
+          {
+            "upgradeType": "Increase_Damage",
+            "valueUpgrade": 10.0
+          }
+        ]
+      ]
+    }
+  },
+  "dicRarityColor": {
+    "Common": "A8A8A8",
+    "Great": "56CA00",
+    "Rare": "0073FF",
+    "Epic": "FF28F1",
+    "Mythical": "FF9400",
+    "Legendary": "FF0C00"
+  },
+  "dicDismantleCoinReturn": {
+    "Common": 500,
+    "Great": 1500,
+    "Rare": 4500,
+    "Epic": 13500,
+    "Mythical": 40500,
+    "Legendary": 121500
+  },
+  "dicDismantleSoulReturn": {
+    "Common": 3,
+    "Great": 9,
+    "Rare": 27,
+    "Epic": 81,
+    "Mythical": 243,
+    "Legendary": 729
+  },
+  "dicReforgeCost": {
+    "Common": 1000,
+    "Great": 3000,
+    "Rare": 10000,
+    "Epic": 30000,
+    "Mythical": 100000,
+    "Legendary": 300000
+  },
+  "dicGunPaterm": {
+    "1": [
+      {
+        "posOffset": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "angleOffset": 0.0
+      }
+    ],
+    "2": [
+      {
+        "posOffset": {
+          "x": 0.0,
+          "y": 1.0
+        },
+        "angleOffset": 0.0
+      },
+      {
+        "posOffset": {
+          "x": 0.0,
+          "y": -1.0
+        },
+        "angleOffset": 0.0
+      }
+    ],
+    "3": [
+      {
+        "posOffset": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "angleOffset": 0.0
+      },
+      {
+        "posOffset": {
+          "x": -1.0,
+          "y": -2.0
+        },
+        "angleOffset": 330.0
+      },
+      {
+        "posOffset": {
+          "x": -1.0,
+          "y": 2.0
+        },
+        "angleOffset": 30.0
+      }
+    ],
+    "4": [
+      {
+        "posOffset": {
+          "x": 0.0,
+          "y": 1.0
+        },
+        "angleOffset": 0.0
+      },
+      {
+        "posOffset": {
+          "x": -1.0,
+          "y": -2.0
+        },
+        "angleOffset": 330.0
+      },
+      {
+        "posOffset": {
+          "x": -1.0,
+          "y": 2.0
+        },
+        "angleOffset": 30.0
+      },
+      {
+        "posOffset": {
+          "x": 0.0,
+          "y": -1.0
+        },
+        "angleOffset": 0.0
+      }
+    ],
+    "5": [
+      {
+        "posOffset": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "angleOffset": 0.0
+      },
+      {
+        "posOffset": {
+          "x": -1.0,
+          "y": -2.0
+        },
+        "angleOffset": 330.0
+      },
+      {
+        "posOffset": {
+          "x": -1.0,
+          "y": 2.0
+        },
+        "angleOffset": 30.0
+      },
+      {
+        "posOffset": {
+          "x": -2.0,
+          "y": 3.0
+        },
+        "angleOffset": 30.0
+      },
+      {
+        "posOffset": {
+          "x": -2.0,
+          "y": -3.0
+        },
+        "angleOffset": 330.0
+      }
+    ],
+    "6": [
+      {
+        "posOffset": {
+          "x": 0.0,
+          "y": 1.0
+        },
+        "angleOffset": 0.0
+      },
+      {
+        "posOffset": {
+          "x": -1.0,
+          "y": -2.0
+        },
+        "angleOffset": 330.0
+      },
+      {
+        "posOffset": {
+          "x": -1.0,
+          "y": 2.0
+        },
+        "angleOffset": 30.0
+      },
+      {
+        "posOffset": {
+          "x": -2.0,
+          "y": 3.0
+        },
+        "angleOffset": 30.0
+      },
+      {
+        "posOffset": {
+          "x": -2.0,
+          "y": -3.0
+        },
+        "angleOffset": 330.0
+      },
+      {
+        "posOffset": {
+          "x": 0.0,
+          "y": -1.0
+        },
+        "angleOffset": 0.0
+      }
+    ],
+    "7": [
+      {
+        "posOffset": {
+          "x": 0.0,
+          "y": 1.0
+        },
+        "angleOffset": 0.0
+      },
+      {
+        "posOffset": {
+          "x": -1.0,
+          "y": -2.0
+        },
+        "angleOffset": 330.0
+      },
+      {
+        "posOffset": {
+          "x": -1.0,
+          "y": 2.0
+        },
+        "angleOffset": 30.0
+      },
+      {
+        "posOffset": {
+          "x": -2.0,
+          "y": 3.0
+        },
+        "angleOffset": 30.0
+      },
+      {
+        "posOffset": {
+          "x": -2.0,
+          "y": -3.0
+        },
+        "angleOffset": 330.0
+      },
+      {
+        "posOffset": {
+          "x": 0.0,
+          "y": -1.0
+        },
+        "angleOffset": 0.0
+      },
+      {
+        "posOffset": {
+          "x": -1.0,
+          "y": 0.0
+        },
+        "angleOffset": 0.0
+      }
+    ],
+    "8": [
+      {
+        "posOffset": {
+          "x": 0.0,
+          "y": 1.0
+        },
+        "angleOffset": 0.0
+      },
+      {
+        "posOffset": {
+          "x": -1.0,
+          "y": -2.0
+        },
+        "angleOffset": 330.0
+      },
+      {
+        "posOffset": {
+          "x": -1.0,
+          "y": 2.0
+        },
+        "angleOffset": 30.0
+      },
+      {
+        "posOffset": {
+          "x": -2.0,
+          "y": 3.0
+        },
+        "angleOffset": 30.0
+      },
+      {
+        "posOffset": {
+          "x": -2.0,
+          "y": -3.0
+        },
+        "angleOffset": 330.0
+      },
+      {
+        "posOffset": {
+          "x": 0.0,
+          "y": -1.0
+        },
+        "angleOffset": 0.0
+      },
+      {
+        "posOffset": {
+          "x": -1.0,
+          "y": 1.0
+        },
+        "angleOffset": 0.0
+      },
+      {
+        "posOffset": {
+          "x": -1.0,
+          "y": -1.0
+        },
+        "angleOffset": 0.0
+      }
+    ],
+    "9": [
+      {
+        "posOffset": {
+          "x": 0.0,
+          "y": 1.0
+        },
+        "angleOffset": 0.0
+      },
+      {
+        "posOffset": {
+          "x": -1.0,
+          "y": -2.0
+        },
+        "angleOffset": 330.0
+      },
+      {
+        "posOffset": {
+          "x": -1.0,
+          "y": 2.0
+        },
+        "angleOffset": 30.0
+      },
+      {
+        "posOffset": {
+          "x": -2.0,
+          "y": 3.0
+        },
+        "angleOffset": 30.0
+      },
+      {
+        "posOffset": {
+          "x": -2.0,
+          "y": -3.0
+        },
+        "angleOffset": 330.0
+      },
+      {
+        "posOffset": {
+          "x": 0.0,
+          "y": -1.0
+        },
+        "angleOffset": 0.0
+      },
+      {
+        "posOffset": {
+          "x": -1.0,
+          "y": 0.0
+        },
+        "angleOffset": 0.0
+      },
+      {
+        "posOffset": {
+          "x": -2.0,
+          "y": -2.0
+        },
+        "angleOffset": 330.0
+      },
+      {
+        "posOffset": {
+          "x": -2.0,
+          "y": 2.0
+        },
+        "angleOffset": 30.0
+      }
+    ],
+    "10": [
+      {
+        "posOffset": {
+          "x": 0.0,
+          "y": 1.0
+        },
+        "angleOffset": 0.0
+      },
+      {
+        "posOffset": {
+          "x": -1.0,
+          "y": -2.0
+        },
+        "angleOffset": 330.0
+      },
+      {
+        "posOffset": {
+          "x": -1.0,
+          "y": 2.0
+        },
+        "angleOffset": 30.0
+      },
+      {
+        "posOffset": {
+          "x": -2.0,
+          "y": 3.0
+        },
+        "angleOffset": 30.0
+      },
+      {
+        "posOffset": {
+          "x": -2.0,
+          "y": -3.0
+        },
+        "angleOffset": 330.0
+      },
+      {
+        "posOffset": {
+          "x": 0.0,
+          "y": -1.0
+        },
+        "angleOffset": 0.0
+      },
+      {
+        "posOffset": {
+          "x": -1.0,
+          "y": 1.0
+        },
+        "angleOffset": 0.0
+      },
+      {
+        "posOffset": {
+          "x": -2.0,
+          "y": -2.0
+        },
+        "angleOffset": 330.0
+      },
+      {
+        "posOffset": {
+          "x": -2.0,
+          "y": 2.0
+        },
+        "angleOffset": 30.0
+      },
+      {
+        "posOffset": {
+          "x": -1.0,
+          "y": -1.0
+        },
+        "angleOffset": 0.0
+      }
+    ],
+    "11": [
+      {
+        "posOffset": {
+          "x": 0.0,
+          "y": 1.0
+        },
+        "angleOffset": 0.0
+      },
+      {
+        "posOffset": {
+          "x": -1.0,
+          "y": -2.0
+        },
+        "angleOffset": 330.0
+      },
+      {
+        "posOffset": {
+          "x": -1.0,
+          "y": 2.0
+        },
+        "angleOffset": 30.0
+      },
+      {
+        "posOffset": {
+          "x": -2.0,
+          "y": 3.0
+        },
+        "angleOffset": 30.0
+      },
+      {
+        "posOffset": {
+          "x": -2.0,
+          "y": -3.0
+        },
+        "angleOffset": 330.0
+      },
+      {
+        "posOffset": {
+          "x": 0.0,
+          "y": -1.0
+        },
+        "angleOffset": 0.0
+      },
+      {
+        "posOffset": {
+          "x": -1.0,
+          "y": 0.0
+        },
+        "angleOffset": 0.0
+      },
+      {
+        "posOffset": {
+          "x": -3.0,
+          "y": -2.0
+        },
+        "angleOffset": 330.0
+      },
+      {
+        "posOffset": {
+          "x": -3.0,
+          "y": 2.0
+        },
+        "angleOffset": 30.0
+      },
+      {
+        "posOffset": {
+          "x": -2.0,
+          "y": 1.0
+        },
+        "angleOffset": 30.0
+      },
+      {
+        "posOffset": {
+          "x": -2.0,
+          "y": -1.0
+        },
+        "angleOffset": 330.0
+      }
+    ],
+    "12": [
+      {
+        "posOffset": {
+          "x": 0.0,
+          "y": 1.0
+        },
+        "angleOffset": 0.0
+      },
+      {
+        "posOffset": {
+          "x": -1.0,
+          "y": -2.0
+        },
+        "angleOffset": 330.0
+      },
+      {
+        "posOffset": {
+          "x": -1.0,
+          "y": 2.0
+        },
+        "angleOffset": 30.0
+      },
+      {
+        "posOffset": {
+          "x": -2.0,
+          "y": 3.0
+        },
+        "angleOffset": 30.0
+      },
+      {
+        "posOffset": {
+          "x": -2.0,
+          "y": -3.0
+        },
+        "angleOffset": 330.0
+      },
+      {
+        "posOffset": {
+          "x": 0.0,
+          "y": -1.0
+        },
+        "angleOffset": 0.0
+      },
+      {
+        "posOffset": {
+          "x": -1.0,
+          "y": 1.0
+        },
+        "angleOffset": 0.0
+      },
+      {
+        "posOffset": {
+          "x": -3.0,
+          "y": -2.0
+        },
+        "angleOffset": 330.0
+      },
+      {
+        "posOffset": {
+          "x": -3.0,
+          "y": 2.0
+        },
+        "angleOffset": 30.0
+      },
+      {
+        "posOffset": {
+          "x": -2.0,
+          "y": 1.0
+        },
+        "angleOffset": 30.0
+      },
+      {
+        "posOffset": {
+          "x": -2.0,
+          "y": -1.0
+        },
+        "angleOffset": 330.0
+      },
+      {
+        "posOffset": {
+          "x": -1.0,
+          "y": -1.0
+        },
+        "angleOffset": 0.0
+      }
+    ]
+  },
+  "dicSkillByElement": {
+    "Fire": [
+      "Flame_Arrow",
+      "Fire_Explose",
+      "Groundfire",
+      "Flame_Orb",
+      "Flame_Trail",
+      "Fire_Shield",
+      "Pants",
+      "Machine_Gun"
+    ],
+    "Lightning": [
+      "Bouncing_Thunder",
+      "Lightning_Explose",
+      "Lightning_Strike",
+      "Rotate_Lightning_Ball",
+      "Static_Lightning_Ball",
+      "Lightning_Shield",
+      "Boots"
+    ],
+    "Mechanic": [
+      "Rotate_Saw_Blade",
+      "Static_Saw",
+      "Light_Gun_Drone",
+      "Rocket_Drone",
+      "Shotgun",
+      "Gloves"
+    ],
+    "Mythic": [
+      "Ground_Stamp",
+      "Magic_Burst",
+      "Immune_Shield",
+      "Moonlight_Gyro",
+      "Meteor",
+      "Holy_Light",
+      "Cloak"
+    ],
+    "Pollute": [
+      "Radiance",
+      "Toxic_Explose",
+      "Toxic_Swamp",
+      "Acid_Rain",
+      "Venom_Shot",
+      "Plague_Ward"
+    ]
+  },
+  "dicElementBySkill": {
+    "Flame_Arrow": "Fire",
+    "Fire_Explose": "Fire",
+    "Groundfire": "Fire",
+    "Flame_Orb": "Fire",
+    "Flame_Trail": "Fire",
+    "Fire_Shield": "Fire",
+    "Bouncing_Thunder": "Lightning",
+    "Lightning_Explose": "Lightning",
+    "Lightning_Strike": "Lightning",
+    "Rotate_Lightning_Ball": "Lightning",
+    "Static_Lightning_Ball": "Lightning",
+    "Lightning_Shield": "Lightning",
+    "Machine_Gun": "Fire",
+    "Rotate_Saw_Blade": "Mechanic",
+    "Static_Saw": "Mechanic",
+    "Light_Gun_Drone": "Mechanic",
+    "Rocket_Drone": "Mechanic",
+    "Shotgun": "Mechanic",
+    "Ground_Stamp": "Mythic",
+    "Magic_Burst": "Mythic",
+    "Immune_Shield": "Mythic",
+    "Moonlight_Gyro": "Mythic",
+    "Meteor": "Mythic",
+    "Holy_Light": "Mythic",
+    "Radiance": "Pollute",
+    "Toxic_Explose": "Pollute",
+    "Toxic_Swamp": "Pollute",
+    "Acid_Rain": "Pollute",
+    "Venom_Shot": "Pollute",
+    "Plague_Ward": "Pollute",
+    "Cloak": "Mythic",
+    "Pants": "Mechanic",
+    "Gloves": "Pollute",
+    "Boots": "Lightning",
+    "Magic_Ring": "Fire"
+  },
+  "offsetMulti": 0.15,
+  "maxParterm": 15
+}

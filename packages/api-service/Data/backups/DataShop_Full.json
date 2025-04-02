@@ -1,0 +1,2025 @@
+{
+  "dicCostChest": {
+    "SilverChestx1": 60,
+    "SilverChestx10": 540,
+    "GoldenChestx1": 300,
+    "GoldenChestx10": 2600,
+    "MaterialChestx1": 10000,
+    "MaterialChestx10": 95000
+  },
+  "dicCostKey": {
+    "SilverChestx1": 1,
+    "SilverChestx10": 9,
+    "GoldenChestx1": 1,
+    "GoldenChestx10": 9
+  },
+  "dicRateSilverChest": {
+    "Common": 85.0,
+    "Great": 15.0
+  },
+  "dicRateGoldenChest": {
+    "Great": 80.0,
+    "Rare": 16.0,
+    "Epic": 4.0
+  },
+  "dicMaterialChestReward": {
+    "SoulPieceResource|Mechanic_Soul|10": 10.0,
+    "SoulPieceResource|Fire_Soul|10": 10.0,
+    "SoulPieceResource|Lightning_Soul|10": 10.0,
+    "SoulPieceResource|Mythic_Soul|10": 10.0,
+    "SoulPieceResource|Pollute_Soul|10": 10.0,
+    "SoulPieceResource|Mechanic_Soul|15": 3.0,
+    "SoulPieceResource|Fire_Soul|15": 3.0,
+    "SoulPieceResource|Lightning_Soul|15": 3.0,
+    "SoulPieceResource|Mythic_Soul|15": 3.0,
+    "SoulPieceResource|Pollute_Soul|15": 3.0,
+    "SoulPieceResource|Mechanic_Soul|20": 1.0,
+    "SoulPieceResource|Fire_Soul|20": 1.0,
+    "SoulPieceResource|Lightning_Soul|20": 1.0,
+    "SoulPieceResource|Mythic_Soul|20": 1.0,
+    "SoulPieceResource|Pollute_Soul|20": 1.0,
+    "CommonResource|HeroPiece|3": 10.0,
+    "CommonResource|HeroPiece|5": 3.0,
+    "CommonResource|HeroPiece|7": 1.0,
+    "CommonResource|Silver_Key|1": 1.0,
+    "CommonResource|Forge_Hamer|5": 10.0,
+    "CommonResource|Forge_Hamer|10": 3.0,
+    "CommonResource|Forge_Hamer|15": 1.0
+  },
+  "dicShopCoinValue": {
+    "ShopCoin1": 2,
+    "ShopCoin2": 6,
+    "ShopCoin3": 12,
+    "ShopCoin4": 36
+  },
+  "dicShopCoinCost": {
+    "ShopCoin1": 20,
+    "ShopCoin2": 55,
+    "ShopCoin3": 100,
+    "ShopCoin4": 250
+  },
+  "dicShopCashPackID": {
+    "ShopCash2": "CashPack2",
+    "ShopCash3": "CashPack3",
+    "ShopCash4": "CashPack4"
+  },
+  "dicRateSalePercent": {
+    "E10": 32.0,
+    "E20": 16.0,
+    "E30": 8.0,
+    "E40": 4.0,
+    "E50": 2.0,
+    "E75": 1.0
+  },
+  "dicShopDailyCoin": [
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 20000,
+        "SaleItem": "Equipment|Common|Flame_Arrow"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 20000,
+        "SaleItem": "Equipment|Common|Fire_Explose"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 20000,
+        "SaleItem": "Equipment|Common|Groundfire"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 20000,
+        "SaleItem": "Equipment|Common|Flame_Orb"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 20000,
+        "SaleItem": "Equipment|Common|Flame_Trail"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 20000,
+        "SaleItem": "Equipment|Common|Fire_Shield"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 20000,
+        "SaleItem": "Equipment|Common|Bouncing_Thunder"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 20000,
+        "SaleItem": "Equipment|Common|Lightning_Explose"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 20000,
+        "SaleItem": "Equipment|Common|Lightning_Strike"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 20000,
+        "SaleItem": "Equipment|Common|Rotate_Lightning_Ball"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 20000,
+        "SaleItem": "Equipment|Common|Static_Lightning_Ball"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 20000,
+        "SaleItem": "Equipment|Common|Lightning_Shield"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 20000,
+        "SaleItem": "Equipment|Common|Machine_Gun"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 20000,
+        "SaleItem": "Equipment|Common|Rotate_Saw_Blade"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 20000,
+        "SaleItem": "Equipment|Common|Static_Saw"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 20000,
+        "SaleItem": "Equipment|Common|Light_Gun_Drone"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 20000,
+        "SaleItem": "Equipment|Common|Rocket_Drone"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 20000,
+        "SaleItem": "Equipment|Common|Shotgun"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 20000,
+        "SaleItem": "Equipment|Common|Ground_Stamp"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 20000,
+        "SaleItem": "Equipment|Common|Magic_Burst"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 20000,
+        "SaleItem": "Equipment|Common|Immune_Shield"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 20000,
+        "SaleItem": "Equipment|Common|Moonlight_Gyro"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 20000,
+        "SaleItem": "Equipment|Common|Meteor"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 20000,
+        "SaleItem": "Equipment|Common|Holy_Light"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 20000,
+        "SaleItem": "Equipment|Common|Radiance"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 20000,
+        "SaleItem": "Equipment|Common|Toxic_Explose"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 20000,
+        "SaleItem": "Equipment|Common|Toxic_Swamp"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 20000,
+        "SaleItem": "Equipment|Common|Acid_Rain"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 20000,
+        "SaleItem": "Equipment|Common|Venom_Shot"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 20000,
+        "SaleItem": "Equipment|Common|Plague_Ward"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 60000,
+        "SaleItem": "Equipment|Great|Flame_Arrow"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 60000,
+        "SaleItem": "Equipment|Great|Fire_Explose"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 60000,
+        "SaleItem": "Equipment|Great|Groundfire"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 60000,
+        "SaleItem": "Equipment|Great|Flame_Orb"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 60000,
+        "SaleItem": "Equipment|Great|Flame_Trail"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 60000,
+        "SaleItem": "Equipment|Great|Fire_Shield"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 60000,
+        "SaleItem": "Equipment|Great|Bouncing_Thunder"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 60000,
+        "SaleItem": "Equipment|Great|Lightning_Explose"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 60000,
+        "SaleItem": "Equipment|Great|Lightning_Strike"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 60000,
+        "SaleItem": "Equipment|Great|Rotate_Lightning_Ball"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 60000,
+        "SaleItem": "Equipment|Great|Static_Lightning_Ball"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 60000,
+        "SaleItem": "Equipment|Great|Lightning_Shield"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 60000,
+        "SaleItem": "Equipment|Great|Machine_Gun"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 60000,
+        "SaleItem": "Equipment|Great|Rotate_Saw_Blade"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 60000,
+        "SaleItem": "Equipment|Great|Static_Saw"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 60000,
+        "SaleItem": "Equipment|Great|Light_Gun_Drone"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 60000,
+        "SaleItem": "Equipment|Great|Rocket_Drone"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 60000,
+        "SaleItem": "Equipment|Great|Shotgun"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 60000,
+        "SaleItem": "Equipment|Great|Ground_Stamp"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 60000,
+        "SaleItem": "Equipment|Great|Magic_Burst"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 60000,
+        "SaleItem": "Equipment|Great|Immune_Shield"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 60000,
+        "SaleItem": "Equipment|Great|Moonlight_Gyro"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 60000,
+        "SaleItem": "Equipment|Great|Meteor"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 60000,
+        "SaleItem": "Equipment|Great|Holy_Light"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 60000,
+        "SaleItem": "Equipment|Great|Radiance"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 60000,
+        "SaleItem": "Equipment|Great|Toxic_Explose"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 60000,
+        "SaleItem": "Equipment|Great|Toxic_Swamp"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 60000,
+        "SaleItem": "Equipment|Great|Acid_Rain"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 60000,
+        "SaleItem": "Equipment|Great|Venom_Shot"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 60000,
+        "SaleItem": "Equipment|Great|Plague_Ward"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 15000,
+        "SaleItem": "SoulPieceResource|Mechanic_Soul|15"
+      },
+      "Percent": 10.0
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 15000,
+        "SaleItem": "SoulPieceResource|Fire_Soul|15"
+      },
+      "Percent": 10.0
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 15000,
+        "SaleItem": "SoulPieceResource|Lightning_Soul|15"
+      },
+      "Percent": 10.0
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 15000,
+        "SaleItem": "SoulPieceResource|Mythic_Soul|15"
+      },
+      "Percent": 10.0
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 15000,
+        "SaleItem": "SoulPieceResource|Pollute_Soul|15"
+      },
+      "Percent": 10.0
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 30000,
+        "SaleItem": "SoulPieceResource|Mechanic_Soul|30"
+      },
+      "Percent": 3.0
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 30000,
+        "SaleItem": "SoulPieceResource|Fire_Soul|30"
+      },
+      "Percent": 3.0
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 30000,
+        "SaleItem": "SoulPieceResource|Lightning_Soul|30"
+      },
+      "Percent": 3.0
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 30000,
+        "SaleItem": "SoulPieceResource|Mythic_Soul|30"
+      },
+      "Percent": 3.0
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 30000,
+        "SaleItem": "SoulPieceResource|Pollute_Soul|30"
+      },
+      "Percent": 3.0
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 1500,
+        "SaleItem": "CommonResource|Energy|5"
+      },
+      "Percent": 10.0
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 6000,
+        "SaleItem": "CommonResource|Energy|20"
+      },
+      "Percent": 3.0
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 15000,
+        "SaleItem": "CommonResource|HeroPiece|5"
+      },
+      "Percent": 10.0
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 30000,
+        "SaleItem": "CommonResource|HeroPiece|10"
+      },
+      "Percent": 3.0
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 70000,
+        "SaleItem": "CommonResource|HeroPiece|25"
+      },
+      "Percent": 1.0
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 15000,
+        "SaleItem": "CommonResource|Silver_Key|1"
+      },
+      "Percent": 3.0
+    },
+    {
+      "Config": {
+        "costType": "Coin",
+        "CostValue": 70000,
+        "SaleItem": "CommonResource|Golden_Key|1"
+      },
+      "Percent": 3.0
+    }
+  ],
+  "dicShopDailyCash": [
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 75,
+        "SaleItem": "Equipment|Common|Flame_Arrow"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 75,
+        "SaleItem": "Equipment|Common|Fire_Explose"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 75,
+        "SaleItem": "Equipment|Common|Groundfire"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 75,
+        "SaleItem": "Equipment|Common|Flame_Orb"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 75,
+        "SaleItem": "Equipment|Common|Flame_Trail"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 75,
+        "SaleItem": "Equipment|Common|Fire_Shield"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 75,
+        "SaleItem": "Equipment|Common|Bouncing_Thunder"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 75,
+        "SaleItem": "Equipment|Common|Lightning_Explose"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 75,
+        "SaleItem": "Equipment|Common|Lightning_Strike"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 75,
+        "SaleItem": "Equipment|Common|Rotate_Lightning_Ball"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 75,
+        "SaleItem": "Equipment|Common|Static_Lightning_Ball"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 75,
+        "SaleItem": "Equipment|Common|Lightning_Shield"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 75,
+        "SaleItem": "Equipment|Common|Machine_Gun"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 75,
+        "SaleItem": "Equipment|Common|Rotate_Saw_Blade"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 75,
+        "SaleItem": "Equipment|Common|Static_Saw"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 75,
+        "SaleItem": "Equipment|Common|Light_Gun_Drone"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 75,
+        "SaleItem": "Equipment|Common|Rocket_Drone"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 75,
+        "SaleItem": "Equipment|Common|Shotgun"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 75,
+        "SaleItem": "Equipment|Common|Ground_Stamp"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 75,
+        "SaleItem": "Equipment|Common|Magic_Burst"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 75,
+        "SaleItem": "Equipment|Common|Immune_Shield"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 75,
+        "SaleItem": "Equipment|Common|Moonlight_Gyro"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 75,
+        "SaleItem": "Equipment|Common|Meteor"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 75,
+        "SaleItem": "Equipment|Common|Holy_Light"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 75,
+        "SaleItem": "Equipment|Common|Radiance"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 75,
+        "SaleItem": "Equipment|Common|Toxic_Explose"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 75,
+        "SaleItem": "Equipment|Common|Toxic_Swamp"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 75,
+        "SaleItem": "Equipment|Common|Acid_Rain"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 75,
+        "SaleItem": "Equipment|Common|Venom_Shot"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 75,
+        "SaleItem": "Equipment|Common|Plague_Ward"
+      },
+      "Percent": 0.3
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 225,
+        "SaleItem": "Equipment|Great|Flame_Arrow"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 225,
+        "SaleItem": "Equipment|Great|Fire_Explose"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 225,
+        "SaleItem": "Equipment|Great|Groundfire"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 225,
+        "SaleItem": "Equipment|Great|Flame_Orb"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 225,
+        "SaleItem": "Equipment|Great|Flame_Trail"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 225,
+        "SaleItem": "Equipment|Great|Fire_Shield"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 225,
+        "SaleItem": "Equipment|Great|Bouncing_Thunder"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 225,
+        "SaleItem": "Equipment|Great|Lightning_Explose"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 225,
+        "SaleItem": "Equipment|Great|Lightning_Strike"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 225,
+        "SaleItem": "Equipment|Great|Rotate_Lightning_Ball"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 225,
+        "SaleItem": "Equipment|Great|Static_Lightning_Ball"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 225,
+        "SaleItem": "Equipment|Great|Lightning_Shield"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 225,
+        "SaleItem": "Equipment|Great|Machine_Gun"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 225,
+        "SaleItem": "Equipment|Great|Rotate_Saw_Blade"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 225,
+        "SaleItem": "Equipment|Great|Static_Saw"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 225,
+        "SaleItem": "Equipment|Great|Light_Gun_Drone"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 225,
+        "SaleItem": "Equipment|Great|Rocket_Drone"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 225,
+        "SaleItem": "Equipment|Great|Shotgun"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 225,
+        "SaleItem": "Equipment|Great|Ground_Stamp"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 225,
+        "SaleItem": "Equipment|Great|Magic_Burst"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 225,
+        "SaleItem": "Equipment|Great|Immune_Shield"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 225,
+        "SaleItem": "Equipment|Great|Moonlight_Gyro"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 225,
+        "SaleItem": "Equipment|Great|Meteor"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 225,
+        "SaleItem": "Equipment|Great|Holy_Light"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 225,
+        "SaleItem": "Equipment|Great|Radiance"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 225,
+        "SaleItem": "Equipment|Great|Toxic_Explose"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 225,
+        "SaleItem": "Equipment|Great|Toxic_Swamp"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 225,
+        "SaleItem": "Equipment|Great|Acid_Rain"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 225,
+        "SaleItem": "Equipment|Great|Venom_Shot"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 225,
+        "SaleItem": "Equipment|Great|Plague_Ward"
+      },
+      "Percent": 0.09
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 675,
+        "SaleItem": "Equipment|Rare|Flame_Arrow"
+      },
+      "Percent": 0.03
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 675,
+        "SaleItem": "Equipment|Rare|Fire_Explose"
+      },
+      "Percent": 0.03
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 675,
+        "SaleItem": "Equipment|Rare|Groundfire"
+      },
+      "Percent": 0.03
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 675,
+        "SaleItem": "Equipment|Rare|Flame_Orb"
+      },
+      "Percent": 0.03
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 675,
+        "SaleItem": "Equipment|Rare|Flame_Trail"
+      },
+      "Percent": 0.03
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 675,
+        "SaleItem": "Equipment|Rare|Fire_Shield"
+      },
+      "Percent": 0.03
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 675,
+        "SaleItem": "Equipment|Rare|Bouncing_Thunder"
+      },
+      "Percent": 0.03
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 675,
+        "SaleItem": "Equipment|Rare|Lightning_Explose"
+      },
+      "Percent": 0.03
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 675,
+        "SaleItem": "Equipment|Rare|Lightning_Strike"
+      },
+      "Percent": 0.03
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 675,
+        "SaleItem": "Equipment|Rare|Rotate_Lightning_Ball"
+      },
+      "Percent": 0.03
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 675,
+        "SaleItem": "Equipment|Rare|Static_Lightning_Ball"
+      },
+      "Percent": 0.03
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 675,
+        "SaleItem": "Equipment|Rare|Lightning_Shield"
+      },
+      "Percent": 0.03
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 675,
+        "SaleItem": "Equipment|Rare|Machine_Gun"
+      },
+      "Percent": 0.03
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 675,
+        "SaleItem": "Equipment|Rare|Rotate_Saw_Blade"
+      },
+      "Percent": 0.03
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 675,
+        "SaleItem": "Equipment|Rare|Static_Saw"
+      },
+      "Percent": 0.03
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 675,
+        "SaleItem": "Equipment|Rare|Light_Gun_Drone"
+      },
+      "Percent": 0.03
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 675,
+        "SaleItem": "Equipment|Rare|Rocket_Drone"
+      },
+      "Percent": 0.03
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 675,
+        "SaleItem": "Equipment|Rare|Shotgun"
+      },
+      "Percent": 0.03
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 675,
+        "SaleItem": "Equipment|Rare|Ground_Stamp"
+      },
+      "Percent": 0.03
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 675,
+        "SaleItem": "Equipment|Rare|Magic_Burst"
+      },
+      "Percent": 0.03
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 675,
+        "SaleItem": "Equipment|Rare|Immune_Shield"
+      },
+      "Percent": 0.03
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 675,
+        "SaleItem": "Equipment|Rare|Moonlight_Gyro"
+      },
+      "Percent": 0.03
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 675,
+        "SaleItem": "Equipment|Rare|Meteor"
+      },
+      "Percent": 0.03
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 675,
+        "SaleItem": "Equipment|Rare|Holy_Light"
+      },
+      "Percent": 0.03
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 675,
+        "SaleItem": "Equipment|Rare|Radiance"
+      },
+      "Percent": 0.03
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 675,
+        "SaleItem": "Equipment|Rare|Toxic_Explose"
+      },
+      "Percent": 0.03
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 675,
+        "SaleItem": "Equipment|Rare|Toxic_Swamp"
+      },
+      "Percent": 0.03
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 675,
+        "SaleItem": "Equipment|Rare|Acid_Rain"
+      },
+      "Percent": 0.03
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 675,
+        "SaleItem": "Equipment|Rare|Venom_Shot"
+      },
+      "Percent": 0.03
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 675,
+        "SaleItem": "Equipment|Rare|Plague_Ward"
+      },
+      "Percent": 0.03
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 50,
+        "SaleItem": "SoulPieceResource|Mechanic_Soul|15"
+      },
+      "Percent": 10.0
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 50,
+        "SaleItem": "SoulPieceResource|Fire_Soul|15"
+      },
+      "Percent": 10.0
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 50,
+        "SaleItem": "SoulPieceResource|Lightning_Soul|15"
+      },
+      "Percent": 10.0
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 50,
+        "SaleItem": "SoulPieceResource|Mythic_Soul|15"
+      },
+      "Percent": 10.0
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 50,
+        "SaleItem": "SoulPieceResource|Pollute_Soul|15"
+      },
+      "Percent": 10.0
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 100,
+        "SaleItem": "SoulPieceResource|Mechanic_Soul|30"
+      },
+      "Percent": 3.0
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 100,
+        "SaleItem": "SoulPieceResource|Fire_Soul|30"
+      },
+      "Percent": 3.0
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 100,
+        "SaleItem": "SoulPieceResource|Lightning_Soul|30"
+      },
+      "Percent": 3.0
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 100,
+        "SaleItem": "SoulPieceResource|Mythic_Soul|30"
+      },
+      "Percent": 3.0
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 100,
+        "SaleItem": "SoulPieceResource|Pollute_Soul|30"
+      },
+      "Percent": 3.0
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 300,
+        "SaleItem": "SoulPieceResource|Mechanic_Soul|100"
+      },
+      "Percent": 1.0
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 300,
+        "SaleItem": "SoulPieceResource|Fire_Soul|100"
+      },
+      "Percent": 1.0
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 300,
+        "SaleItem": "SoulPieceResource|Lightning_Soul|100"
+      },
+      "Percent": 1.0
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 300,
+        "SaleItem": "SoulPieceResource|Mythic_Soul|100"
+      },
+      "Percent": 1.0
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 300,
+        "SaleItem": "SoulPieceResource|Pollute_Soul|100"
+      },
+      "Percent": 1.0
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 50,
+        "SaleItem": "CommonResource|Coin_Time_Reward|5"
+      },
+      "Percent": 10.0
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 100,
+        "SaleItem": "CommonResource|Coin_Time_Reward|12"
+      },
+      "Percent": 6.0
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 180,
+        "SaleItem": "CommonResource|Coin_Time_Reward|24"
+      },
+      "Percent": 4.0
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 350,
+        "SaleItem": "CommonResource|Coin_Time_Reward|48"
+      },
+      "Percent": 2.0
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 550,
+        "SaleItem": "CommonResource|Coin_Time_Reward|72"
+      },
+      "Percent": 1.0
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 20,
+        "SaleItem": "CommonResource|Energy|20"
+      },
+      "Percent": 10.0
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 40,
+        "SaleItem": "CommonResource|Energy|50"
+      },
+      "Percent": 3.0
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 75,
+        "SaleItem": "CommonResource|Energy|100"
+      },
+      "Percent": 1.0
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 50,
+        "SaleItem": "CommonResource|HeroPiece|5"
+      },
+      "Percent": 10.0
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 100,
+        "SaleItem": "CommonResource|HeroPiece|10"
+      },
+      "Percent": 4.0
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 250,
+        "SaleItem": "CommonResource|HeroPiece|25"
+      },
+      "Percent": 2.0
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 500,
+        "SaleItem": "CommonResource|HeroPiece|50"
+      },
+      "Percent": 1.0
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 60,
+        "SaleItem": "CommonResource|Silver_Key|1"
+      },
+      "Percent": 10.0
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 180,
+        "SaleItem": "CommonResource|Silver_Key|3"
+      },
+      "Percent": 3.0
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 540,
+        "SaleItem": "CommonResource|Silver_Key|10"
+      },
+      "Percent": 1.0
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 300,
+        "SaleItem": "CommonResource|Golden_Key|1"
+      },
+      "Percent": 10.0
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 900,
+        "SaleItem": "CommonResource|Golden_Key|3"
+      },
+      "Percent": 3.0
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 2600,
+        "SaleItem": "CommonResource|Golden_Key|10"
+      },
+      "Percent": 1.0
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 50,
+        "SaleItem": "CommonResource|Forge_Hamer|5"
+      },
+      "Percent": 10.0
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 150,
+        "SaleItem": "CommonResource|Forge_Hamer|15"
+      },
+      "Percent": 3.0
+    },
+    {
+      "Config": {
+        "costType": "Cash",
+        "CostValue": 450,
+        "SaleItem": "CommonResource|Forge_Hamer|50"
+      },
+      "Percent": 1.0
+    }
+  ],
+  "dicShopDailyAds": [
+    {
+      "Config": {
+        "costType": "Ads",
+        "CostValue": 0,
+        "SaleItem": "Equipment|Common|Flame_Arrow"
+      },
+      "Percent": 1.0
+    },
+    {
+      "Config": {
+        "costType": "Ads",
+        "CostValue": 0,
+        "SaleItem": "Equipment|Common|Fire_Explose"
+      },
+      "Percent": 1.0
+    },
+    {
+      "Config": {
+        "costType": "Ads",
+        "CostValue": 0,
+        "SaleItem": "Equipment|Common|Groundfire"
+      },
+      "Percent": 1.0
+    },
+    {
+      "Config": {
+        "costType": "Ads",
+        "CostValue": 0,
+        "SaleItem": "Equipment|Common|Flame_Orb"
+      },
+      "Percent": 1.0
+    },
+    {
+      "Config": {
+        "costType": "Ads",
+        "CostValue": 0,
+        "SaleItem": "Equipment|Common|Flame_Trail"
+      },
+      "Percent": 1.0
+    },
+    {
+      "Config": {
+        "costType": "Ads",
+        "CostValue": 0,
+        "SaleItem": "Equipment|Common|Fire_Shield"
+      },
+      "Percent": 1.0
+    },
+    {
+      "Config": {
+        "costType": "Ads",
+        "CostValue": 0,
+        "SaleItem": "Equipment|Common|Bouncing_Thunder"
+      },
+      "Percent": 1.0
+    },
+    {
+      "Config": {
+        "costType": "Ads",
+        "CostValue": 0,
+        "SaleItem": "Equipment|Common|Lightning_Explose"
+      },
+      "Percent": 1.0
+    },
+    {
+      "Config": {
+        "costType": "Ads",
+        "CostValue": 0,
+        "SaleItem": "Equipment|Common|Lightning_Strike"
+      },
+      "Percent": 1.0
+    },
+    {
+      "Config": {
+        "costType": "Ads",
+        "CostValue": 0,
+        "SaleItem": "Equipment|Common|Rotate_Lightning_Ball"
+      },
+      "Percent": 1.0
+    },
+    {
+      "Config": {
+        "costType": "Ads",
+        "CostValue": 0,
+        "SaleItem": "Equipment|Common|Static_Lightning_Ball"
+      },
+      "Percent": 1.0
+    },
+    {
+      "Config": {
+        "costType": "Ads",
+        "CostValue": 0,
+        "SaleItem": "Equipment|Common|Lightning_Shield"
+      },
+      "Percent": 1.0
+    },
+    {
+      "Config": {
+        "costType": "Ads",
+        "CostValue": 0,
+        "SaleItem": "Equipment|Common|Machine_Gun"
+      },
+      "Percent": 1.0
+    },
+    {
+      "Config": {
+        "costType": "Ads",
+        "CostValue": 0,
+        "SaleItem": "Equipment|Common|Rotate_Saw_Blade"
+      },
+      "Percent": 1.0
+    },
+    {
+      "Config": {
+        "costType": "Ads",
+        "CostValue": 0,
+        "SaleItem": "Equipment|Common|Static_Saw"
+      },
+      "Percent": 1.0
+    },
+    {
+      "Config": {
+        "costType": "Ads",
+        "CostValue": 0,
+        "SaleItem": "Equipment|Common|Light_Gun_Drone"
+      },
+      "Percent": 1.0
+    },
+    {
+      "Config": {
+        "costType": "Ads",
+        "CostValue": 0,
+        "SaleItem": "Equipment|Common|Rocket_Drone"
+      },
+      "Percent": 1.0
+    },
+    {
+      "Config": {
+        "costType": "Ads",
+        "CostValue": 0,
+        "SaleItem": "Equipment|Common|Shotgun"
+      },
+      "Percent": 1.0
+    },
+    {
+      "Config": {
+        "costType": "Ads",
+        "CostValue": 0,
+        "SaleItem": "Equipment|Common|Ground_Stamp"
+      },
+      "Percent": 1.0
+    },
+    {
+      "Config": {
+        "costType": "Ads",
+        "CostValue": 0,
+        "SaleItem": "Equipment|Common|Magic_Burst"
+      },
+      "Percent": 1.0
+    },
+    {
+      "Config": {
+        "costType": "Ads",
+        "CostValue": 0,
+        "SaleItem": "Equipment|Common|Immune_Shield"
+      },
+      "Percent": 1.0
+    },
+    {
+      "Config": {
+        "costType": "Ads",
+        "CostValue": 0,
+        "SaleItem": "Equipment|Common|Moonlight_Gyro"
+      },
+      "Percent": 1.0
+    },
+    {
+      "Config": {
+        "costType": "Ads",
+        "CostValue": 0,
+        "SaleItem": "Equipment|Common|Meteor"
+      },
+      "Percent": 1.0
+    },
+    {
+      "Config": {
+        "costType": "Ads",
+        "CostValue": 0,
+        "SaleItem": "Equipment|Common|Holy_Light"
+      },
+      "Percent": 1.0
+    },
+    {
+      "Config": {
+        "costType": "Ads",
+        "CostValue": 0,
+        "SaleItem": "Equipment|Common|Radiance"
+      },
+      "Percent": 1.0
+    },
+    {
+      "Config": {
+        "costType": "Ads",
+        "CostValue": 0,
+        "SaleItem": "Equipment|Common|Toxic_Explose"
+      },
+      "Percent": 1.0
+    },
+    {
+      "Config": {
+        "costType": "Ads",
+        "CostValue": 0,
+        "SaleItem": "Equipment|Common|Toxic_Swamp"
+      },
+      "Percent": 1.0
+    },
+    {
+      "Config": {
+        "costType": "Ads",
+        "CostValue": 0,
+        "SaleItem": "Equipment|Common|Acid_Rain"
+      },
+      "Percent": 1.0
+    },
+    {
+      "Config": {
+        "costType": "Ads",
+        "CostValue": 0,
+        "SaleItem": "Equipment|Common|Venom_Shot"
+      },
+      "Percent": 1.0
+    },
+    {
+      "Config": {
+        "costType": "Ads",
+        "CostValue": 0,
+        "SaleItem": "Equipment|Common|Plague_Ward"
+      },
+      "Percent": 1.0
+    },
+    {
+      "Config": {
+        "costType": "Ads",
+        "CostValue": 0,
+        "SaleItem": "CommonResource|Cash|50"
+      },
+      "Percent": 10.0
+    },
+    {
+      "Config": {
+        "costType": "Ads",
+        "CostValue": 0,
+        "SaleItem": "CommonResource|Coin_Time_Reward|5"
+      },
+      "Percent": 10.0
+    },
+    {
+      "Config": {
+        "costType": "Ads",
+        "CostValue": 0,
+        "SaleItem": "CommonResource|Silver_Key|1"
+      },
+      "Percent": 10.0
+    },
+    {
+      "Config": {
+        "costType": "Ads",
+        "CostValue": 0,
+        "SaleItem": "CommonResource|HeroPiece|5"
+      },
+      "Percent": 10.0
+    },
+    {
+      "Config": {
+        "costType": "Ads",
+        "CostValue": 0,
+        "SaleItem": "CommonResource|Forge_Hamer|5"
+      },
+      "Percent": 10.0
+    },
+    {
+      "Config": {
+        "costType": "Ads",
+        "CostValue": 0,
+        "SaleItem": "SoulPieceResource|Mechanic_Soul|15"
+      },
+      "Percent": 10.0
+    },
+    {
+      "Config": {
+        "costType": "Ads",
+        "CostValue": 0,
+        "SaleItem": "SoulPieceResource|Fire_Soul|15"
+      },
+      "Percent": 10.0
+    },
+    {
+      "Config": {
+        "costType": "Ads",
+        "CostValue": 0,
+        "SaleItem": "SoulPieceResource|Lightning_Soul|15"
+      },
+      "Percent": 10.0
+    },
+    {
+      "Config": {
+        "costType": "Ads",
+        "CostValue": 0,
+        "SaleItem": "SoulPieceResource|Mythic_Soul|15"
+      },
+      "Percent": 10.0
+    },
+    {
+      "Config": {
+        "costType": "Ads",
+        "CostValue": 0,
+        "SaleItem": "SoulPieceResource|Pollute_Soul|15"
+      },
+      "Percent": 10.0
+    }
+  ],
+  "updatedAt": "2025-03-24 15:22:57"
+}

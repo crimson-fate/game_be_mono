@@ -1,0 +1,2307 @@
+{
+  "lstZoneRewardConfigCampaign": [
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|200",
+        "CommonResource|Coin|250",
+        "CommonResource|Coin|300",
+        "CommonResource|Coin|350",
+        "CommonResource|Coin|400"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|1000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|10"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Silver_Key|1"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|300",
+        "CommonResource|Coin|350",
+        "CommonResource|Coin|400",
+        "CommonResource|Coin|450",
+        "CommonResource|Coin|500"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|1200"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|10"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Silver_Key|1"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|400",
+        "CommonResource|Coin|500",
+        "CommonResource|Coin|600",
+        "CommonResource|Coin|700",
+        "CommonResource|Coin|800"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|1400"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|10"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Silver_Key|1"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|500",
+        "CommonResource|Coin|600",
+        "CommonResource|Coin|700",
+        "CommonResource|Coin|800",
+        "CommonResource|Coin|900"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|1600"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|10"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Silver_Key|1"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|600",
+        "CommonResource|Coin|700",
+        "CommonResource|Coin|800",
+        "CommonResource|Coin|900",
+        "CommonResource|Coin|1000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|1800"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|20"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Silver_Key|1"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|700",
+        "CommonResource|Coin|800",
+        "CommonResource|Coin|900",
+        "CommonResource|Coin|1000",
+        "CommonResource|Coin|1100"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|2000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|20"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Silver_Key|1"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|800",
+        "CommonResource|Coin|900",
+        "CommonResource|Coin|1000",
+        "CommonResource|Coin|1100",
+        "CommonResource|Coin|1200"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|2200"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|20"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Silver_Key|1"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|900",
+        "CommonResource|Coin|1000",
+        "CommonResource|Coin|1100",
+        "CommonResource|Coin|1200",
+        "CommonResource|Coin|1300"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|2400"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|20"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Silver_Key|1"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|1000",
+        "CommonResource|Coin|1200",
+        "CommonResource|Coin|1400",
+        "CommonResource|Coin|1600",
+        "CommonResource|Coin|1800"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|2600"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|20"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Silver_Key|1"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|1200",
+        "CommonResource|Coin|1400",
+        "CommonResource|Coin|1600",
+        "CommonResource|Coin|1800",
+        "CommonResource|Coin|2000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|3000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|30"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Silver_Key|2"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|1400",
+        "CommonResource|Coin|1600",
+        "CommonResource|Coin|1800",
+        "CommonResource|Coin|2000",
+        "CommonResource|Coin|2200"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|3400"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|30"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Silver_Key|2"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|1600",
+        "CommonResource|Coin|1800",
+        "CommonResource|Coin|2000",
+        "CommonResource|Coin|2200",
+        "CommonResource|Coin|2400"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|3800"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|30"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Silver_Key|2"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|1800",
+        "CommonResource|Coin|2000",
+        "CommonResource|Coin|2200",
+        "CommonResource|Coin|2400",
+        "CommonResource|Coin|2600"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|4200"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|30"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Silver_Key|2"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|2000",
+        "CommonResource|Coin|2200",
+        "CommonResource|Coin|2400",
+        "CommonResource|Coin|2600",
+        "CommonResource|Coin|3000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|4600"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|30"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Silver_Key|2"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|2200",
+        "CommonResource|Coin|2400",
+        "CommonResource|Coin|2600",
+        "CommonResource|Coin|3000",
+        "CommonResource|Coin|3400"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|5000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|40"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Silver_Key|2"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|2400",
+        "CommonResource|Coin|2600",
+        "CommonResource|Coin|3000",
+        "CommonResource|Coin|3400",
+        "CommonResource|Coin|3800"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|5500"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|40"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Silver_Key|2"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|2600",
+        "CommonResource|Coin|3000",
+        "CommonResource|Coin|3400",
+        "CommonResource|Coin|3800",
+        "CommonResource|Coin|4200"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|6000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|40"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Silver_Key|2"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|3000",
+        "CommonResource|Coin|3400",
+        "CommonResource|Coin|3800",
+        "CommonResource|Coin|4200",
+        "CommonResource|Coin|4600"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|6500"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|40"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Silver_Key|2"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|3400",
+        "CommonResource|Coin|3800",
+        "CommonResource|Coin|4200",
+        "CommonResource|Coin|4600",
+        "CommonResource|Coin|5000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|7000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|40"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Silver_Key|2"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|3800",
+        "CommonResource|Coin|4200",
+        "CommonResource|Coin|4600",
+        "CommonResource|Coin|5000",
+        "CommonResource|Coin|5500"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|7500"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|50"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Silver_Key|3"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|4200",
+        "CommonResource|Coin|4600",
+        "CommonResource|Coin|5000",
+        "CommonResource|Coin|5500",
+        "CommonResource|Coin|6000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|8000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|50"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Silver_Key|3"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|4600",
+        "CommonResource|Coin|5000",
+        "CommonResource|Coin|5500",
+        "CommonResource|Coin|6000",
+        "CommonResource|Coin|6500"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|9000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|50"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Silver_Key|3"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|5000",
+        "CommonResource|Coin|5500",
+        "CommonResource|Coin|6000",
+        "CommonResource|Coin|6500",
+        "CommonResource|Coin|7000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|10000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|50"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Silver_Key|3"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|5500",
+        "CommonResource|Coin|6000",
+        "CommonResource|Coin|6500",
+        "CommonResource|Coin|7000",
+        "CommonResource|Coin|7500"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|11000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|50"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Silver_Key|3"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|6000",
+        "CommonResource|Coin|6500",
+        "CommonResource|Coin|7000",
+        "CommonResource|Coin|7500",
+        "CommonResource|Coin|8000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|12000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|60"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Silver_Key|3"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|6500",
+        "CommonResource|Coin|7000",
+        "CommonResource|Coin|7500",
+        "CommonResource|Coin|8000",
+        "CommonResource|Coin|9000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|13000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|60"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Silver_Key|3"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|7000",
+        "CommonResource|Coin|7500",
+        "CommonResource|Coin|8000",
+        "CommonResource|Coin|9000",
+        "CommonResource|Coin|10000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|14000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|60"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Silver_Key|3"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|7500",
+        "CommonResource|Coin|8000",
+        "CommonResource|Coin|9000",
+        "CommonResource|Coin|10000",
+        "CommonResource|Coin|11000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|15000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|60"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Silver_Key|3"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|8000",
+        "CommonResource|Coin|9000",
+        "CommonResource|Coin|10000",
+        "CommonResource|Coin|11000",
+        "CommonResource|Coin|12000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|17000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|60"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Silver_Key|3"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|9000",
+        "CommonResource|Coin|10000",
+        "CommonResource|Coin|11000",
+        "CommonResource|Coin|12000",
+        "CommonResource|Coin|13000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|19000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|70"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Golden_Key|1"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|10000",
+        "CommonResource|Coin|11000",
+        "CommonResource|Coin|12000",
+        "CommonResource|Coin|13000",
+        "CommonResource|Coin|14000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|21000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|70"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Golden_Key|1"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|11000",
+        "CommonResource|Coin|12000",
+        "CommonResource|Coin|13000",
+        "CommonResource|Coin|14000",
+        "CommonResource|Coin|15000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|23000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|70"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Golden_Key|1"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|12000",
+        "CommonResource|Coin|13000",
+        "CommonResource|Coin|14000",
+        "CommonResource|Coin|15000",
+        "CommonResource|Coin|17000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|25000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|70"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Golden_Key|1"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|13000",
+        "CommonResource|Coin|14000",
+        "CommonResource|Coin|15000",
+        "CommonResource|Coin|17000",
+        "CommonResource|Coin|19000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|27000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|70"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Golden_Key|1"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|14000",
+        "CommonResource|Coin|15000",
+        "CommonResource|Coin|17000",
+        "CommonResource|Coin|19000",
+        "CommonResource|Coin|21000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|29000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|80"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Golden_Key|1"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|15000",
+        "CommonResource|Coin|17000",
+        "CommonResource|Coin|19000",
+        "CommonResource|Coin|21000",
+        "CommonResource|Coin|23000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|31000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|80"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Golden_Key|1"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|17000",
+        "CommonResource|Coin|19000",
+        "CommonResource|Coin|21000",
+        "CommonResource|Coin|23000",
+        "CommonResource|Coin|25000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|35000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|80"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Golden_Key|1"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|19000",
+        "CommonResource|Coin|21000",
+        "CommonResource|Coin|23000",
+        "CommonResource|Coin|25000",
+        "CommonResource|Coin|27000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|39000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|80"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Golden_Key|1"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|21000",
+        "CommonResource|Coin|23000",
+        "CommonResource|Coin|25000",
+        "CommonResource|Coin|27000",
+        "CommonResource|Coin|29000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|43000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|80"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Golden_Key|1"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|23000",
+        "CommonResource|Coin|25000",
+        "CommonResource|Coin|27000",
+        "CommonResource|Coin|29000",
+        "CommonResource|Coin|31000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|47000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|90"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Golden_Key|2"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|25000",
+        "CommonResource|Coin|27000",
+        "CommonResource|Coin|29000",
+        "CommonResource|Coin|31000",
+        "CommonResource|Coin|35000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|51000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|90"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Golden_Key|2"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|27000",
+        "CommonResource|Coin|29000",
+        "CommonResource|Coin|31000",
+        "CommonResource|Coin|35000",
+        "CommonResource|Coin|39000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|55000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|90"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Golden_Key|2"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|29000",
+        "CommonResource|Coin|31000",
+        "CommonResource|Coin|35000",
+        "CommonResource|Coin|39000",
+        "CommonResource|Coin|43000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|60000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|90"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Golden_Key|2"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|31000",
+        "CommonResource|Coin|35000",
+        "CommonResource|Coin|39000",
+        "CommonResource|Coin|43000",
+        "CommonResource|Coin|47000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|65000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|90"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Golden_Key|2"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|35000",
+        "CommonResource|Coin|39000",
+        "CommonResource|Coin|43000",
+        "CommonResource|Coin|47000",
+        "CommonResource|Coin|51000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|70000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|100"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Golden_Key|2"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|39000",
+        "CommonResource|Coin|43000",
+        "CommonResource|Coin|47000",
+        "CommonResource|Coin|51000",
+        "CommonResource|Coin|55000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|75000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|100"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Golden_Key|2"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|43000",
+        "CommonResource|Coin|47000",
+        "CommonResource|Coin|51000",
+        "CommonResource|Coin|55000",
+        "CommonResource|Coin|60000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|80000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|100"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Golden_Key|2"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|47000",
+        "CommonResource|Coin|51000",
+        "CommonResource|Coin|55000",
+        "CommonResource|Coin|60000",
+        "CommonResource|Coin|65000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|85000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|100"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Golden_Key|2"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|51000",
+        "CommonResource|Coin|55000",
+        "CommonResource|Coin|60000",
+        "CommonResource|Coin|65000",
+        "CommonResource|Coin|70000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|90000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|100"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Golden_Key|2"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|55000",
+        "CommonResource|Coin|60000",
+        "CommonResource|Coin|65000",
+        "CommonResource|Coin|70000",
+        "CommonResource|Coin|75000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|95000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|100"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Golden_Key|2"
+        }
+      ]
+    }
+  ],
+  "lstZoneRewardConfigInferno": [
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|400",
+        "CommonResource|Coin|500",
+        "CommonResource|Coin|600",
+        "CommonResource|Coin|700",
+        "CommonResource|Coin|800"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|2000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|20"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Silver_Key|2"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|600",
+        "CommonResource|Coin|700",
+        "CommonResource|Coin|900",
+        "CommonResource|Coin|1000",
+        "CommonResource|Coin|1000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|2400"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|20"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Silver_Key|2"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|800",
+        "CommonResource|Coin|1000",
+        "CommonResource|Coin|1200",
+        "CommonResource|Coin|1400",
+        "CommonResource|Coin|1600"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|2800"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|20"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Silver_Key|2"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|1000",
+        "CommonResource|Coin|1200",
+        "CommonResource|Coin|1400",
+        "CommonResource|Coin|1600",
+        "CommonResource|Coin|1800"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|3200"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|20"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Silver_Key|2"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|1200",
+        "CommonResource|Coin|1400",
+        "CommonResource|Coin|1600",
+        "CommonResource|Coin|1800",
+        "CommonResource|Coin|2000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|3600"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|20"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Silver_Key|2"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|1400",
+        "CommonResource|Coin|1600",
+        "CommonResource|Coin|1800",
+        "CommonResource|Coin|2000",
+        "CommonResource|Coin|2400"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|4000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|30"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Silver_Key|2"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|1600",
+        "CommonResource|Coin|1800",
+        "CommonResource|Coin|2000",
+        "CommonResource|Coin|2400",
+        "CommonResource|Coin|2800"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|4400"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|30"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Silver_Key|2"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|1800",
+        "CommonResource|Coin|2000",
+        "CommonResource|Coin|2400",
+        "CommonResource|Coin|2800",
+        "CommonResource|Coin|3200"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|4800"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|30"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Silver_Key|2"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|2000",
+        "CommonResource|Coin|2400",
+        "CommonResource|Coin|2800",
+        "CommonResource|Coin|3200",
+        "CommonResource|Coin|3600"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|5200"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|30"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Silver_Key|2"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|2400",
+        "CommonResource|Coin|2800",
+        "CommonResource|Coin|3200",
+        "CommonResource|Coin|3600",
+        "CommonResource|Coin|4000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|6000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|30"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Silver_Key|2"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|2800",
+        "CommonResource|Coin|3200",
+        "CommonResource|Coin|3600",
+        "CommonResource|Coin|4000",
+        "CommonResource|Coin|4400"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|6800"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|40"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Silver_Key|3"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|3200",
+        "CommonResource|Coin|3600",
+        "CommonResource|Coin|4000",
+        "CommonResource|Coin|4400",
+        "CommonResource|Coin|4800"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|7600"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|40"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Silver_Key|3"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|3600",
+        "CommonResource|Coin|4000",
+        "CommonResource|Coin|4400",
+        "CommonResource|Coin|4800",
+        "CommonResource|Coin|5200"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|8400"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|40"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Silver_Key|3"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|4000",
+        "CommonResource|Coin|4400",
+        "CommonResource|Coin|4800",
+        "CommonResource|Coin|5200",
+        "CommonResource|Coin|6000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|9200"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|40"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Silver_Key|3"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|4400",
+        "CommonResource|Coin|4800",
+        "CommonResource|Coin|5200",
+        "CommonResource|Coin|6000",
+        "CommonResource|Coin|6800"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|10000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|40"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Silver_Key|3"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|4800",
+        "CommonResource|Coin|5200",
+        "CommonResource|Coin|6000",
+        "CommonResource|Coin|6800",
+        "CommonResource|Coin|7600"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|11000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|50"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Silver_Key|3"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|5200",
+        "CommonResource|Coin|6000",
+        "CommonResource|Coin|6800",
+        "CommonResource|Coin|7600",
+        "CommonResource|Coin|8400"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|12000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|50"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Silver_Key|3"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|6000",
+        "CommonResource|Coin|6800",
+        "CommonResource|Coin|7600",
+        "CommonResource|Coin|8400",
+        "CommonResource|Coin|9200"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|13000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|50"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Silver_Key|3"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|6800",
+        "CommonResource|Coin|7600",
+        "CommonResource|Coin|8400",
+        "CommonResource|Coin|9200",
+        "CommonResource|Coin|10000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|14000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|50"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Silver_Key|3"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|7600",
+        "CommonResource|Coin|8400",
+        "CommonResource|Coin|9200",
+        "CommonResource|Coin|10000",
+        "CommonResource|Coin|11000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|15000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|50"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Silver_Key|3"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|8400",
+        "CommonResource|Coin|9200",
+        "CommonResource|Coin|10000",
+        "CommonResource|Coin|11000",
+        "CommonResource|Coin|12000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|16000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|60"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Golden_Key|1"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|9200",
+        "CommonResource|Coin|10000",
+        "CommonResource|Coin|11000",
+        "CommonResource|Coin|12000",
+        "CommonResource|Coin|13000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|18000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|60"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Golden_Key|1"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|10000",
+        "CommonResource|Coin|11000",
+        "CommonResource|Coin|12000",
+        "CommonResource|Coin|13000",
+        "CommonResource|Coin|14000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|20000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|60"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Golden_Key|1"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|11000",
+        "CommonResource|Coin|12000",
+        "CommonResource|Coin|13000",
+        "CommonResource|Coin|14000",
+        "CommonResource|Coin|15000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|22000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|60"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Golden_Key|1"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|12000",
+        "CommonResource|Coin|13000",
+        "CommonResource|Coin|14000",
+        "CommonResource|Coin|15000",
+        "CommonResource|Coin|16000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|24000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|60"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Golden_Key|1"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|13000",
+        "CommonResource|Coin|14000",
+        "CommonResource|Coin|15000",
+        "CommonResource|Coin|16000",
+        "CommonResource|Coin|18000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|26000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|70"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Golden_Key|1"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|14000",
+        "CommonResource|Coin|15000",
+        "CommonResource|Coin|16000",
+        "CommonResource|Coin|18000",
+        "CommonResource|Coin|20000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|28000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|70"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Golden_Key|1"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|15000",
+        "CommonResource|Coin|16000",
+        "CommonResource|Coin|18000",
+        "CommonResource|Coin|20000",
+        "CommonResource|Coin|22000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|30000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|70"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Golden_Key|1"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|16000",
+        "CommonResource|Coin|18000",
+        "CommonResource|Coin|20000",
+        "CommonResource|Coin|22000",
+        "CommonResource|Coin|24000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|34000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|70"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Golden_Key|1"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|18000",
+        "CommonResource|Coin|20000",
+        "CommonResource|Coin|22000",
+        "CommonResource|Coin|24000",
+        "CommonResource|Coin|26000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|38000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|70"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Golden_Key|1"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|20000",
+        "CommonResource|Coin|22000",
+        "CommonResource|Coin|24000",
+        "CommonResource|Coin|26000",
+        "CommonResource|Coin|28000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|42000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|80"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Golden_Key|2"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|22000",
+        "CommonResource|Coin|24000",
+        "CommonResource|Coin|26000",
+        "CommonResource|Coin|28000",
+        "CommonResource|Coin|30000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|46000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|80"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Golden_Key|2"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|24000",
+        "CommonResource|Coin|26000",
+        "CommonResource|Coin|28000",
+        "CommonResource|Coin|30000",
+        "CommonResource|Coin|34000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|50000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|80"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Golden_Key|2"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|26000",
+        "CommonResource|Coin|28000",
+        "CommonResource|Coin|30000",
+        "CommonResource|Coin|34000",
+        "CommonResource|Coin|38000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|54000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|80"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Golden_Key|2"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|28000",
+        "CommonResource|Coin|30000",
+        "CommonResource|Coin|34000",
+        "CommonResource|Coin|38000",
+        "CommonResource|Coin|42000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|58000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|80"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Golden_Key|2"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|30000",
+        "CommonResource|Coin|34000",
+        "CommonResource|Coin|38000",
+        "CommonResource|Coin|42000",
+        "CommonResource|Coin|46000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|62000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|90"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Golden_Key|2"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|34000",
+        "CommonResource|Coin|38000",
+        "CommonResource|Coin|42000",
+        "CommonResource|Coin|46000",
+        "CommonResource|Coin|50000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|70000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|90"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Golden_Key|2"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|38000",
+        "CommonResource|Coin|42000",
+        "CommonResource|Coin|46000",
+        "CommonResource|Coin|50000",
+        "CommonResource|Coin|54000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|78000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|90"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Golden_Key|2"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|42000",
+        "CommonResource|Coin|46000",
+        "CommonResource|Coin|50000",
+        "CommonResource|Coin|54000",
+        "CommonResource|Coin|58000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|86000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|90"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Golden_Key|2"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|46000",
+        "CommonResource|Coin|50000",
+        "CommonResource|Coin|54000",
+        "CommonResource|Coin|58000",
+        "CommonResource|Coin|62000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|94000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|90"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Golden_Key|2"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|50000",
+        "CommonResource|Coin|54000",
+        "CommonResource|Coin|58000",
+        "CommonResource|Coin|62000",
+        "CommonResource|Coin|70000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|102000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|100"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Golden_Key|2"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|54000",
+        "CommonResource|Coin|58000",
+        "CommonResource|Coin|62000",
+        "CommonResource|Coin|70000",
+        "CommonResource|Coin|78000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|110000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|100"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Golden_Key|3"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|58000",
+        "CommonResource|Coin|62000",
+        "CommonResource|Coin|70000",
+        "CommonResource|Coin|78000",
+        "CommonResource|Coin|86000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|118000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|100"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Golden_Key|3"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|62000",
+        "CommonResource|Coin|70000",
+        "CommonResource|Coin|78000",
+        "CommonResource|Coin|86000",
+        "CommonResource|Coin|94000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|126000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|100"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Golden_Key|3"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|70000",
+        "CommonResource|Coin|78000",
+        "CommonResource|Coin|86000",
+        "CommonResource|Coin|94000",
+        "CommonResource|Coin|102000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|134000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|100"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Golden_Key|3"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|78000",
+        "CommonResource|Coin|86000",
+        "CommonResource|Coin|94000",
+        "CommonResource|Coin|102000",
+        "CommonResource|Coin|110000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|142000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|100"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Golden_Key|3"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|86000",
+        "CommonResource|Coin|94000",
+        "CommonResource|Coin|102000",
+        "CommonResource|Coin|110000",
+        "CommonResource|Coin|118000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|150000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|110"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Golden_Key|3"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|94000",
+        "CommonResource|Coin|102000",
+        "CommonResource|Coin|110000",
+        "CommonResource|Coin|118000",
+        "CommonResource|Coin|126000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|158000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|110"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Golden_Key|3"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|102000",
+        "CommonResource|Coin|110000",
+        "CommonResource|Coin|118000",
+        "CommonResource|Coin|126000",
+        "CommonResource|Coin|134000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|166000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|110"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Golden_Key|3"
+        }
+      ]
+    },
+    {
+      "lstLevelReward": [
+        "CommonResource|Coin|110000",
+        "CommonResource|Coin|118000",
+        "CommonResource|Coin|126000",
+        "CommonResource|Coin|134000",
+        "CommonResource|Coin|142000"
+      ],
+      "lstQuestConfig": [
+        {
+          "questType": "CompleteZone",
+          "questReward": "CommonResource|Coin|174000"
+        },
+        {
+          "questType": "RescueAllPrisoner",
+          "questReward": "SoulPieceResource|Random|110"
+        },
+        {
+          "questType": "Kill90PercentEnemy",
+          "questReward": "CommonResource|Golden_Key|3"
+        }
+      ]
+    }
+  ],
+  "updatedAt": "2025-03-24 15:21:25"
+}

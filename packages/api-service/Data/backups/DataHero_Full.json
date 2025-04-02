@@ -1,0 +1,407 @@
+{
+  "dicHeroConfig": {
+    "Hero_1": {
+      "heroType": "Hero_1",
+      "heroName": "Hero 1",
+      "attackBase": 100.0,
+      "hpBase": 400.0,
+      "armourBase": 60.0,
+      "moveSpeedBase": 3.0,
+      "attackUpgrade": 5.0,
+      "hpUpgrade": 20.0,
+      "armourUpgrade": 3.0,
+      "combatAttribute": "Hp",
+      "combatAttributeBase": 20.0,
+      "combatAttributeUpgrade": 5.0,
+      "unlockCondition": "By_Reach_Level_Player",
+      "unlockValue": 1
+    },
+    "Hero_2": {
+      "heroType": "Hero_2",
+      "heroName": "Hero 2",
+      "attackBase": 130.0,
+      "hpBase": 350.0,
+      "armourBase": 70.0,
+      "moveSpeedBase": 3.0,
+      "attackUpgrade": 6.5,
+      "hpUpgrade": 17.5,
+      "armourUpgrade": 3.5,
+      "combatAttribute": "Attack",
+      "combatAttributeBase": 20.0,
+      "combatAttributeUpgrade": 5.0,
+      "unlockCondition": "By_Win_Zone",
+      "unlockValue": 4
+    },
+    "Hero_3": {
+      "heroType": "Hero_3",
+      "heroName": "Hero 3",
+      "attackBase": 130.0,
+      "hpBase": 300.0,
+      "armourBase": 100.0,
+      "moveSpeedBase": 3.0,
+      "attackUpgrade": 6.5,
+      "hpUpgrade": 15.0,
+      "armourUpgrade": 5.0,
+      "combatAttribute": "Drop_Rate_Increase",
+      "combatAttributeBase": 20.0,
+      "combatAttributeUpgrade": 5.0,
+      "unlockCondition": "By_Coin",
+      "unlockValue": 100000
+    },
+    "Hero_4": {
+      "heroType": "Hero_4",
+      "heroName": "Hero 4",
+      "attackBase": 180.0,
+      "hpBase": 320.0,
+      "armourBase": 60.0,
+      "moveSpeedBase": 3.0,
+      "attackUpgrade": 9.0,
+      "hpUpgrade": 16.0,
+      "armourUpgrade": 3.0,
+      "combatAttribute": "Evasion",
+      "combatAttributeBase": 10.0,
+      "combatAttributeUpgrade": 2.0,
+      "unlockCondition": "By_Ads_Watch",
+      "unlockValue": 30
+    },
+    "Hero_5": {
+      "heroType": "Hero_5",
+      "heroName": "Hero 5",
+      "attackBase": 120.0,
+      "hpBase": 400.0,
+      "armourBase": 100.0,
+      "moveSpeedBase": 3.0,
+      "attackUpgrade": 6.0,
+      "hpUpgrade": 20.0,
+      "armourUpgrade": 5.0,
+      "combatAttribute": "Skill_Condition_Reduce",
+      "combatAttributeBase": 10.0,
+      "combatAttributeUpgrade": 2.0,
+      "unlockCondition": "By_Cash",
+      "unlockValue": 500
+    }
+  },
+  "lstUpgradeConfig": [
+    {
+      "coinCost": 400,
+      "materialCost": 1
+    },
+    {
+      "coinCost": 600,
+      "materialCost": 2
+    },
+    {
+      "coinCost": 800,
+      "materialCost": 3
+    },
+    {
+      "coinCost": 1000,
+      "materialCost": 4
+    },
+    {
+      "coinCost": 1200,
+      "materialCost": 5
+    },
+    {
+      "coinCost": 1400,
+      "materialCost": 10
+    },
+    {
+      "coinCost": 1600,
+      "materialCost": 10
+    },
+    {
+      "coinCost": 1800,
+      "materialCost": 10
+    },
+    {
+      "coinCost": 2000,
+      "materialCost": 10
+    },
+    {
+      "coinCost": 2500,
+      "materialCost": 15
+    },
+    {
+      "coinCost": 3000,
+      "materialCost": 15
+    },
+    {
+      "coinCost": 3500,
+      "materialCost": 15
+    },
+    {
+      "coinCost": 4000,
+      "materialCost": 15
+    },
+    {
+      "coinCost": 4500,
+      "materialCost": 15
+    },
+    {
+      "coinCost": 5000,
+      "materialCost": 20
+    },
+    {
+      "coinCost": 5500,
+      "materialCost": 20
+    },
+    {
+      "coinCost": 6000,
+      "materialCost": 20
+    },
+    {
+      "coinCost": 6500,
+      "materialCost": 20
+    },
+    {
+      "coinCost": 7000,
+      "materialCost": 20
+    },
+    {
+      "coinCost": 8000,
+      "materialCost": 25
+    },
+    {
+      "coinCost": 9000,
+      "materialCost": 25
+    },
+    {
+      "coinCost": 10000,
+      "materialCost": 25
+    },
+    {
+      "coinCost": 11000,
+      "materialCost": 25
+    },
+    {
+      "coinCost": 12000,
+      "materialCost": 25
+    },
+    {
+      "coinCost": 13000,
+      "materialCost": 30
+    },
+    {
+      "coinCost": 14000,
+      "materialCost": 30
+    },
+    {
+      "coinCost": 15000,
+      "materialCost": 30
+    },
+    {
+      "coinCost": 16000,
+      "materialCost": 30
+    },
+    {
+      "coinCost": 18000,
+      "materialCost": 30
+    },
+    {
+      "coinCost": 20000,
+      "materialCost": 35
+    },
+    {
+      "coinCost": 22000,
+      "materialCost": 35
+    },
+    {
+      "coinCost": 24000,
+      "materialCost": 35
+    },
+    {
+      "coinCost": 26000,
+      "materialCost": 35
+    },
+    {
+      "coinCost": 28000,
+      "materialCost": 35
+    },
+    {
+      "coinCost": 30000,
+      "materialCost": 40
+    },
+    {
+      "coinCost": 32000,
+      "materialCost": 40
+    },
+    {
+      "coinCost": 34000,
+      "materialCost": 40
+    },
+    {
+      "coinCost": 36000,
+      "materialCost": 40
+    },
+    {
+      "coinCost": 38000,
+      "materialCost": 40
+    },
+    {
+      "coinCost": 40000,
+      "materialCost": 45
+    },
+    {
+      "coinCost": 42000,
+      "materialCost": 45
+    },
+    {
+      "coinCost": 44000,
+      "materialCost": 45
+    },
+    {
+      "coinCost": 46000,
+      "materialCost": 45
+    },
+    {
+      "coinCost": 48000,
+      "materialCost": 45
+    },
+    {
+      "coinCost": 50000,
+      "materialCost": 50
+    },
+    {
+      "coinCost": 52000,
+      "materialCost": 50
+    },
+    {
+      "coinCost": 54000,
+      "materialCost": 50
+    },
+    {
+      "coinCost": 56000,
+      "materialCost": 50
+    },
+    {
+      "coinCost": 58000,
+      "materialCost": 50
+    },
+    {
+      "coinCost": 60000,
+      "materialCost": 55
+    },
+    {
+      "coinCost": 62000,
+      "materialCost": 55
+    },
+    {
+      "coinCost": 64000,
+      "materialCost": 55
+    },
+    {
+      "coinCost": 66000,
+      "materialCost": 55
+    },
+    {
+      "coinCost": 68000,
+      "materialCost": 55
+    },
+    {
+      "coinCost": 70000,
+      "materialCost": 60
+    },
+    {
+      "coinCost": 72000,
+      "materialCost": 60
+    },
+    {
+      "coinCost": 74000,
+      "materialCost": 60
+    },
+    {
+      "coinCost": 76000,
+      "materialCost": 60
+    },
+    {
+      "coinCost": 78000,
+      "materialCost": 60
+    },
+    {
+      "coinCost": 80000,
+      "materialCost": 70
+    },
+    {
+      "coinCost": 82000,
+      "materialCost": 70
+    },
+    {
+      "coinCost": 84000,
+      "materialCost": 70
+    },
+    {
+      "coinCost": 86000,
+      "materialCost": 70
+    },
+    {
+      "coinCost": 88000,
+      "materialCost": 70
+    },
+    {
+      "coinCost": 90000,
+      "materialCost": 80
+    },
+    {
+      "coinCost": 92000,
+      "materialCost": 80
+    },
+    {
+      "coinCost": 94000,
+      "materialCost": 80
+    },
+    {
+      "coinCost": 96000,
+      "materialCost": 80
+    },
+    {
+      "coinCost": 98000,
+      "materialCost": 80
+    },
+    {
+      "coinCost": 100000,
+      "materialCost": 90
+    },
+    {
+      "coinCost": 102000,
+      "materialCost": 90
+    },
+    {
+      "coinCost": 104000,
+      "materialCost": 90
+    },
+    {
+      "coinCost": 106000,
+      "materialCost": 90
+    },
+    {
+      "coinCost": 108000,
+      "materialCost": 90
+    },
+    {
+      "coinCost": 110000,
+      "materialCost": 100
+    },
+    {
+      "coinCost": 112000,
+      "materialCost": 100
+    },
+    {
+      "coinCost": 114000,
+      "materialCost": 100
+    },
+    {
+      "coinCost": 116000,
+      "materialCost": 100
+    },
+    {
+      "coinCost": 118000,
+      "materialCost": 100
+    },
+    {
+      "coinCost": 120000,
+      "materialCost": 100
+    }
+  ],
+  "updatedAt": "2025-03-26 14:43:55"
+}

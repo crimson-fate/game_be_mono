@@ -1,0 +1,21 @@
+{
+  "lstZone": [
+    {
+      "zoneId": 1,
+      "zoneLength": 5,
+      "linkOldZone": 1,
+      "zoneLevel": [
+        "zone_new_map_1",
+        "zone_new_map_1",
+        "zone_new_map_1",
+        "zone_new_map_1",
+        "zone_new_map_1"
+      ],
+      "zoneIconPath": "Zone Icon/Icon Map/1",
+      "zoneIconBlackPath": "Zone Icon/Black_White/1"
+    }
+  ],
+  "maxZoneEditor": 50,
+  "maxZoneLevel": 5,
+  "updatedAt": "2025-03-24 15:22:13"
+}

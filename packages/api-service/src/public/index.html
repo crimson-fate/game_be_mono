@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameDemo Backend</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        h1,
+        h2,
+        h3 {
+            color: #0066cc;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            color: #0066cc;
+        }
+
+        a.button {
+            display: inline-block;
+            background-color: #0066cc;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            margin-top: 10px;
+            margin-right: 10px;
+            transition: background-color 0.3s;
+        }
+
+        a.button:hover {
+            background-color: #0052a3;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        table th,
+        table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        table th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>GameDemo Backend - Công cụ quản lý dữ liệu</h1>
+
+        <div class="card">
+            <h2>Quản lý dữ liệu game</h2>
+            <p>Công cụ quản lý dữ liệu cho game của bạn. Chọn loại dữ liệu để xem và quản lý.</p>
+
+            <div class="data-types">
+                <h3>Loại dữ liệu:</h3>
+                <a href="/hero.html" class="button">Hero</a>
+                <a href="/equipment.html" class="button">Equipment</a>
+                <a href="/playerLevel.html" class="button">Player Level</a>
+                <a href="/shop.html" class="button">Shop</a>
+                <a href="/zone.html" class="button">Zone</a>
+                <a href="/dropResource.html" class="button">Drop Resource</a>
+                <a href="/zoneReward.html" class="button">Zone Reward</a>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>API Endpoints</h2>
+            <p>Các API endpoints có sẵn:</p>
+
+            <h3>Upload Data</h3>
+            <table>
+                <tr>
+                    <th>API Endpoint</th>
+                    <th>Phương thức</th>
+                    <th>Mô tả</th>
+                </tr>
+                <tr>
+                    <td>/api/uploadHeroData</td>
+                    <td>POST</td>
+                    <td>Upload dữ liệu Hero</td>
+                </tr>
+                <tr>
+                    <td>/api/uploadHeroFile</td>
+                    <td>POST</td>
+                    <td>Upload file Hero JSON</td>
+                </tr>
+                <tr>
+                    <td>/api/uploadEquipmentData</td>
+                    <td>POST</td>
+                    <td>Upload dữ liệu Equipment</td>
+                </tr>
+                <tr>
+                    <td>/api/uploadEquipmentFile</td>
+                    <td>POST</td>
+                    <td>Upload file Equipment JSON</td>
+                </tr>
+                <tr>
+                    <td>/api/uploadPlayerLevelData</td>
+                    <td>POST</td>
+                    <td>Upload dữ liệu Player Level</td>
+                </tr>
+                <tr>
+                    <td>/api/uploadPlayerLevelFile</td>
+                    <td>POST</td>
+                    <td>Upload file Player Level JSON</td>
+                </tr>
+                <tr>
+                    <td>/api/uploadShopData</td>
+                    <td>POST</td>
+                    <td>Upload dữ liệu Shop</td>
+                </tr>
+                <tr>
+                    <td>/api/uploadShopFile</td>
+                    <td>POST</td>
+                    <td>Upload file Shop JSON</td>
+                </tr>
+                <tr>
+                    <td>/api/uploadZoneData</td>
+                    <td>POST</td>
+                    <td>Upload dữ liệu Zone</td>
+                </tr>
+                <tr>
+                    <td>/api/uploadZoneFile</td>
+                    <td>POST</td>
+                    <td>Upload file Zone JSON</td>
+                </tr>
+                <tr>
+                    <td>/api/uploadDropResourceData</td>
+                    <td>POST</td>
+                    <td>Upload dữ liệu Drop Resource</td>
+                </tr>
+                <tr>
+                    <td>/api/uploadDropResourceFile</td>
+                    <td>POST</td>
+                    <td>Upload file Drop Resource JSON</td>
+                </tr>
+                <tr>
+                    <td>/api/uploadZoneRewardData</td>
+                    <td>POST</td>
+                    <td>Upload dữ liệu Zone Reward</td>
+                </tr>
+                <tr>
+                    <td>/api/uploadZoneRewardFile</td>
+                    <td>POST</td>
+                    <td>Upload file Zone Reward JSON</td>
+                </tr>
+            </table>
+
+            <h3>Get Data</h3>
+            <table>
+                <tr>
+                    <th>API Endpoint</th>
+                    <th>Phương thức</th>
+                    <th>Mô tả</th>
+                </tr>
+                <tr>
+                    <td>/api/getHeroData</td>
+                    <td>GET</td>
+                    <td>Lấy dữ liệu Hero</td>
+                </tr>
+                <tr>
+                    <td>/api/getEquipmentData</td>
+                    <td>GET</td>
+                    <td>Lấy dữ liệu Equipment</td>
+                </tr>
+                <tr>
+                    <td>/api/getPlayerLevelData</td>
+                    <td>GET</td>
+                    <td>Lấy dữ liệu Player Level</td>
+                </tr>
+                <tr>
+                    <td>/api/getShopData</td>
+                    <td>GET</td>
+                    <td>Lấy dữ liệu Shop</td>
+                </tr>
+                <tr>
+                    <td>/api/getZoneData</td>
+                    <td>GET</td>
+                    <td>Lấy dữ liệu Zone</td>
+                </tr>
+                <tr>
+                    <td>/api/getDropResourceData</td>
+                    <td>GET</td>
+                    <td>Lấy dữ liệu Drop Resource</td>
+                </tr>
+                <tr>
+                    <td>/api/getZoneRewardData</td>
+                    <td>GET</td>
+                    <td>Lấy dữ liệu Zone Reward</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="card">
+            <h2>Hướng dẫn thêm loại dữ liệu mới</h2>
+            <p>Để thêm một loại dữ liệu mới, bạn cần:</p>
+            <ol>
+                <li>Định nghĩa model trong <code>src/models/gameDataModels.js</code></li>
+                <li>Tạo trang quản lý dữ liệu trong thư mục <code>public</code></li>
+                <li>Sử dụng các API endpoints theo định dạng <code>/api/upload[Type]Data</code>,
+                    <code>/api/upload[Type]File</code>, <code>/api/get[Type]Data</code></li>
+            </ol>
+        </div>
+    </div>
+</body>
+
+</html>

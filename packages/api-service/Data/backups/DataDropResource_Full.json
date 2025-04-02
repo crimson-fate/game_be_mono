@@ -1,0 +1,777 @@
+{
+  "lstZoneResourceConfigsCampaign": [
+    {
+      "zoneId": 1,
+      "dicDropRate": {
+        "Coin": 500.0,
+        "ElementPiece": 100.0,
+        "HeroPiece": 30.0,
+        "CommonEquipment": 10.0
+      },
+      "dicMaxDrop": {
+        "Coin": 500,
+        "ElementPiece": 3,
+        "HeroPiece": 2,
+        "CommonEquipment": 1
+      }
+    },
+    {
+      "zoneId": 2,
+      "dicDropRate": {
+        "Coin": 500.0,
+        "ElementPiece": 100.0,
+        "HeroPiece": 30.0,
+        "CommonEquipment": 10.0
+      },
+      "dicMaxDrop": {
+        "Coin": 500,
+        "ElementPiece": 3,
+        "HeroPiece": 2,
+        "CommonEquipment": 1
+      }
+    },
+    {
+      "zoneId": 3,
+      "dicDropRate": {
+        "Coin": 750.0,
+        "ElementPiece": 150.0,
+        "HeroPiece": 45.0,
+        "CommonEquipment": 15.0
+      },
+      "dicMaxDrop": {
+        "Coin": 750,
+        "ElementPiece": 4,
+        "HeroPiece": 2,
+        "CommonEquipment": 1
+      }
+    },
+    {
+      "zoneId": 4,
+      "dicDropRate": {
+        "Coin": 750.0,
+        "ElementPiece": 150.0,
+        "HeroPiece": 45.0,
+        "CommonEquipment": 15.0
+      },
+      "dicMaxDrop": {
+        "Coin": 750,
+        "ElementPiece": 4,
+        "HeroPiece": 2,
+        "CommonEquipment": 1
+      }
+    },
+    {
+      "zoneId": 5,
+      "dicDropRate": {
+        "Coin": 1000.0,
+        "ElementPiece": 200.0,
+        "HeroPiece": 60.0,
+        "CommonEquipment": 20.0
+      },
+      "dicMaxDrop": {
+        "Coin": 1000,
+        "ElementPiece": 4,
+        "HeroPiece": 3,
+        "CommonEquipment": 1
+      }
+    },
+    {
+      "zoneId": 6,
+      "dicDropRate": {
+        "Coin": 1000.0,
+        "ElementPiece": 200.0,
+        "HeroPiece": 60.0,
+        "CommonEquipment": 20.0
+      },
+      "dicMaxDrop": {
+        "Coin": 1000,
+        "ElementPiece": 4,
+        "HeroPiece": 3,
+        "CommonEquipment": 1
+      }
+    },
+    {
+      "zoneId": 7,
+      "dicDropRate": {
+        "Coin": 1250.0,
+        "ElementPiece": 250.0,
+        "HeroPiece": 75.0,
+        "CommonEquipment": 25.0
+      },
+      "dicMaxDrop": {
+        "Coin": 1250,
+        "ElementPiece": 5,
+        "HeroPiece": 3,
+        "CommonEquipment": 1
+      }
+    },
+    {
+      "zoneId": 8,
+      "dicDropRate": {
+        "Coin": 1250.0,
+        "ElementPiece": 250.0,
+        "HeroPiece": 75.0,
+        "CommonEquipment": 25.0
+      },
+      "dicMaxDrop": {
+        "Coin": 1250,
+        "ElementPiece": 5,
+        "HeroPiece": 3,
+        "CommonEquipment": 1
+      }
+    },
+    {
+      "zoneId": 9,
+      "dicDropRate": {
+        "Coin": 1500.0,
+        "ElementPiece": 300.0,
+        "HeroPiece": 90.0,
+        "CommonEquipment": 30.0
+      },
+      "dicMaxDrop": {
+        "Coin": 1500,
+        "ElementPiece": 5,
+        "HeroPiece": 3,
+        "CommonEquipment": 1
+      }
+    },
+    {
+      "zoneId": 10,
+      "dicDropRate": {
+        "Coin": 1500.0,
+        "ElementPiece": 300.0,
+        "HeroPiece": 90.0,
+        "CommonEquipment": 30.0
+      },
+      "dicMaxDrop": {
+        "Coin": 1500,
+        "ElementPiece": 5,
+        "HeroPiece": 3,
+        "CommonEquipment": 2
+      }
+    },
+    {
+      "zoneId": 11,
+      "dicDropRate": {
+        "Coin": 1750.0,
+        "ElementPiece": 350.0,
+        "HeroPiece": 105.0,
+        "CommonEquipment": 35.0
+      },
+      "dicMaxDrop": {
+        "Coin": 1750,
+        "ElementPiece": 6,
+        "HeroPiece": 3,
+        "CommonEquipment": 2
+      }
+    },
+    {
+      "zoneId": 12,
+      "dicDropRate": {
+        "Coin": 1750.0,
+        "ElementPiece": 350.0,
+        "HeroPiece": 105.0,
+        "CommonEquipment": 35.0
+      },
+      "dicMaxDrop": {
+        "Coin": 1750,
+        "ElementPiece": 6,
+        "HeroPiece": 3,
+        "CommonEquipment": 2
+      }
+    },
+    {
+      "zoneId": 13,
+      "dicDropRate": {
+        "Coin": 2000.0,
+        "ElementPiece": 400.0,
+        "HeroPiece": 120.0,
+        "CommonEquipment": 40.0
+      },
+      "dicMaxDrop": {
+        "Coin": 2000,
+        "ElementPiece": 6,
+        "HeroPiece": 3,
+        "CommonEquipment": 2
+      }
+    },
+    {
+      "zoneId": 14,
+      "dicDropRate": {
+        "Coin": 2000.0,
+        "ElementPiece": 400.0,
+        "HeroPiece": 120.0,
+        "CommonEquipment": 40.0
+      },
+      "dicMaxDrop": {
+        "Coin": 2000,
+        "ElementPiece": 6,
+        "HeroPiece": 3,
+        "CommonEquipment": 2
+      }
+    },
+    {
+      "zoneId": 15,
+      "dicDropRate": {
+        "Coin": 2250.0,
+        "ElementPiece": 450.0,
+        "HeroPiece": 135.0,
+        "CommonEquipment": 45.0
+      },
+      "dicMaxDrop": {
+        "Coin": 2250,
+        "ElementPiece": 7,
+        "HeroPiece": 3,
+        "CommonEquipment": 2
+      }
+    },
+    {
+      "zoneId": 16,
+      "dicDropRate": {
+        "Coin": 2250.0,
+        "ElementPiece": 450.0,
+        "HeroPiece": 135.0,
+        "CommonEquipment": 45.0
+      },
+      "dicMaxDrop": {
+        "Coin": 2250,
+        "ElementPiece": 7,
+        "HeroPiece": 3,
+        "CommonEquipment": 2
+      }
+    },
+    {
+      "zoneId": 17,
+      "dicDropRate": {
+        "Coin": 2500.0,
+        "ElementPiece": 500.0,
+        "HeroPiece": 150.0,
+        "CommonEquipment": 50.0
+      },
+      "dicMaxDrop": {
+        "Coin": 2500,
+        "ElementPiece": 7,
+        "HeroPiece": 4,
+        "CommonEquipment": 2
+      }
+    },
+    {
+      "zoneId": 18,
+      "dicDropRate": {
+        "Coin": 2500.0,
+        "ElementPiece": 500.0,
+        "HeroPiece": 150.0,
+        "CommonEquipment": 50.0
+      },
+      "dicMaxDrop": {
+        "Coin": 2500,
+        "ElementPiece": 7,
+        "HeroPiece": 4,
+        "CommonEquipment": 2
+      }
+    },
+    {
+      "zoneId": 19,
+      "dicDropRate": {
+        "Coin": 2750.0,
+        "ElementPiece": 550.0,
+        "HeroPiece": 165.0,
+        "CommonEquipment": 55.0
+      },
+      "dicMaxDrop": {
+        "Coin": 2750,
+        "ElementPiece": 8,
+        "HeroPiece": 4,
+        "CommonEquipment": 2
+      }
+    },
+    {
+      "zoneId": 20,
+      "dicDropRate": {
+        "Coin": 2750.0,
+        "ElementPiece": 550.0,
+        "HeroPiece": 165.0,
+        "CommonEquipment": 55.0
+      },
+      "dicMaxDrop": {
+        "Coin": 2750,
+        "ElementPiece": 8,
+        "HeroPiece": 4,
+        "CommonEquipment": 3
+      }
+    },
+    {
+      "zoneId": 21,
+      "dicDropRate": {
+        "Coin": 3000.0,
+        "ElementPiece": 600.0,
+        "HeroPiece": 180.0,
+        "CommonEquipment": 60.0
+      },
+      "dicMaxDrop": {
+        "Coin": 3000,
+        "ElementPiece": 8,
+        "HeroPiece": 4,
+        "CommonEquipment": 3
+      }
+    },
+    {
+      "zoneId": 22,
+      "dicDropRate": {
+        "Coin": 3000.0,
+        "ElementPiece": 600.0,
+        "HeroPiece": 180.0,
+        "CommonEquipment": 60.0
+      },
+      "dicMaxDrop": {
+        "Coin": 3000,
+        "ElementPiece": 8,
+        "HeroPiece": 4,
+        "CommonEquipment": 3
+      }
+    },
+    {
+      "zoneId": 23,
+      "dicDropRate": {
+        "Coin": 3250.0,
+        "ElementPiece": 650.0,
+        "HeroPiece": 195.0,
+        "CommonEquipment": 65.0
+      },
+      "dicMaxDrop": {
+        "Coin": 3250,
+        "ElementPiece": 9,
+        "HeroPiece": 4,
+        "CommonEquipment": 3
+      }
+    },
+    {
+      "zoneId": 24,
+      "dicDropRate": {
+        "Coin": 3250.0,
+        "ElementPiece": 650.0,
+        "HeroPiece": 195.0,
+        "CommonEquipment": 65.0
+      },
+      "dicMaxDrop": {
+        "Coin": 3250,
+        "ElementPiece": 9,
+        "HeroPiece": 4,
+        "CommonEquipment": 3
+      }
+    },
+    {
+      "zoneId": 25,
+      "dicDropRate": {
+        "Coin": 3500.0,
+        "ElementPiece": 700.0,
+        "HeroPiece": 210.0,
+        "CommonEquipment": 70.0
+      },
+      "dicMaxDrop": {
+        "Coin": 3500,
+        "ElementPiece": 9,
+        "HeroPiece": 4,
+        "CommonEquipment": 3
+      }
+    },
+    {
+      "zoneId": 26,
+      "dicDropRate": {
+        "Coin": 3500.0,
+        "ElementPiece": 700.0,
+        "HeroPiece": 210.0,
+        "CommonEquipment": 70.0
+      },
+      "dicMaxDrop": {
+        "Coin": 3500,
+        "ElementPiece": 9,
+        "HeroPiece": 4,
+        "CommonEquipment": 3
+      }
+    },
+    {
+      "zoneId": 27,
+      "dicDropRate": {
+        "Coin": 3750.0,
+        "ElementPiece": 750.0,
+        "HeroPiece": 225.0,
+        "CommonEquipment": 75.0
+      },
+      "dicMaxDrop": {
+        "Coin": 3750,
+        "ElementPiece": 10,
+        "HeroPiece": 4,
+        "CommonEquipment": 3
+      }
+    },
+    {
+      "zoneId": 28,
+      "dicDropRate": {
+        "Coin": 3750.0,
+        "ElementPiece": 750.0,
+        "HeroPiece": 225.0,
+        "CommonEquipment": 75.0
+      },
+      "dicMaxDrop": {
+        "Coin": 3750,
+        "ElementPiece": 10,
+        "HeroPiece": 4,
+        "CommonEquipment": 3
+      }
+    },
+    {
+      "zoneId": 29,
+      "dicDropRate": {
+        "Coin": 4000.0,
+        "ElementPiece": 800.0,
+        "HeroPiece": 240.0,
+        "CommonEquipment": 80.0
+      },
+      "dicMaxDrop": {
+        "Coin": 4000,
+        "ElementPiece": 10,
+        "HeroPiece": 4,
+        "CommonEquipment": 3
+      }
+    },
+    {
+      "zoneId": 30,
+      "dicDropRate": {
+        "Coin": 4000.0,
+        "ElementPiece": 800.0,
+        "HeroPiece": 240.0,
+        "CommonEquipment": 80.0
+      },
+      "dicMaxDrop": {
+        "Coin": 4000,
+        "ElementPiece": 10,
+        "HeroPiece": 4,
+        "CommonEquipment": 4
+      }
+    },
+    {
+      "zoneId": 31,
+      "dicDropRate": {
+        "Coin": 4250.0,
+        "ElementPiece": 850.0,
+        "HeroPiece": 255.0,
+        "CommonEquipment": 85.0
+      },
+      "dicMaxDrop": {
+        "Coin": 4250,
+        "ElementPiece": 11,
+        "HeroPiece": 5,
+        "CommonEquipment": 4
+      }
+    },
+    {
+      "zoneId": 32,
+      "dicDropRate": {
+        "Coin": 4250.0,
+        "ElementPiece": 850.0,
+        "HeroPiece": 255.0,
+        "CommonEquipment": 85.0
+      },
+      "dicMaxDrop": {
+        "Coin": 4250,
+        "ElementPiece": 11,
+        "HeroPiece": 5,
+        "CommonEquipment": 4
+      }
+    },
+    {
+      "zoneId": 33,
+      "dicDropRate": {
+        "Coin": 4500.0,
+        "ElementPiece": 900.0,
+        "HeroPiece": 270.0,
+        "CommonEquipment": 90.0
+      },
+      "dicMaxDrop": {
+        "Coin": 4500,
+        "ElementPiece": 11,
+        "HeroPiece": 5,
+        "CommonEquipment": 4
+      }
+    },
+    {
+      "zoneId": 34,
+      "dicDropRate": {
+        "Coin": 4500.0,
+        "ElementPiece": 900.0,
+        "HeroPiece": 270.0,
+        "CommonEquipment": 90.0
+      },
+      "dicMaxDrop": {
+        "Coin": 4500,
+        "ElementPiece": 11,
+        "HeroPiece": 5,
+        "CommonEquipment": 4
+      }
+    },
+    {
+      "zoneId": 35,
+      "dicDropRate": {
+        "Coin": 4750.0,
+        "ElementPiece": 950.0,
+        "HeroPiece": 285.0,
+        "CommonEquipment": 95.0
+      },
+      "dicMaxDrop": {
+        "Coin": 4750,
+        "ElementPiece": 12,
+        "HeroPiece": 5,
+        "CommonEquipment": 4
+      }
+    },
+    {
+      "zoneId": 36,
+      "dicDropRate": {
+        "Coin": 4750.0,
+        "ElementPiece": 950.0,
+        "HeroPiece": 285.0,
+        "CommonEquipment": 95.0
+      },
+      "dicMaxDrop": {
+        "Coin": 4750,
+        "ElementPiece": 12,
+        "HeroPiece": 5,
+        "CommonEquipment": 4
+      }
+    },
+    {
+      "zoneId": 37,
+      "dicDropRate": {
+        "Coin": 5000.0,
+        "ElementPiece": 1000.0,
+        "HeroPiece": 300.0,
+        "CommonEquipment": 100.0
+      },
+      "dicMaxDrop": {
+        "Coin": 5000,
+        "ElementPiece": 12,
+        "HeroPiece": 5,
+        "CommonEquipment": 4
+      }
+    },
+    {
+      "zoneId": 38,
+      "dicDropRate": {
+        "Coin": 5000.0,
+        "ElementPiece": 1000.0,
+        "HeroPiece": 300.0,
+        "CommonEquipment": 100.0
+      },
+      "dicMaxDrop": {
+        "Coin": 5000,
+        "ElementPiece": 12,
+        "HeroPiece": 5,
+        "CommonEquipment": 4
+      }
+    },
+    {
+      "zoneId": 39,
+      "dicDropRate": {
+        "Coin": 5250.0,
+        "ElementPiece": 1050.0,
+        "HeroPiece": 315.0,
+        "CommonEquipment": 105.0
+      },
+      "dicMaxDrop": {
+        "Coin": 5250,
+        "ElementPiece": 13,
+        "HeroPiece": 5,
+        "CommonEquipment": 4
+      }
+    },
+    {
+      "zoneId": 40,
+      "dicDropRate": {
+        "Coin": 5250.0,
+        "ElementPiece": 1050.0,
+        "HeroPiece": 315.0,
+        "CommonEquipment": 105.0
+      },
+      "dicMaxDrop": {
+        "Coin": 5250,
+        "ElementPiece": 13,
+        "HeroPiece": 5,
+        "CommonEquipment": 5
+      }
+    },
+    {
+      "zoneId": 41,
+      "dicDropRate": {
+        "Coin": 5500.0,
+        "ElementPiece": 1100.0,
+        "HeroPiece": 330.0,
+        "CommonEquipment": 110.0
+      },
+      "dicMaxDrop": {
+        "Coin": 5500,
+        "ElementPiece": 13,
+        "HeroPiece": 5,
+        "CommonEquipment": 5
+      }
+    },
+    {
+      "zoneId": 42,
+      "dicDropRate": {
+        "Coin": 5500.0,
+        "ElementPiece": 1100.0,
+        "HeroPiece": 330.0,
+        "CommonEquipment": 110.0
+      },
+      "dicMaxDrop": {
+        "Coin": 5500,
+        "ElementPiece": 13,
+        "HeroPiece": 5,
+        "CommonEquipment": 5
+      }
+    },
+    {
+      "zoneId": 43,
+      "dicDropRate": {
+        "Coin": 5750.0,
+        "ElementPiece": 1150.0,
+        "HeroPiece": 345.0,
+        "CommonEquipment": 115.0
+      },
+      "dicMaxDrop": {
+        "Coin": 5750,
+        "ElementPiece": 14,
+        "HeroPiece": 5,
+        "CommonEquipment": 5
+      }
+    },
+    {
+      "zoneId": 44,
+      "dicDropRate": {
+        "Coin": 5750.0,
+        "ElementPiece": 1150.0,
+        "HeroPiece": 345.0,
+        "CommonEquipment": 115.0
+      },
+      "dicMaxDrop": {
+        "Coin": 5750,
+        "ElementPiece": 14,
+        "HeroPiece": 5,
+        "CommonEquipment": 5
+      }
+    },
+    {
+      "zoneId": 45,
+      "dicDropRate": {
+        "Coin": 6000.0,
+        "ElementPiece": 1200.0,
+        "HeroPiece": 360.0,
+        "CommonEquipment": 120.0
+      },
+      "dicMaxDrop": {
+        "Coin": 6000,
+        "ElementPiece": 14,
+        "HeroPiece": 6,
+        "CommonEquipment": 5
+      }
+    },
+    {
+      "zoneId": 46,
+      "dicDropRate": {
+        "Coin": 6000.0,
+        "ElementPiece": 1200.0,
+        "HeroPiece": 360.0,
+        "CommonEquipment": 120.0
+      },
+      "dicMaxDrop": {
+        "Coin": 6000,
+        "ElementPiece": 14,
+        "HeroPiece": 6,
+        "CommonEquipment": 5
+      }
+    },
+    {
+      "zoneId": 47,
+      "dicDropRate": {
+        "Coin": 6250.0,
+        "ElementPiece": 1250.0,
+        "HeroPiece": 375.0,
+        "CommonEquipment": 125.0
+      },
+      "dicMaxDrop": {
+        "Coin": 6250,
+        "ElementPiece": 15,
+        "HeroPiece": 6,
+        "CommonEquipment": 5
+      }
+    },
+    {
+      "zoneId": 48,
+      "dicDropRate": {
+        "Coin": 6250.0,
+        "ElementPiece": 1250.0,
+        "HeroPiece": 375.0,
+        "CommonEquipment": 125.0
+      },
+      "dicMaxDrop": {
+        "Coin": 6250,
+        "ElementPiece": 15,
+        "HeroPiece": 6,
+        "CommonEquipment": 5
+      }
+    },
+    {
+      "zoneId": 49,
+      "dicDropRate": {
+        "Coin": 6500.0,
+        "ElementPiece": 1300.0,
+        "HeroPiece": 390.0,
+        "CommonEquipment": 130.0
+      },
+      "dicMaxDrop": {
+        "Coin": 6500,
+        "ElementPiece": 15,
+        "HeroPiece": 6,
+        "CommonEquipment": 5
+      }
+    },
+    {
+      "zoneId": 50,
+      "dicDropRate": {
+        "Coin": 6500.0,
+        "ElementPiece": 1300.0,
+        "HeroPiece": 390.0,
+        "CommonEquipment": 130.0
+      },
+      "dicMaxDrop": {
+        "Coin": 6500,
+        "ElementPiece": 15,
+        "HeroPiece": 6,
+        "CommonEquipment": 5
+      }
+    }
+  ],
+  "dicRateDropByLevel": {
+    "1": 0.1,
+    "2": 0.15,
+    "3": 0.2,
+    "4": 0.25,
+    "5": 0.3
+  },
+  "dicRateExpByLevel": {
+    "1": 0.25,
+    "2": 0.25,
+    "3": 0.2,
+    "4": 0.15,
+    "5": 0.15
+  },
+  "dicRateDropByType": {
+    "Enemy": 1.0,
+    "Prisoner": 0.0
+  },
+  "dicRateExpByType": {
+    "Enemy": 1.0,
+    "House_Exp": 0.0
+  },
+  "updatedAt": "2025-03-24 15:21:54"
+}
