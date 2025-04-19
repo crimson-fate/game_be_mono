@@ -21,7 +21,7 @@ interface DungeonOperation {
 export class AiAgentService {
   private agent;
   private readonly goalContext;
-  // Add default responses for common questions
+
   private readonly defaultResponses = {
     whatNext:
       'I suggest exploring the eastern corridors of the Crimson Dungeon. There are rumors of ancient artifacts hidden in the shadow chambers. Would you like me to guide you there?',
@@ -347,7 +347,6 @@ DO NOT output anything except the {"content": "your message"} JSON format.
             return jsonMatches[1].trim();
           }
 
-          // If we can't extract well-formed content, just clean up and use what we have
           return cleanedContent
             .replace(/<\/?(?:response|reasoning|action_call)[^>]*>/g, '')
             .replace(/\{.*\}/g, '')
@@ -355,11 +354,9 @@ DO NOT output anything except the {"content": "your message"} JSON format.
         }
       }
 
-      // 4. Check for content in steps
       if (result.steps && result.steps.length > 0) {
         const lastStep = result.steps[result.steps.length - 1];
 
-        // Check outputs in the step
         if (lastStep.outputs && lastStep.outputs.length > 0) {
           for (const output of lastStep.outputs) {
             if (output.data?.content) {
@@ -374,10 +371,8 @@ DO NOT output anything except the {"content": "your message"} JSON format.
         }
       }
 
-      // 5. Look for any response in the result
       const resultStr = JSON.stringify(result);
 
-      // Look for content field
       const contentPattern = /"content"\s*:\s*"([^"]+)"/;
       const contentMatch = resultStr.match(contentPattern);
 
@@ -387,7 +382,6 @@ DO NOT output anything except the {"content": "your message"} JSON format.
           .replace(/\\"/g, '"')
           .trim();
 
-        // Filter out internal reasoning and action calls
         if (
           !content.includes('<reasoning>') &&
           !content.includes('<action_call') &&
@@ -420,7 +414,6 @@ DO NOT output anything except the {"content": "your message"} JSON format.
         }
       }
 
-      // 2. Check if output data is a string containing JSON
       if (typeof result.output?.data === 'string') {
         try {
           if (result.output.data.includes('operation')) {
@@ -433,12 +426,9 @@ DO NOT output anything except the {"content": "your message"} JSON format.
               };
             }
           }
-        } catch (e) {
-          // Not valid JSON, continue
-        }
+        } catch (e) {}
       }
 
-      // 3. Check structured output
       if (result.output?.structured?.text?.content) {
         try {
           if (result.output.structured.text.content.includes('operation')) {
@@ -498,7 +488,6 @@ DO NOT output anything except the {"content": "your message"} JSON format.
     }
   }
 
-  // Process the dungeon operation
   private async processDungeonOperation(
     operation: DungeonOperation,
   ): Promise<void> {
@@ -507,7 +496,6 @@ DO NOT output anything except the {"content": "your message"} JSON format.
       operation.details,
     );
 
-    // Implement database operations
     switch (operation.type) {
       case 'clean':
         await this.cleanDungeon(operation.dungeonId, operation.details);
