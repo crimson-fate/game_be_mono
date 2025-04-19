@@ -55,8 +55,14 @@ IMPORTANT INSTRUCTIONS:
 
     this.goalContext = context({
       type: 'hunter-assistant',
-      schema: z.object({}),
+      schema: z.object({
+        message: z
+          .string()
+          .min(1, 'Message is required')
+          .describe("User's direct message to Kael"),
+      }),
       instructions: template,
+
       render: () => template,
     });
 
@@ -81,8 +87,8 @@ IMPORTANT INSTRUCTIONS:
         }),
         action({
           name: 'normal_chat',
-          schema: z.object({}),
-          async handler() {
+          schema: z.object({ message: z.string() }),
+          async handler({ message }) {
             return {
               structured: {
                 text: {
@@ -147,6 +153,7 @@ IMPORTANT INSTRUCTIONS:
 
     this.agent = createDreams({
       model: groq('meta-llama/llama-4-scout-17b-16e-instruct'),
+
       extensions: [kaelExtension],
       contexts: [this.goalContext],
     });
