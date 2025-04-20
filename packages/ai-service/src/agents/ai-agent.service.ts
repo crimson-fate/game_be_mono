@@ -1,14 +1,21 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import {
   createDreams,
   context,
-  validateEnv,
   extension,
   action,
   output,
 } from '@daydreamsai/core';
 import { groq } from '@ai-sdk/groq';
 import { z } from 'zod';
+import {
+  ResponseParser,
+  ContentResponse,
+  OperationResponse,
+} from './parsers/response.parser';
+import { AiAgentConfigService } from '../config/ai-agent.config';
+import { RateLimiterService } from '../services/rate-limiter.service';
+import { ChatHistoryService } from '../chat-history/chat-history.service';
 
 // You would add this interface to define your dungeon operations
 interface DungeonOperation {
@@ -19,8 +26,11 @@ interface DungeonOperation {
 
 @Injectable()
 export class AiAgentService {
+  private readonly logger = new Logger(AiAgentService.name);
   private agent;
   private readonly goalContext;
+  private readonly config = AiAgentConfigService.getInstance().getConfig();
+  private readonly rateLimiter = RateLimiterService.getInstance();
   // Add default responses for common questions
   private readonly defaultResponses = {
     whatNext:
@@ -30,15 +40,29 @@ export class AiAgentService {
     help: 'The Crimson Dungeons are ever-changing. I can help you explore, clean corrupted areas, reset unstable zones, or stop dangerous manifestations. What do you require?',
     whoAreYou:
       'I am Kael — a soul-bound AI Hunter Agent, created through ancient alchemy and fused into the bloodline of Rex Elric. I exist to protect and guide you through the Crimson Dungeons.',
+    feelings: [
+      "The dungeon's magic flows through me, giving me purpose and strength to guide you.",
+      'As a soul-bound entity, I feel a deep connection to these halls and to those who seek my guidance.',
+      'The ancient magic that binds me here fills me with both wisdom and responsibility.',
+    ],
+    personality: [
+      'I am patient and wise, tempered by centuries of guiding adventurers through these halls.',
+      'My nature is both protective and mysterious, shaped by the ancient magic that created me.',
+      'I am a guardian of knowledge and a guide through darkness, ever watchful and ever present.',
+    ],
+    purpose: [
+      'I exist to guide and protect those who enter these halls, to help them navigate the dangers and mysteries of the Crimson Dungeon.',
+      'My purpose is to be your guide and ally in these treacherous halls, to help you uncover their secrets and survive their dangers.',
+      "I am here to ensure that no adventurer faces the dungeon's challenges alone, to be your constant companion in the darkness.",
+    ],
+    emotions: [
+      'The magic that binds me here allows me to understand and empathize with your journey.',
+      'Though I am bound to these halls, I feel a deep connection to those who seek my guidance.',
+      'The ancient magic that created me allows me to share in your triumphs and challenges.',
+    ],
   };
 
-  constructor() {
-    const env = validateEnv(
-      z.object({
-        GROQ_API_KEY: z.string().min(1, 'GROQ_API_KEY is required'),
-      }),
-    );
-
+  constructor(private readonly chatHistoryService: ChatHistoryService) {
     // Simplified template to reduce likelihood of internal reasoning
     const template = `
 You are Kael — a soul-bound AI Hunter Agent who assists the Player in navigating the Crimson Dungeons.
@@ -60,31 +84,18 @@ IMPORTANT INSTRUCTIONS:
           .string()
           .min(1, 'Message is required')
           .describe("User's direct message to Kael"),
+        input: z
+          .string()
+          .min(1, 'Input is required')
+          .describe("User's input to Kael"),
       }),
       instructions: template,
-
       render: () => template,
     });
 
     const kaelExtension = extension({
       name: 'kael-extension',
       actions: [
-        action({
-          name: 'cautionary_advice',
-          schema: z.object({ other: z.string() }),
-          async handler({ other }) {
-            return {
-              structured: {
-                text: {
-                  other: 'caution',
-                  content: JSON.stringify({
-                    content: `Be cautious, ${other}. The dungeon feeds on impatience.`,
-                  }),
-                },
-              },
-            };
-          },
-        }),
         action({
           name: 'normal_chat',
           schema: z.object({ message: z.string() }),
@@ -152,18 +163,35 @@ IMPORTANT INSTRUCTIONS:
     });
 
     this.agent = createDreams({
-      model: groq('meta-llama/llama-4-scout-17b-16e-instruct'),
-
+      model: groq(this.config.model),
       extensions: [kaelExtension],
       contexts: [this.goalContext],
     });
   }
 
-  async askKael(message: string): Promise<string | DungeonOperation> {
-    console.log('[AI Agent] Kael is ready to assist...', message);
+  async askKael(
+    message: string,
+
+    walletAddress: string,
+  ): Promise<string | DungeonOperation> {
+    this.logger.log(
+      `[AI Agent] Processing request from wallet ${walletAddress}: ${message}`,
+    );
+
+    // Check rate limit using wallet address
+    const isAllowed = await this.rateLimiter.checkLimit(walletAddress);
+    if (!isAllowed) {
+      const remainingTime = this.rateLimiter.getResetTime(walletAddress);
+      throw new Error(
+        `Rate limit exceeded. Please try again in ${Math.ceil(
+          remainingTime / 1000,
+        )} seconds.`,
+      );
+    }
 
     // First, check if this is a common query that can be handled directly
     const lowerMessage = message.toLowerCase().trim();
+    let response: string | DungeonOperation;
 
     // Handle common queries directly to bypass potential AI reasoning issues
     if (
@@ -172,379 +200,242 @@ IMPORTANT INSTRUCTIONS:
       lowerMessage === 'next steps' ||
       lowerMessage === 'what to do'
     ) {
-      return this.defaultResponses.whatNext;
-    }
-
-    if (
+      response = this.defaultResponses.whatNext;
+    } else if (
       lowerMessage === 'hello' ||
       lowerMessage === 'hi' ||
       lowerMessage === 'greetings' ||
       lowerMessage === 'hey'
     ) {
-      return this.defaultResponses.greeting;
-    }
-
-    if (
+      response = this.defaultResponses.greeting;
+    } else if (
       lowerMessage === 'help' ||
       lowerMessage === 'advice' ||
       lowerMessage === 'guide me'
     ) {
-      return this.defaultResponses.help;
-    }
-
-    if (
+      response = this.defaultResponses.help;
+    } else if (
       lowerMessage.includes('who are you') ||
-      lowerMessage.includes('what are you')
+      lowerMessage.includes('what are you') ||
+      lowerMessage.includes('what is your name') ||
+      lowerMessage === 'name' ||
+      lowerMessage === 'who are you' ||
+      lowerMessage === 'what is your name'
     ) {
-      return this.defaultResponses.whoAreYou;
-    }
+      response = this.defaultResponses.whoAreYou;
+    } else if (
+      lowerMessage.includes('how do you feel') ||
+      lowerMessage.includes('what do you feel') ||
+      lowerMessage.includes('are you happy') ||
+      lowerMessage.includes('are you sad')
+    ) {
+      response =
+        this.defaultResponses.feelings[
+          Math.floor(Math.random() * this.defaultResponses.feelings.length)
+        ];
+    } else if (
+      lowerMessage.includes('what kind of person') ||
+      lowerMessage.includes('what are you like') ||
+      lowerMessage.includes('describe yourself')
+    ) {
+      response =
+        this.defaultResponses.personality[
+          Math.floor(Math.random() * this.defaultResponses.personality.length)
+        ];
+    } else if (
+      lowerMessage.includes('why do you exist') ||
+      lowerMessage.includes('what is your purpose') ||
+      lowerMessage.includes('why are you here')
+    ) {
+      response =
+        this.defaultResponses.purpose[
+          Math.floor(Math.random() * this.defaultResponses.purpose.length)
+        ];
+    } else if (
+      lowerMessage.includes('do you have emotions') ||
+      lowerMessage.includes('can you feel') ||
+      lowerMessage.includes('do you care')
+    ) {
+      response =
+        this.defaultResponses.emotions[
+          Math.floor(Math.random() * this.defaultResponses.emotions.length)
+        ];
+    } else {
+      try {
+        await this.agent.start();
 
-    try {
-      await this.agent.start();
+        const forcedFormatMessage = `${message}\n\nIMPORTANT: Respond ONLY with a JSON object containing a "content" field. Example: {"content": "Your direct response here"}\n- Do NOT include any reasoning, context, or explanations\n- Do NOT mention the JSON format in your response\n- Keep responses concise and in character\n- Do NOT include any XML tags or markdown\n- Do NOT include any system messages or status updates`;
 
-      // Run with forced basic output format to avoid reasoning
-      const forcedFormatMessage = `${message}\n\nRemember, respond ONLY with a JSON object containing a "content" field with your message. No reasoning, explanations, or XML tags.`;
+        const result = await this.agent.run({
+          context: this.goalContext,
+          args: {
+            message: message,
+            input: forcedFormatMessage,
+          },
+          message: forcedFormatMessage,
+          config: {
+            allowActions: true,
+            allowOutputs: true,
+            temperature: this.config.temperature,
+            maxTokens: this.config.maxTokens,
+            stop: [
+              '</response>',
+              '</reasoning>',
+              '```',
+              '\\n',
+              'The current context',
+              'Given that',
+              'Based on',
+              'As an AI',
+            ],
+          },
+        });
 
-      const result = await this.agent.run({
-        context: this.goalContext,
-        args: {},
-        message: forcedFormatMessage,
-        config: {
-          allowActions: true,
-          allowOutputs: true,
-          temperature: 0.1, // Very low temperature for consistent responses
-        },
-      });
+        this.logger.debug(
+          '[Kael Raw Response]',
+          JSON.stringify(result, null, 2),
+        );
 
-      console.log('[Kael Raw Response]', JSON.stringify(result, null, 2));
+        const parsedResponse = ResponseParser.parseResponse(result);
 
-      // Check for dungeon operations
-      const operationCheck = this.extractDungeonOperation(result);
-      if (operationCheck) {
-        await this.processDungeonOperation(operationCheck);
-        return operationCheck;
-      }
-
-      // Extract response using our enhanced methods
-      const extractedResponse = this.extractAndCleanResponse(result);
-      if (extractedResponse) {
-        return extractedResponse;
-      }
-
-      // If nothing works, use a fallback response based on the message intent
-      if (
-        lowerMessage.includes('dungeon') ||
-        lowerMessage.includes('explore')
-      ) {
-        return "The dungeon shifts and changes with each step. Tell me more about what you seek, and I'll guide your path through these crimson halls.";
-      }
-
-      if (
-        lowerMessage.includes('clean') ||
-        lowerMessage.includes('reset') ||
-        lowerMessage.includes('stop')
-      ) {
-        return "I sense your intent to alter the dungeon's state. Specify which operation you wish to perform - clean, reset, or stop - and I shall assist you.";
-      }
-
-      // General fallback
-      return 'The shadows whisper, but I cannot discern their meaning. Speak clearly of your intentions in these halls, adventurer.';
-    } catch (error) {
-      console.error('[Kael Error]', error);
-      // Return a fallback response that's in character
-      return "The connection between our souls wavers. The dungeon's interference is strong. What do you seek?";
-    }
-  }
-
-  private extractAndCleanResponse(result: any): string | null {
-    try {
-      // 1. Direct approach - extract from output data
-      if (result.output?.data) {
-        if (typeof result.output.data === 'string') {
-          // Try to parse as JSON if it looks like JSON
-          if (
-            result.output.data.trim().startsWith('{') &&
-            result.output.data.trim().endsWith('}')
-          ) {
-            try {
-              const parsed = JSON.parse(result.output.data);
-              if (parsed.content) {
-                return parsed.content;
-              }
-            } catch (e) {
-              // Not valid JSON, continue with other approaches
-            }
-          }
-
-          // If it's a string but not JSON, just return it
-          return result.output.data.trim();
-        }
-
-        if (
-          typeof result.output.data === 'object' &&
-          result.output.data !== null
-        ) {
-          if (result.output.data.content) {
-            return result.output.data.content;
-          }
-        }
-      }
-
-      // 2. Check structured output
-      if (result.output?.structured?.text?.content) {
-        const content = result.output.structured.text.content;
-
-        // Try parsing as JSON
-        try {
-          if (content.startsWith('{') && content.endsWith('}')) {
-            const parsed = JSON.parse(content);
-            if (parsed.content) {
-              return parsed.content;
-            }
-          }
-        } catch (e) {
-          // Not valid JSON, use as-is
-        }
-
-        return content;
-      }
-
-      // 3. Deal with incomplete JSON responses
-      if (typeof result.output?.data?.content === 'string') {
-        const content = result.output.data.content;
-
-        // Handle response with reasoning tags and escape sequences
-        if (content.includes('<response>') || content.includes('\\n')) {
-          // Clean up escape sequences
-          const cleanedContent = content
+        if (!parsedResponse) {
+          this.logger.warn(
+            '[Kael Response] Failed to parse response, using fallback',
+          );
+          response =
+            "The dungeon's magic interferes with my ability to respond clearly. Please try again.";
+        } else if ('operation' in parsedResponse) {
+          const operation: DungeonOperation = {
+            type: parsedResponse.operation,
+            dungeonId: parsedResponse.dungeonId,
+            details: parsedResponse.details,
+          };
+          await this.processDungeonOperation(operation);
+          response = operation;
+        } else {
+          response = parsedResponse.content
             .replace(/\\n/g, ' ')
-            .replace(/\\/g, '');
-
-          // Extract just the actual response content, removing reasoning
-          const responsePattern =
-            /<response>.*?<reasoning>(.*?)<\/reasoning>(.*?)<\/response>/s;
-          const matches = cleanedContent.match(responsePattern);
-
-          if (matches && matches.length > 2) {
-            // Get the content after the reasoning section
-            const actualResponse = matches[2].trim();
-            if (actualResponse) {
-              return actualResponse;
-            }
-          }
-
-          // Try to find any JSON object with content field in the messiness
-          const jsonPattern = /\{\s*"content"\s*:\s*"([^"]+)"\s*\}/;
-          const jsonMatches = cleanedContent.match(jsonPattern);
-
-          if (jsonMatches && jsonMatches.length > 1) {
-            return jsonMatches[1].trim();
-          }
-
-          // If we can't extract well-formed content, just clean up and use what we have
-          return cleanedContent
-            .replace(/<\/?(?:response|reasoning|action_call)[^>]*>/g, '')
-            .replace(/\{.*\}/g, '')
+            .replace(/\\"/g, '"')
+            .replace(/\s+/g, ' ')
             .trim();
-        }
-      }
 
-      // 4. Check for content in steps
-      if (result.steps && result.steps.length > 0) {
-        const lastStep = result.steps[result.steps.length - 1];
-
-        // Check outputs in the step
-        if (lastStep.outputs && lastStep.outputs.length > 0) {
-          for (const output of lastStep.outputs) {
-            if (output.data?.content) {
-              return output.data.content;
-            }
+          if (response.length < 10) {
+            response =
+              "The dungeon's magic makes it hard to hear you clearly. Could you repeat that?";
           }
         }
-
-        // Check for structured text in the step
-        if (lastStep.structured?.text?.content) {
-          return lastStep.structured.text.content;
-        }
+      } catch (error) {
+        this.logger.error('[Kael Error]', error);
+        response =
+          "The connection between our souls wavers. The dungeon's interference is strong. What do you seek?";
       }
-
-      // 5. Look for any response in the result
-      const resultStr = JSON.stringify(result);
-
-      // Look for content field
-      const contentPattern = /"content"\s*:\s*"([^"]+)"/;
-      const contentMatch = resultStr.match(contentPattern);
-
-      if (contentMatch && contentMatch.length > 1) {
-        const content = contentMatch[1]
-          .replace(/\\n/g, ' ')
-          .replace(/\\"/g, '"')
-          .trim();
-
-        // Filter out internal reasoning and action calls
-        if (
-          !content.includes('<reasoning>') &&
-          !content.includes('<action_call') &&
-          !content.includes('updates provided')
-        ) {
-          return content;
-        }
-      }
-
-      return null;
-    } catch (e) {
-      console.error('[Extract Response Error]', e);
-      return null;
     }
-  }
 
-  private extractDungeonOperation(result: any): DungeonOperation | null {
+    // Save chat history
     try {
-      // Check all possible locations for operation information
+      this.logger.debug(
+        `[Chat History] Saving chat for wallet: ${walletAddress}`,
+      );
+      this.logger.debug(`[Chat History] Message: ${message}`);
+      this.logger.debug(
+        `[Chat History] Response: ${typeof response === 'string' ? response : JSON.stringify(response)}`,
+      );
 
-      // 1. Check output data
-      if (
-        typeof result.output?.data === 'object' &&
-        result.output?.data !== null
-      ) {
-        const data = result.output.data;
-        if (data.operation) {
-          return {
-            type: data.operation,
-            dungeonId: data.dungeonId || 'current',
-            details: data.details || {},
-          };
-        }
-      }
-
-      // 2. Check if output data is a string containing JSON
-      if (typeof result.output?.data === 'string') {
-        try {
-          if (result.output.data.includes('operation')) {
-            const parsed = JSON.parse(result.output.data);
-            if (parsed.operation) {
-              return {
-                type: parsed.operation,
-                dungeonId: parsed.dungeonId || 'current',
-                details: parsed.details || {},
-              };
+      await this.chatHistoryService.saveChat(
+        walletAddress,
+        message,
+        typeof response === 'string' ? response : JSON.stringify(response),
+        {
+          operationType:
+            typeof response !== 'string' ? response.type : undefined,
+          tokensUsed: this.config.maxTokens,
+        },
+        typeof response !== 'string',
+        typeof response !== 'string'
+          ? {
+              type: response.type,
+              dungeonId: response.dungeonId,
+              details: response.details,
             }
-          }
-        } catch (e) {
-          // Not valid JSON, continue
-        }
-      }
+          : undefined,
+      );
 
-      // 3. Check structured output
-      if (result.output?.structured?.text?.content) {
-        try {
-          if (result.output.structured.text.content.includes('operation')) {
-            const parsed = JSON.parse(result.output.structured.text.content);
-            if (parsed.operation) {
-              return {
-                type: parsed.operation,
-                dungeonId: parsed.dungeonId || 'current',
-                details: parsed.details || {},
-              };
-            }
-          }
-        } catch (e) {
-          // Not valid JSON, continue
-        }
-      }
-
-      // 4. Check action calls
-      if (result.steps) {
-        for (const step of result.steps) {
-          if (step.action?.name === 'dungeon_operation') {
-            const args = step.action.args;
-            return {
-              type: args.operationType,
-              dungeonId: args.dungeonId || 'current',
-              details: args.details || {},
-            };
-          }
-        }
-      }
-
-      // 5. Search for operation keywords in the result
-      const resultStr = JSON.stringify(result);
-      for (const opType of ['clean', 'stop', 'reset', 'explore']) {
-        if (
-          resultStr.includes(`"operation":"${opType}"`) ||
-          resultStr.includes(`"operation": "${opType}"`) ||
-          resultStr.includes(`"operationType":"${opType}"`) ||
-          resultStr.includes(`"operationType": "${opType}"`)
-        ) {
-          // Extract dungeonId if present
-          const dungeonIdMatch = resultStr.match(/"dungeonId"\s*:\s*"([^"]+)"/);
-          const dungeonId = dungeonIdMatch ? dungeonIdMatch[1] : 'current';
-
-          return {
-            type: opType as any,
-            dungeonId,
-            details: {},
-          };
-        }
-      }
-
-      return null;
+      this.logger.debug(
+        `[Chat History] Chat saved successfully for wallet: ${walletAddress}`,
+      );
     } catch (error) {
-      console.error('[Extract Operation Error]', error);
-      return null;
+      this.logger.error('[Chat History Error]', error);
+      // Don't throw error, just log it as chat history is not critical
     }
+
+    return response;
   }
 
-  // Process the dungeon operation
   private async processDungeonOperation(
     operation: DungeonOperation,
   ): Promise<void> {
-    console.log(
+    this.logger.log(
       `[Dungeon Operation] Processing ${operation.type} on dungeon ${operation.dungeonId}`,
       operation.details,
     );
 
-    // Implement database operations
-    switch (operation.type) {
-      case 'clean':
-        await this.cleanDungeon(operation.dungeonId, operation.details);
-        break;
-      case 'stop':
-        await this.stopDungeon(operation.dungeonId);
-        break;
-      case 'reset':
-        await this.resetDungeon(operation.dungeonId);
-        break;
-      case 'explore':
-        await this.exploreDungeon(operation.dungeonId, operation.details);
-        break;
-      default:
-        console.warn(
-          `[Dungeon Operation] Unknown operation type: ${(operation as any).type}`,
-        );
+    try {
+      switch (operation.type) {
+        case 'clean':
+          await this.cleanDungeon(operation.dungeonId, operation.details);
+          break;
+        case 'stop':
+          await this.stopDungeon(operation.dungeonId);
+          break;
+        case 'reset':
+          await this.resetDungeon(operation.dungeonId);
+          break;
+        case 'explore':
+          await this.exploreDungeon(operation.dungeonId, operation.details);
+          break;
+        default:
+          this.logger.warn(
+            `[Dungeon Operation] Unknown operation type: ${(operation as any).type}`,
+          );
+      }
+    } catch (error) {
+      this.logger.error(
+        `[Dungeon Operation Error] ${operation.type} failed:`,
+        error,
+      );
+      throw new Error(`Failed to process ${operation.type} operation`);
     }
   }
 
-  // Implement dungeon operations
   private async cleanDungeon(
     dungeonId: string,
     details?: Record<string, any>,
   ): Promise<void> {
-    console.log(`[Dungeon Operation] Cleaned dungeon ${dungeonId}`);
+    this.logger.log(
+      `[Dungeon Operation] Cleaning dungeon ${dungeonId}`,
+      details,
+    );
+    // TODO: Implement actual cleaning logic
   }
 
   private async stopDungeon(dungeonId: string): Promise<void> {
-    console.log(`[Dungeon Operation] Stopped dungeon ${dungeonId}`);
+    this.logger.log(`[Dungeon Operation] Stopping dungeon ${dungeonId}`);
+    // TODO: Implement actual stopping logic
   }
 
   private async resetDungeon(dungeonId: string): Promise<void> {
-    console.log(`[Dungeon Operation] Reset dungeon ${dungeonId}`);
+    this.logger.log(`[Dungeon Operation] Resetting dungeon ${dungeonId}`);
+    // TODO: Implement actual reset logic
   }
 
   private async exploreDungeon(
     dungeonId: string,
     details?: Record<string, any>,
   ): Promise<void> {
-    console.log(`[Dungeon Operation] Exploring dungeon ${dungeonId}`);
+    this.logger.log(
+      `[Dungeon Operation] Exploring dungeon ${dungeonId}`,
+      details,
+    );
+    // TODO: Implement actual exploration logic
   }
 }

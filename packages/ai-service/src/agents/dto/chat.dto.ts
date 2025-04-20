@@ -1,4 +1,4 @@
-import { IsString, MinLength } from 'class-validator';
+import { IsString, MinLength, IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 export class ChatDto {
   @ApiProperty({
@@ -8,6 +8,10 @@ export class ChatDto {
   @IsString()
   @MinLength(1)
   message: string;
+
+  @IsString()
+  @IsOptional()
+  walletAddress?: string;
 }
 
 // DTO for the response - can be text or operation
