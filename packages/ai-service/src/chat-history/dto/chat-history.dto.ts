@@ -1,4 +1,10 @@
-import { IsString, IsOptional, IsNumber, Min, IsBoolean } from 'class-validator';
+import {
+  IsString,
+  IsOptional,
+  IsNumber,
+  Min,
+  IsBoolean,
+} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class ChatHistoryQueryDto {
@@ -49,4 +55,4 @@ export class ChatHistoryQueryDto {
   @IsOptional()
   @IsString()
   dungeonId?: string;
-} 
+}

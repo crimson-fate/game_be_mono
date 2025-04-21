@@ -1,4 +1,4 @@
-import { IsString, MinLength, IsOptional } from 'class-validator';
+import { IsString, MinLength } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 export class ChatDto {
   @ApiProperty({
@@ -9,8 +9,12 @@ export class ChatDto {
   @MinLength(1)
   message: string;
 
+  @ApiProperty({
+    description: 'Wallet address of the user',
+    example: '0x1234567890abcdef1234567890abcdef12345678',
+    required: false,
+  })
   @IsString()
-  @IsOptional()
   walletAddress?: string;
 }
 

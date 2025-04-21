@@ -26,7 +26,7 @@ export class ChatHistoryController {
   async getChatHistory(
     @Query() query: ChatHistoryQueryDto,
   ): Promise<ChatHistoryResponseDto[]> {
-    const { walletAddress, limit, skip, isOperation, dungeonId } = query;
+    const { walletAddress, limit, skip, dungeonId } = query;
 
     let history;
     if (dungeonId) {
@@ -36,13 +36,8 @@ export class ChatHistoryController {
         limit,
         skip,
       );
-    } else if (isOperation) {
-      history = await this.chatHistoryService.getOperationHistory(
-        walletAddress,
-        limit,
-        skip,
-      );
-    } else {
+    }
+    {
       history = await this.chatHistoryService.getChatHistory(
         walletAddress,
         limit,
@@ -58,4 +53,4 @@ export class ChatHistoryController {
       createdAt: chat.createdAt,
     }));
   }
-} 
+}
