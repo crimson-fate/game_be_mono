@@ -3,8 +3,8 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 export function configureSwagger(app: INestApplication) {
   const swaggerDocOptions = new DocumentBuilder()
-    .setTitle('Story ID API Gateway')
-    .setDescription('Story API  Document Description Content')
+    .setTitle('CrimsonFate API')
+    .setDescription('CrimsonFate API  Document Description Content')
     .setVersion('0.0.1')
 
     .addBearerAuth(
