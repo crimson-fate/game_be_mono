@@ -31,4 +31,4 @@ export class ChatHistory {
   };
 }
 
-export const ChatHistorySchema = SchemaFactory.createForClass(ChatHistory); 
+export const ChatHistorySchema = SchemaFactory.createForClass(ChatHistory);

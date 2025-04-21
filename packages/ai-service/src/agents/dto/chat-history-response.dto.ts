@@ -45,4 +45,4 @@ export class ChatHistoryResponseDto {
     example: '2024-04-20T19:28:29.000Z',
   })
   createdAt: Date;
-} 
+}

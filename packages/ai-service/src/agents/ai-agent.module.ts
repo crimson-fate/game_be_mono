@@ -2,18 +2,20 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AiAgentController } from './ai-agent.controller';
 import { AiAgentService } from './ai-agent.service';
-import { ChatHistoryModule } from '../chat-history/chat-history.module';
-import { ChatHistory, ChatHistorySchema } from '../chat-history/schemas/chat-history.schema';
+import {
+  ChatHistory,
+  ChatHistorySchema,
+} from '@app/shared/models/schema/chat-history.schema';
+import { ChatHistoryService } from './services/chat-history.service';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: ChatHistory.name, schema: ChatHistorySchema },
     ]),
-    ChatHistoryModule,
   ],
   controllers: [AiAgentController],
-  providers: [AiAgentService],
+  providers: [AiAgentService, ChatHistoryService],
   exports: [AiAgentService],
 })
 export class AiAgentModule {}

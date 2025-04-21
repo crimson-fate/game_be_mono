@@ -1,9 +1,10 @@
-import { AiAgentConfigService } from '../config/ai-agent.config';
+import { AiAgentConfigService } from 'ai-service/src/config/ai-agent.config';
 
 export class RateLimiterService {
   private static instance: RateLimiterService;
   private config = AiAgentConfigService.getInstance().getConfig();
-  private requestCounts: Map<string, { count: number; lastReset: number }> = new Map();
+  private requestCounts: Map<string, { count: number; lastReset: number }> =
+    new Map();
 
   private constructor() {}
 
@@ -67,4 +68,4 @@ export class RateLimiterService {
     const timeSinceReset = now - limit.lastReset;
     return Math.max(0, this.config.rateLimit.interval * 1000 - timeSinceReset);
   }
-} 
+}

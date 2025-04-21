@@ -8,15 +8,12 @@ import {
 } from '@daydreamsai/core';
 import { groq } from '@ai-sdk/groq';
 import { z } from 'zod';
-import {
-  ResponseParser,
-  ContentResponse,
-  OperationResponse,
-} from './parsers/response.parser';
+import { ResponseParser } from './parsers/response.parser';
 import { AiAgentConfigService } from '../config/ai-agent.config';
-import { RateLimiterService } from '../services/rate-limiter.service';
-import { ChatHistoryService } from '../chat-history/chat-history.service';
-import { ChatHistoryDocument } from '../chat-history/schemas/chat-history.schema';
+
+import { ChatHistoryService } from './services/chat-history.service';
+import { ChatHistoryDocument } from '@app/shared/models/schema/chat-history.schema';
+import { RateLimiterService } from './services/rate-limiter.service';
 
 // You would add this interface to define your dungeon operations
 interface DungeonOperation {
@@ -32,7 +29,7 @@ export class AiAgentService {
   private readonly goalContext;
   private readonly config = AiAgentConfigService.getInstance().getConfig();
   private readonly rateLimiter = RateLimiterService.getInstance();
-  // Add default responses for common questions
+
   private readonly defaultResponses = {
     whatNext:
       'I suggest exploring the eastern corridors of the Crimson Dungeon. There are rumors of ancient artifacts hidden in the shadow chambers. Would you like me to guide you there?',
@@ -275,7 +272,8 @@ DO NOT output anything except the {"content": "your message"} JSON format.
           lowerMessage.includes('cleanse') ||
           lowerMessage.includes('purge')
         ) {
-          const dungeonId = lowerMessage.match(/dungeon\s+id\s+(\w+)/)?.[1] || 'current';
+          const dungeonId =
+            lowerMessage.match(/dungeon\s+id\s+(\w+)/)?.[1] || 'current';
           const operation: DungeonOperation = {
             type: 'clean',
             dungeonId: dungeonId,
@@ -288,7 +286,8 @@ DO NOT output anything except the {"content": "your message"} JSON format.
           lowerMessage.includes('halt') ||
           lowerMessage.includes('pause')
         ) {
-          const dungeonId = lowerMessage.match(/dungeon\s+id\s+(\w+)/)?.[1] || 'current';
+          const dungeonId =
+            lowerMessage.match(/dungeon\s+id\s+(\w+)/)?.[1] || 'current';
           const operation: DungeonOperation = {
             type: 'stop',
             dungeonId: dungeonId,
@@ -301,7 +300,8 @@ DO NOT output anything except the {"content": "your message"} JSON format.
           lowerMessage.includes('restart') ||
           lowerMessage.includes('reload')
         ) {
-          const dungeonId = lowerMessage.match(/dungeon\s+id\s+(\w+)/)?.[1] || 'current';
+          const dungeonId =
+            lowerMessage.match(/dungeon\s+id\s+(\w+)/)?.[1] || 'current';
           const operation: DungeonOperation = {
             type: 'reset',
             dungeonId: dungeonId,
@@ -314,7 +314,8 @@ DO NOT output anything except the {"content": "your message"} JSON format.
           lowerMessage.includes('search') ||
           lowerMessage.includes('investigate')
         ) {
-          const dungeonId = lowerMessage.match(/dungeon\s+id\s+(\w+)/)?.[1] || 'current';
+          const dungeonId =
+            lowerMessage.match(/dungeon\s+id\s+(\w+)/)?.[1] || 'current';
           const operation: DungeonOperation = {
             type: 'explore',
             dungeonId: dungeonId,

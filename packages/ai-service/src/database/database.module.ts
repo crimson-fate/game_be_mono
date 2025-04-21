@@ -8,10 +8,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => {
         const logger = new Logger('MongoDB');
-        const uri = configService.get<string>('MONGODB_URI') || 'mongodb://localhost:27017/crimson-dungeon';
-        
+        const uri =
+          configService.get<string>('MONGODB_URI') ||
+          'mongodb://localhost:27017/crimson-dungeon';
+
         logger.log(`Connecting to MongoDB at ${uri}`);
-        
+
         return {
           uri,
           retryAttempts: 3,
@@ -35,4 +37,4 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
   ],
   exports: [MongooseModule],
 })
-export class DatabaseModule {} 
+export class DatabaseModule {}

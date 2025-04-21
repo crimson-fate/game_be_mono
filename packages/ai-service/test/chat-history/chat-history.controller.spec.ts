@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ChatHistoryController } from '../../src/chat-history/chat-history.controller';
-import { ChatHistoryService } from '../../src/chat-history/chat-history.service';
+import { ChatHistoryService } from '../../src/agents/services/chat-history.service';
 import { getModelToken } from '@nestjs/mongoose';
-import { ChatHistory } from '../../src/chat-history/schemas/chat-history.schema';
+import { ChatHistory } from '../../../shared/models/schema/chat-history.schema';
 import { Model } from 'mongoose';
 
 describe('ChatHistoryController', () => {
@@ -55,7 +55,9 @@ describe('ChatHistoryController', () => {
 
       const result = await controller.getChatHistory(query);
       expect(result).toEqual([mockChatHistory]);
-      expect(model.find).toHaveBeenCalledWith({ walletAddress: query.walletAddress });
+      expect(model.find).toHaveBeenCalledWith({
+        walletAddress: query.walletAddress,
+      });
     });
 
     it('should return operation history when isOperation is true', async () => {
@@ -102,4 +104,4 @@ describe('ChatHistoryController', () => {
       expect(model.skip).toHaveBeenCalledWith(query.skip);
     });
   });
-}); 
+});

@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AiAgentService } from './ai-agent.service';
-import { ChatHistoryService } from '../chat-history/chat-history.service';
+import { ChatHistoryService } from './services/chat-history.service';
 import { getModelToken } from '@nestjs/mongoose';
-import { ChatHistory } from '../chat-history/schemas/chat-history.schema';
+import { ChatHistory } from '../../../shared/models/schema/chat-history.schema';
 import { Model } from 'mongoose';
 
 describe('AiAgentService', () => {
@@ -28,7 +28,9 @@ describe('AiAgentService', () => {
 
     service = module.get<AiAgentService>(AiAgentService);
     chatHistoryService = module.get<ChatHistoryService>(ChatHistoryService);
-    chatHistoryModel = module.get<Model<ChatHistory>>(getModelToken(ChatHistory.name));
+    chatHistoryModel = module.get<Model<ChatHistory>>(
+      getModelToken(ChatHistory.name),
+    );
   });
 
   it('should be defined', () => {
@@ -48,7 +50,11 @@ describe('AiAgentService', () => {
     it('should handle common queries', async () => {
       jest.spyOn(service['rateLimiter'], 'checkLimit').mockResolvedValue(true);
 
-      const response = await service.askKael('hello', 'test-client', 'test-wallet');
+      const response = await service.askKael(
+        'hello',
+        'test-client',
+        'test-wallet',
+      );
       expect(response).toBeDefined();
       expect(typeof response).toBe('string');
     });
@@ -90,4 +96,4 @@ describe('AiAgentService', () => {
       );
     });
   });
-}); 
+});

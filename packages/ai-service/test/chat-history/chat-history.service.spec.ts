@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ChatHistoryService } from '../../src/chat-history/chat-history.service';
+import { ChatHistoryService } from '../../src/agents/services/chat-history.service';
 import { getModelToken } from '@nestjs/mongoose';
-import { ChatHistory } from '../../src/chat-history/schemas/chat-history.schema';
+import { ChatHistory } from '../../../shared/models/schema/chat-history.schema';
 import { Model, Query } from 'mongoose';
 
 describe('ChatHistoryService', () => {
@@ -138,4 +138,4 @@ describe('ChatHistoryService', () => {
       });
     });
   });
-}); 
+});

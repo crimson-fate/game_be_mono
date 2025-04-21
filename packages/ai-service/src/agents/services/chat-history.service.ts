@@ -4,7 +4,7 @@ import { Model } from 'mongoose';
 import {
   ChatHistory,
   ChatHistoryDocument,
-} from './schemas/chat-history.schema';
+} from '@app/shared/models/schema/chat-history.schema';
 
 @Injectable()
 export class ChatHistoryService {

@@ -6,18 +6,17 @@ import {
   Query,
   HttpException,
   HttpStatus,
-  UseGuards,
 } from '@nestjs/common';
 import { AiAgentService } from './ai-agent.service';
 import { ChatDto, ChatResponseDto } from './dto/chat.dto';
-import { ChatHistoryQueryDto } from '../chat-history/dto/chat-history.dto';
-import { ChatHistoryResponseDto } from '../chat-history/dto/chat-history-response.dto';
+
 import { ApiOperation, ApiResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
-import { AuthGuard } from '../auth/auth.guard';
+
+import { ChatHistoryResponseDto } from './dto/chat-history-response.dto';
+import { ChatHistoryQueryDto } from './dto/chat-history.dto';
 
 @ApiTags('AI Chat')
 @Controller('ai')
-@UseGuards(AuthGuard)
 export class AiAgentController {
   constructor(private readonly aiAgentService: AiAgentService) {}
 
@@ -89,10 +88,7 @@ export class AiAgentController {
         skip,
       );
     } else {
-      history = await this.aiAgentService.getChatHistory(
-        walletAddress,
-        limit,
-      );
+      history = await this.aiAgentService.getChatHistory(walletAddress, limit);
     }
 
     return history.map((chat) => ({

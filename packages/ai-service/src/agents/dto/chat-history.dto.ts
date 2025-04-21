@@ -10,7 +10,7 @@ import { ApiProperty } from '@nestjs/swagger';
 export class ChatHistoryQueryDto {
   @ApiProperty({
     description: 'Wallet address of the user',
-    example: '0x123...abc',
+    example: '0x1234567890abcdef1234567890abcdef12345678',
   })
   @IsString()
   walletAddress: string;
@@ -49,7 +49,7 @@ export class ChatHistoryQueryDto {
 
   @ApiProperty({
     description: 'Filter by dungeon ID',
-    example: 'dungeon-1',
+    example: '',
     required: false,
   })
   @IsOptional()
