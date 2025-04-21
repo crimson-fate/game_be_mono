@@ -2,14 +2,22 @@ import {
   Controller,
   Post,
   Body,
+  Get,
+  Query,
   HttpException,
   HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
 import { AiAgentService } from './ai-agent.service';
 import { ChatDto, ChatResponseDto } from './dto/chat.dto';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ChatHistoryQueryDto } from '../chat-history/dto/chat-history.dto';
+import { ChatHistoryResponseDto } from '../chat-history/dto/chat-history-response.dto';
+import { ApiOperation, ApiResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from '../auth/auth.guard';
 
+@ApiTags('AI Chat')
 @Controller('ai')
+@UseGuards(AuthGuard)
 export class AiAgentController {
   constructor(private readonly aiAgentService: AiAgentService) {}
 
@@ -28,7 +36,6 @@ export class AiAgentController {
     try {
       const result = await this.aiAgentService.askKael(
         body.message,
-
         body.walletAddress || 'unknown',
       );
 
@@ -54,5 +61,47 @@ export class AiAgentController {
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
+  }
+
+  @Get('chat/history')
+  @ApiOperation({ summary: 'Get chat history for a user' })
+  @ApiQuery({ name: 'walletAddress', required: true })
+  @ApiQuery({ name: 'limit', required: false })
+  @ApiQuery({ name: 'skip', required: false })
+  @ApiQuery({ name: 'isOperation', required: false })
+  @ApiQuery({ name: 'dungeonId', required: false })
+  @ApiResponse({
+    status: 200,
+    description: 'Returns chat history for the specified user',
+    type: [ChatHistoryResponseDto],
+  })
+  async getChatHistory(
+    @Query() query: ChatHistoryQueryDto,
+  ): Promise<ChatHistoryResponseDto[]> {
+    const { walletAddress, limit, skip, dungeonId } = query;
+
+    let history;
+    if (dungeonId) {
+      history = await this.aiAgentService.getDungeonChatHistory(
+        walletAddress,
+        dungeonId,
+        limit,
+        skip,
+      );
+    } else {
+      history = await this.aiAgentService.getChatHistory(
+        walletAddress,
+        limit,
+      );
+    }
+
+    return history.map((chat) => ({
+      walletAddress: chat.walletAddress,
+      message: chat.message,
+      response: chat.response,
+      isOperation: chat.isOperation,
+      operationDetails: chat.operationDetails,
+      createdAt: chat.createdAt,
+    }));
   }
 }

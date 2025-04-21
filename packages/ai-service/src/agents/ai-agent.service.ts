@@ -16,6 +16,7 @@ import {
 import { AiAgentConfigService } from '../config/ai-agent.config';
 import { RateLimiterService } from '../services/rate-limiter.service';
 import { ChatHistoryService } from '../chat-history/chat-history.service';
+import { ChatHistoryDocument } from '../chat-history/schemas/chat-history.schema';
 
 // You would add this interface to define your dungeon operations
 interface DungeonOperation {
@@ -175,7 +176,6 @@ DO NOT output anything except the {"content": "your message"} JSON format.
 
   async askKael(
     message: string,
-
     walletAddress: string,
   ): Promise<string | DungeonOperation> {
     this.logger.log(
@@ -268,64 +268,135 @@ DO NOT output anything except the {"content": "your message"} JSON format.
       try {
         await this.agent.start();
 
-        const forcedFormatMessage = `${message}\n\nIMPORTANT: Respond ONLY with a JSON object containing a "content" field. Example: {"content": "Your direct response here"}\n- Do NOT include any reasoning, context, or explanations\n- Do NOT mention the JSON format in your response\n- Keep responses concise and in character\n- Do NOT include any XML tags or markdown\n- Do NOT include any system messages or status updates`;
-
-        const result = await this.agent.run({
-          context: this.goalContext,
-          args: {
-            message: message,
-            input: forcedFormatMessage,
-          },
-          message: forcedFormatMessage,
-          config: {
-            allowActions: true,
-            allowOutputs: true,
-            temperature: this.config.temperature,
-            maxTokens: this.config.maxTokens,
-            stop: [
-              '</response>',
-              '</reasoning>',
-              '```',
-              '\\n',
-              'The current context',
-              'Given that',
-              'Based on',
-              'As an AI',
-            ],
-          },
-        });
-
-        this.logger.debug(
-          '[Kael Raw Response]',
-          JSON.stringify(result, null, 2),
-        );
-
-        const parsedResponse = ResponseParser.parseResponse(result);
-
-        if (!parsedResponse) {
-          this.logger.warn(
-            '[Kael Response] Failed to parse response, using fallback',
-          );
-          response =
-            "The dungeon's magic interferes with my ability to respond clearly. Please try again.";
-        } else if ('operation' in parsedResponse) {
+        // Check for dungeon operation keywords
+        if (
+          lowerMessage.includes('clean') ||
+          lowerMessage.includes('clear') ||
+          lowerMessage.includes('cleanse') ||
+          lowerMessage.includes('purge')
+        ) {
+          const dungeonId = lowerMessage.match(/dungeon\s+id\s+(\w+)/)?.[1] || 'current';
           const operation: DungeonOperation = {
-            type: parsedResponse.operation,
-            dungeonId: parsedResponse.dungeonId,
-            details: parsedResponse.details,
+            type: 'clean',
+            dungeonId: dungeonId,
+            details: {},
+          };
+          await this.processDungeonOperation(operation);
+          response = operation;
+        } else if (
+          lowerMessage.includes('stop') ||
+          lowerMessage.includes('halt') ||
+          lowerMessage.includes('pause')
+        ) {
+          const dungeonId = lowerMessage.match(/dungeon\s+id\s+(\w+)/)?.[1] || 'current';
+          const operation: DungeonOperation = {
+            type: 'stop',
+            dungeonId: dungeonId,
+            details: {},
+          };
+          await this.processDungeonOperation(operation);
+          response = operation;
+        } else if (
+          lowerMessage.includes('reset') ||
+          lowerMessage.includes('restart') ||
+          lowerMessage.includes('reload')
+        ) {
+          const dungeonId = lowerMessage.match(/dungeon\s+id\s+(\w+)/)?.[1] || 'current';
+          const operation: DungeonOperation = {
+            type: 'reset',
+            dungeonId: dungeonId,
+            details: {},
+          };
+          await this.processDungeonOperation(operation);
+          response = operation;
+        } else if (
+          lowerMessage.includes('explore') ||
+          lowerMessage.includes('search') ||
+          lowerMessage.includes('investigate')
+        ) {
+          const dungeonId = lowerMessage.match(/dungeon\s+id\s+(\w+)/)?.[1] || 'current';
+          const operation: DungeonOperation = {
+            type: 'explore',
+            dungeonId: dungeonId,
+            details: {},
           };
           await this.processDungeonOperation(operation);
           response = operation;
         } else {
-          response = parsedResponse.content
-            .replace(/\\n/g, ' ')
-            .replace(/\\"/g, '"')
-            .replace(/\s+/g, ' ')
-            .trim();
+          const forcedFormatMessage = `${message}\n\nIMPORTANT: You are Kael, a soul-bound AI Hunter Agent. You have access to these actions:
+- normal_chat: For regular conversation
+- dungeon_advice: For giving guidance about the dungeon
+- dungeon_operation: For performing dungeon operations (clean, stop, reset, explore)
 
-          if (response.length < 10) {
+If the user's request requires a dungeon operation, use the dungeon_operation action with the appropriate operation type.
+Otherwise, use normal_chat or dungeon_advice based on the context.
+
+Your response must be a JSON object. For operations, use:
+{"operation": "TYPE", "dungeonId": "current", "content": "Your message"}
+For normal responses, use:
+{"content": "Your message"}
+
+- Do NOT include any reasoning or explanations
+- Keep responses concise and in character
+- Do NOT include any XML tags or markdown`;
+
+          const result = await this.agent.run({
+            context: this.goalContext,
+            args: {
+              message: message,
+              input: forcedFormatMessage,
+            },
+            message: forcedFormatMessage,
+            config: {
+              allowActions: true,
+              allowOutputs: true,
+              temperature: this.config.temperature,
+              maxTokens: this.config.maxTokens,
+              stop: [
+                '</response>',
+                '</reasoning>',
+                '```',
+                '\\n',
+                'The current context',
+                'Given that',
+                'Based on',
+                'As an AI',
+              ],
+            },
+          });
+
+          this.logger.debug(
+            '[Kael Raw Response]',
+            JSON.stringify(result, null, 2),
+          );
+
+          const parsedResponse = ResponseParser.parseResponse(result);
+
+          if (!parsedResponse) {
+            this.logger.warn(
+              '[Kael Response] Failed to parse response, using fallback',
+            );
             response =
-              "The dungeon's magic makes it hard to hear you clearly. Could you repeat that?";
+              "The dungeon's magic interferes with my ability to respond clearly. Please try again.";
+          } else if ('operation' in parsedResponse) {
+            const operation: DungeonOperation = {
+              type: parsedResponse.operation,
+              dungeonId: parsedResponse.dungeonId,
+              details: parsedResponse.details,
+            };
+            await this.processDungeonOperation(operation);
+            response = operation;
+          } else {
+            response = parsedResponse.content
+              .replace(/\\n/g, ' ')
+              .replace(/\\"/g, '"')
+              .replace(/\s+/g, ' ')
+              .trim();
+
+            if (response.length < 10) {
+              response =
+                "The dungeon's magic makes it hard to hear you clearly. Could you repeat that?";
+            }
           }
         }
       } catch (error) {
@@ -441,5 +512,42 @@ DO NOT output anything except the {"content": "your message"} JSON format.
       details,
     );
     // TODO: Implement actual exploration logic
+  }
+
+  async getChatHistory(
+    walletAddress: string,
+    limit: number = 10,
+  ): Promise<ChatHistoryDocument[]> {
+    return this.chatHistoryService.getChatHistory(walletAddress, limit);
+  }
+
+  async getDungeonChatHistory(
+    walletAddress: string,
+    dungeonId: string,
+    limit: number = 50,
+    skip: number = 0,
+  ): Promise<ChatHistoryDocument[]> {
+    return this.chatHistoryService.getDungeonChatHistory(
+      walletAddress,
+      dungeonId,
+      limit,
+      skip,
+    );
+  }
+
+  async getOperationHistory(
+    walletAddress: string,
+    limit: number = 50,
+    skip: number = 0,
+  ): Promise<ChatHistoryDocument[]> {
+    return this.chatHistoryService.getOperationHistory(
+      walletAddress,
+      limit,
+      skip,
+    );
+  }
+
+  async clearChatHistory(walletAddress: string): Promise<void> {
+    return this.chatHistoryService.clearChatHistory(walletAddress);
   }
 }
