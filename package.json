@@ -11,6 +11,7 @@
     "start": "docker compose up --build -d",
     "run:redis": "docker run --name redis -p 6379:6379 -d redis",
     "stop": "docker compose down",
-    "build": "yarn workspaces run build"
+    "build": "yarn workspaces run build",
+    "test": "yarn workspaces run test"
   }
 }
