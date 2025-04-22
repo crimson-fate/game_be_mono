@@ -13,6 +13,7 @@ import { DropResourceModule } from './drop-resource/drop-resource.module';
 import { ZoneRewardModule } from './zone-reward/zone-reward.module';
 import configuration from '@app/shared/configuration';
 import { FallbackController } from './fallback.controller';
+import { InventoryModule } from './inventory/inventory.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { FallbackController } from './fallback.controller';
     ZoneModule,
     DropResourceModule,
     ZoneRewardModule,
+    InventoryModule,
   ],
   controllers: [FallbackController],
 })
