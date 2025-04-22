@@ -19,4 +19,4 @@ export class PlayerLevelController {
   async uploadPlayerLevelFile(@Body() body: { fileContent: string }) {
     return this.playerLevelService.uploadPlayerLevelFile(body.fileContent);
   }
-} 
+}

@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { HeroesController } from './heroes.controller';
 import { HeroesService } from './heroes.service';
-import { Hero, HeroSchema } from '../../../shared/models/schema/hero.schema';
+import { Hero, HeroSchema } from '@app/shared/models/schema/hero.schema';
 
 @Module({
   imports: [

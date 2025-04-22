@@ -19,4 +19,4 @@ export class HeroesController {
   async uploadHeroFile(@Body() body: { fileContent: string }) {
     return this.heroesService.uploadHeroFile(body.fileContent);
   }
-} 
+}

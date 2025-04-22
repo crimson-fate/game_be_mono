@@ -5,7 +5,7 @@ import { EquipmentService } from './equipment.service';
 import {
   Equipment,
   EquipmentSchema,
-} from '../../../shared/models/schema/equipment.schema';
+} from '@app/shared/models/schema/equipment.schema';
 
 @Module({
   imports: [

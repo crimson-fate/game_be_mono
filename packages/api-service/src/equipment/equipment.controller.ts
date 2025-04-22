@@ -14,4 +14,4 @@ export class EquipmentController {
   async uploadEquipmentFile(@Body() body: { fileContent: string }) {
     return this.equipmentService.uploadEquipmentFile(body.fileContent);
   }
-} 
+}

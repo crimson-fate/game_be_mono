@@ -19,4 +19,4 @@ export class ZoneController {
   async uploadZoneFile(@Body() body: { fileContent: string }) {
     return this.zoneService.uploadZoneFile(body.fileContent);
   }
-} 
+}

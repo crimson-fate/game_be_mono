@@ -19,4 +19,4 @@ export class ShopController {
   async uploadShopFile(@Body() body: { fileContent: string }) {
     return this.shopService.uploadShopFile(body.fileContent);
   }
-} 
+}

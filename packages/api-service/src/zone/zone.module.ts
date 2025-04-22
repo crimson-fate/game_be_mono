@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ZoneController } from './zone.controller';
 import { ZoneService } from './zone.service';
-import { Zone, ZoneSchema } from '../../../shared/models/schema/zone.schema';
+import { Zone, ZoneSchema } from '@app/shared/models/schema/zone.schema';
 
 @Module({
   imports: [
