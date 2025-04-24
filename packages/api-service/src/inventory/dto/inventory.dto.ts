@@ -121,8 +121,9 @@ export class CreateGameInventoryDto {
 
   @IsObject()
   @ValidateNested()
+  @IsOptional()
   @Type(() => GameInventoryDto)
-  inventory: GameInventoryDto;
+  inventory?: GameInventoryDto;
 }
 
 export class UpdateGameInventoryDto extends CreateGameInventoryDto {}

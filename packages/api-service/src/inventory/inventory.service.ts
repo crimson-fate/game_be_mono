@@ -17,7 +17,7 @@ export class InventoryService {
       walletAddress: dto.walletAddress,
       inventory: dto.inventory,
       stats: {
-        totalEquipment: dto.inventory.lstOwned.length,
+        totalEquipment: dto.inventory ? dto.inventory.lstOwned.length : 0,
         lastUpdated: new Date(),
       },
     });
@@ -40,8 +40,7 @@ export class InventoryService {
         $set: {
           inventory: dto.inventory,
           stats: {
-            totalEquipment: dto.inventory.lstOwned.length,
-            lastUpdated: new Date(),
+            totalEquipment: dto.inventory ? dto.inventory.lstOwned.length : 0,
           },
         },
       },
