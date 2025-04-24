@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsArray, IsNumber, IsOptional, IsObject, ValidateNested } from 'class-validator';
+import { IsString, IsNotEmpty, IsArray, IsNumber, IsOptional, IsObject, ValidateNested, IsBoolean } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class InventoryItemDto {
@@ -62,6 +62,72 @@ export class CreateInventoryDto {
 export class UpdateInventoryDto extends CreateInventoryDto {}
 
 export class GetInventoryDto {
+  @IsString()
+  @IsNotEmpty()
+  walletAddress: string;
+}
+
+export class GameEquipmentDto {
+  @IsBoolean()
+  randomSkill: boolean;
+
+  @IsBoolean()
+  randomAttribute: boolean;
+
+  @IsString()
+  @IsNotEmpty()
+  equipemntID: string;
+
+  @IsNumber()
+  currrentRarity: number;
+
+  @IsNumber()
+  baseAttribute: number;
+
+  @IsNumber()
+  skillLink: number;
+
+  @IsNumber()
+  currentUpradeLevel: number;
+
+  @IsBoolean()
+  isNewEquipment: boolean;
+
+  @IsArray()
+  @IsString({ each: true })
+  lstSubAttributeKey: string[];
+
+  @IsNumber()
+  resourceValue: number;
+}
+
+export class GameInventoryDto {
+  @IsBoolean()
+  sortByType: boolean;
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => GameEquipmentDto)
+  lstOwned: GameEquipmentDto[];
+
+  @IsObject()
+  dicEquippedKey: Record<string, string>;
+}
+
+export class CreateGameInventoryDto {
+  @IsString()
+  @IsNotEmpty()
+  walletAddress: string;
+
+  @IsObject()
+  @ValidateNested()
+  @Type(() => GameInventoryDto)
+  inventory: GameInventoryDto;
+}
+
+export class UpdateGameInventoryDto extends CreateGameInventoryDto {}
+
+export class GetGameInventoryDto {
   @IsString()
   @IsNotEmpty()
   walletAddress: string;
