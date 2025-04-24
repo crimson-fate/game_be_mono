@@ -112,7 +112,7 @@ export class AiAgentController {
     try {
       console.log('Running negotiation example...');
       const result = await this.aiAgentService.startNewHagniNegotiation(
-        "0x1234567890abcdef",
+        '0x1234567890abcdef',
         {
           baseValue: 100,
           rarityBonus: {
@@ -132,7 +132,7 @@ export class AiAgentController {
           minSellRatio: 0.5,
           maxDiscount: 1.5,
         },
-        );
+      );
       return result;
     } catch (error) {
       console.error('Error running negotiation example:', error);
@@ -154,8 +154,8 @@ export class AiAgentController {
     try {
       console.log('Running negotiation example...');
       const result = await this.aiAgentService.handlePlayerMessage(
-        "0x1234567890abcdef",
-        query.message
+        '0x1234567890abcdef',
+        query.message,
       );
       return result;
     } catch (error) {

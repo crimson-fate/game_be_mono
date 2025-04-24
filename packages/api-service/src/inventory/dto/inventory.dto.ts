@@ -1,4 +1,13 @@
-import { IsString, IsNotEmpty, IsArray, IsNumber, IsOptional, IsObject, ValidateNested, IsBoolean } from 'class-validator';
+import {
+  IsString,
+  IsNotEmpty,
+  IsArray,
+  IsNumber,
+  IsOptional,
+  IsObject,
+  ValidateNested,
+  IsBoolean,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class InventoryItemDto {
@@ -132,4 +141,4 @@ export class GetGameInventoryDto {
   @IsString()
   @IsNotEmpty()
   walletAddress: string;
-} 
+}

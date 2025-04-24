@@ -11,17 +11,17 @@ import {
   // createVectorStore, // Optional, depends on complexity needed
   extension,
   output, // Using output to send response back
-  input,  // Using input to receive player messages
+  input, // Using input to receive player messages
   type ActionCallContext,
   type Memory,
   type AnyContext,
   type AnyAgent,
-  createVectorStore
-} from "@daydreamsai/core";
+  createVectorStore,
+} from '@daydreamsai/core';
 // import { cliExtension } from "@daydreamsai/cli"; // Can remove if not using CLI directly
-import { z } from "zod";
+import { z } from 'zod';
 import { groq } from '@ai-sdk/groq';
-import { simpleUI } from "./simple-ui/simple-ui"; // Assuming simple-ui.ts exists
+import { simpleUI } from './simple-ui/simple-ui'; // Assuming simple-ui.ts exists
 import { AiAgentConfigService } from '../config/ai-agent.config';
 // import { RateLimiterService } from './services/rate-limiter.service'; // Keep if needed
 // import { ChatHistoryService } from './services/chat-history.service'; // Keep if needed
@@ -33,7 +33,10 @@ const playerInteractionEmitter = new EventEmitter();
 
 // Initialize the UI
 simpleUI.initializeUI();
-simpleUI.logMessage(LogLevel.INFO, "Starting Hagni Farmstead Merchant Agent (Natural Language Mode)...");
+simpleUI.logMessage(
+  LogLevel.INFO,
+  'Starting Hagni Farmstead Merchant Agent (Natural Language Mode)...',
+);
 
 // --- Hagni Agent Definition ---
 
@@ -60,7 +63,6 @@ interface HagniNegotiationState {
   uniqueNegotiationId: string;
 }
 
-
 // --- NestJS Service ---
 @Injectable()
 export class AiAgentService {
@@ -72,15 +74,20 @@ export class AiAgentService {
   // private readonly rateLimiter = RateLimiterService.getInstance(); // Keep if used
   // private readonly chatHistoryService: ChatHistoryService; // Inject if used
 
-  constructor() { // Remove ChatHistoryService if not used
+  constructor() {
+    // Remove ChatHistoryService if not used
     this.goalContext = context({
-      type: "hagniNegotiation",
+      type: 'hagniNegotiation',
       schema: z.object({
-        uniqueNegotiationId: z.string().describe("A unique ID for this specific negotiation session"),
+        uniqueNegotiationId: z
+          .string()
+          .describe('A unique ID for this specific negotiation session'),
         // These are needed to *start* the context
         baseValue: z.number().positive().optional(),
         rarityBonus: z.record(z.string(), z.number().nonnegative()).optional(),
-        itemCountsByRarity: z.record(z.string(), z.number().int().positive()).optional(),
+        itemCountsByRarity: z
+          .record(z.string(), z.number().int().positive())
+          .optional(),
         minSellRatio: z.number().min(0).max(1).optional(),
         maxDiscount: z.number().min(0).max(1).optional(),
       }),
@@ -94,25 +101,34 @@ export class AiAgentService {
         const args = state.args;
         // Ensure required fields are present for creation
         console.log(`Creating context with args: ${JSON.stringify(args)}`);
-        if (!args.baseValue || !args.rarityBonus || !args.itemCountsByRarity || !args.minSellRatio || !args.maxDiscount || !args.uniqueNegotiationId) {
-            throw new Error(`Cannot create negotiation context ${args.uniqueNegotiationId}: Missing required arguments.`);
+        if (
+          !args.baseValue ||
+          !args.rarityBonus ||
+          !args.itemCountsByRarity ||
+          !args.minSellRatio ||
+          !args.maxDiscount ||
+          !args.uniqueNegotiationId
+        ) {
+          throw new Error(
+            `Cannot create negotiation context ${args.uniqueNegotiationId}: Missing required arguments.`,
+          );
         }
 
         let calculatedValue = 0;
-        let itemDescriptionParts: string[] = [];
+        const itemDescriptionParts: string[] = [];
         for (const rarity in args.itemCountsByRarity) {
           const count = args.itemCountsByRarity[rarity];
           const bonus = args.rarityBonus[rarity] ?? 0;
           calculatedValue += (args.baseValue + bonus) * count;
           itemDescriptionParts.push(`${count}x ${rarity}`);
         }
-        const itemDescription = itemDescriptionParts.join(", ");
+        const itemDescription = itemDescriptionParts.join(', ');
 
         const minAcceptablePrice = calculatedValue * args.minSellRatio;
 
         simpleUI.logMessage(
           LogLevel.INFO,
-          `[Context ${args.uniqueNegotiationId}] Create. Items: ${itemDescription}, Calc Value: ${calculatedValue.toFixed(2)}, Min Acceptable: ${minAcceptablePrice.toFixed(2)}`
+          `[Context ${args.uniqueNegotiationId}] Create. Items: ${itemDescription}, Calc Value: ${calculatedValue.toFixed(2)}, Min Acceptable: ${minAcceptablePrice.toFixed(2)}`,
         );
 
         return {
@@ -171,9 +187,9 @@ export class AiAgentService {
     {{taskDescription}}
     `;
 
-        let taskDescription = "";
+        let taskDescription = '';
         if (!hagniState.negotiationActive) {
-          taskDescription = "The negotiation is concluded. Do nothing further.";
+          taskDescription = 'The negotiation is concluded. Do nothing further.';
         } else if (hagniState.lastPlayerRawMessage === null) {
           taskDescription = `This is the start. Use 'hagniResponseOutput' to greet the player, describe the items ('${hagniState.itemDescription}'), and state your initial asking price of ${hagniState.calculatedValue.toFixed(2)} gold. Set outcome to 'asking'.`;
         } else {
@@ -185,11 +201,13 @@ export class AiAgentService {
           itemDescription: hagniState.itemDescription,
           calculatedValue: hagniState.calculatedValue.toFixed(2),
           minAcceptablePrice: hagniState.minAcceptablePrice.toFixed(2),
-          minSellRatio: (hagniState.minSellRatio * 100).toFixed(0) + "%",
+          minSellRatio: (hagniState.minSellRatio * 100).toFixed(0) + '%',
           maxDiscount: hagniState.maxDiscount.toFixed(2), // Show decimal discount limit
           currentAskingPrice: hagniState.currentAskingPrice.toFixed(2),
           lastPlayerRawMessage: hagniState.lastPlayerRawMessage, // Pass the raw message
-          lastPlayerRawMessageFormatted: hagniState.lastPlayerRawMessage ? `'${hagniState.lastPlayerRawMessage}'` : "No message yet",
+          lastPlayerRawMessageFormatted: hagniState.lastPlayerRawMessage
+            ? `'${hagniState.lastPlayerRawMessage}'`
+            : 'No message yet',
           negotiationActive: hagniState.negotiationActive,
           taskDescription: taskDescription,
         });
@@ -201,19 +219,25 @@ export class AiAgentService {
       model: groq(this.config.model),
       // Add inputs to the agent setup
       inputs: {
-        "custom:playerMessage": input({
+        'custom:playerMessage': input({
           schema: z.object({
             uniqueNegotiationId: z.string(),
             playerMessage: z.string(), // Raw player message
           }),
           subscribe: (send, agent: AnyAgent) => {
             const listener = (messageData) => {
-              simpleUI.logMessage(LogLevel.DEBUG, `[Input] Received player message event for ID: ${messageData.uniqueNegotiationId}`);
+              simpleUI.logMessage(
+                LogLevel.DEBUG,
+                `[Input] Received player message event for ID: ${messageData.uniqueNegotiationId}`,
+              );
               // Log player message via UI
-              simpleUI.logMessage(LogLevel.INFO, `Player (to ${messageData.uniqueNegotiationId}): ${messageData.playerMessage}`);
+              simpleUI.logMessage(
+                LogLevel.INFO,
+                `Player (to ${messageData.uniqueNegotiationId}): ${messageData.playerMessage}`,
+              );
 
               const targetContext = this.goalContext;
-              const contextArgs = { 
+              const contextArgs = {
                 uniqueNegotiationId: messageData.uniqueNegotiationId,
               };
               const inputData = messageData;
@@ -223,25 +247,37 @@ export class AiAgentService {
               // For now, we assume the 'send' triggers the agent loop which will then read the message via context rendering
               send(targetContext, contextArgs, inputData);
             };
-            playerInteractionEmitter.on("playerSendsMessage", listener);
+            playerInteractionEmitter.on('playerSendsMessage', listener);
             return () => {
-              playerInteractionEmitter.off("playerSendsMessage", listener);
-              simpleUI.logMessage(LogLevel.DEBUG, "[Input] Detached player message listener.");
+              playerInteractionEmitter.off('playerSendsMessage', listener);
+              simpleUI.logMessage(
+                LogLevel.DEBUG,
+                '[Input] Detached player message listener.',
+              );
             };
           },
           // Handler to update state *before* agent thinks (optional but useful)
           // This ensures the state reflects the message when the prompt is rendered
           handler: async (data, ctx, agent) => {
-              const state = ctx.memory as HagniNegotiationState;
-              if (state && state.uniqueNegotiationId === data.uniqueNegotiationId) {
-                  state.lastPlayerRawMessage = data.playerMessage;
-                  state.lastPlayerOffer = null; // Reset extracted offer until LLM processes it
-                  // No need to call updateMemory here, handler modifies state for the current run
-                  simpleUI.logMessage(LogLevel.DEBUG, `[Input Handler ${data.uniqueNegotiationId}] Updated lastPlayerRawMessage.`);
-              } else {
-                  simpleUI.logMessage(LogLevel.WARN, `[Input Handler ${data.uniqueNegotiationId}] State mismatch or not found when updating raw message.`);
-              }
-              return { data: data }; // Return original data for logging
+            const state = ctx.memory as HagniNegotiationState;
+            if (
+              state &&
+              state.uniqueNegotiationId === data.uniqueNegotiationId
+            ) {
+              state.lastPlayerRawMessage = data.playerMessage;
+              state.lastPlayerOffer = null; // Reset extracted offer until LLM processes it
+              // No need to call updateMemory here, handler modifies state for the current run
+              simpleUI.logMessage(
+                LogLevel.DEBUG,
+                `[Input Handler ${data.uniqueNegotiationId}] Updated lastPlayerRawMessage.`,
+              );
+            } else {
+              simpleUI.logMessage(
+                LogLevel.WARN,
+                `[Input Handler ${data.uniqueNegotiationId}] State mismatch or not found when updating raw message.`,
+              );
+            }
+            return { data: data }; // Return original data for logging
           },
           format: (ref) => {
             const data = ref.data;
@@ -251,107 +287,168 @@ export class AiAgentService {
         }),
       },
       // Add extensions
-      extensions: [extension({
-  name: "hagni",
-  actions: [
-    // Action to explicitly end negotiation if needed (e.g., player walks away)
-    // action({
-    //   name: "endNegotiation",
-    //   description: "Forcefully end the current negotiation session.",
-    //   schema: z.object({
-    //     uniqueNegotiationId: z.string(),
-    //     reason: z.string().optional().default("Player ended interaction."),
-    //   }),
-    //   async handler(data, ctx) {
-    //     const { uniqueNegotiationId, reason } = data;
-    //     const state = ctx.agentMemory;
-    //     if (state && state.uniqueNegotiationId === uniqueNegotiationId && state.negotiationActive) {
-    //        state.negotiationActive = false;
-    //        // updateMemory might not be needed if the agent loop won't run again for this context
-    //        // await ctx.updateMemory(state);
-    //        simpleUI.logMessage(LogLevel.INFO, `[Action ${uniqueNegotiationId}] Negotiation ended. Reason: ${reason}`);
-    //        return { success: true, message: `Negotiation ${uniqueNegotiationId} ended.` };
-    //     }
-    //     return { success: false, message: `Negotiation ${uniqueNegotiationId} not active or found.` };
-    //   },
-    // }),
-  ],
-  // --- Output Definition ---
-  outputs: {
-    "hagniResponseOutput": output({
-      description: "Sends Hagni's conversational response back to the player/UI and updates negotiation state.",
-      schema: z.object({
-        message: z.string().describe("The full conversational message Hagni should say to the player."),
-        outcome: z.enum(["asking", "accepted", "rejected", "countered", "informing", "ended"])
-                   .describe("The logical outcome of this turn based on rules."),
-        // Optional fields the LLM *might* populate if it extracts/calculates them:
-        extractedOffer: z.number().optional().describe("The numerical offer extracted from the player's message."),
-        counterPrice: z.number().optional().describe("The new price Hagni is offering if outcome is 'countered'."),
-      }),
-      handler: async (data, ctx) => {
-        const state = ctx.memory; // Get the current state
-        const { message, outcome, extractedOffer, counterPrice } = data;
-        const negotiationId = state.uniqueNegotiationId;
+      extensions: [
+        extension({
+          name: 'hagni',
+          actions: [
+            // Action to explicitly end negotiation if needed (e.g., player walks away)
+            // action({
+            //   name: "endNegotiation",
+            //   description: "Forcefully end the current negotiation session.",
+            //   schema: z.object({
+            //     uniqueNegotiationId: z.string(),
+            //     reason: z.string().optional().default("Player ended interaction."),
+            //   }),
+            //   async handler(data, ctx) {
+            //     const { uniqueNegotiationId, reason } = data;
+            //     const state = ctx.agentMemory;
+            //     if (state && state.uniqueNegotiationId === uniqueNegotiationId && state.negotiationActive) {
+            //        state.negotiationActive = false;
+            //        // updateMemory might not be needed if the agent loop won't run again for this context
+            //        // await ctx.updateMemory(state);
+            //        simpleUI.logMessage(LogLevel.INFO, `[Action ${uniqueNegotiationId}] Negotiation ended. Reason: ${reason}`);
+            //        return { success: true, message: `Negotiation ${uniqueNegotiationId} ended.` };
+            //     }
+            //     return { success: false, message: `Negotiation ${uniqueNegotiationId} not active or found.` };
+            //   },
+            // }),
+          ],
+          // --- Output Definition ---
+          outputs: {
+            hagniResponseOutput: output({
+              description:
+                "Sends Hagni's conversational response back to the player/UI and updates negotiation state.",
+              schema: z.object({
+                message: z
+                  .string()
+                  .describe(
+                    'The full conversational message Hagni should say to the player.',
+                  ),
+                outcome: z
+                  .enum([
+                    'asking',
+                    'accepted',
+                    'rejected',
+                    'countered',
+                    'informing',
+                    'ended',
+                  ])
+                  .describe('The logical outcome of this turn based on rules.'),
+                // Optional fields the LLM *might* populate if it extracts/calculates them:
+                extractedOffer: z
+                  .number()
+                  .optional()
+                  .describe(
+                    "The numerical offer extracted from the player's message.",
+                  ),
+                counterPrice: z
+                  .number()
+                  .optional()
+                  .describe(
+                    "The new price Hagni is offering if outcome is 'countered'.",
+                  ),
+              }),
+              handler: async (data, ctx) => {
+                const state = ctx.memory; // Get the current state
+                const { message, outcome, extractedOffer, counterPrice } = data;
+                const negotiationId = state.uniqueNegotiationId;
 
-        simpleUI.logMessage(LogLevel.DEBUG, `[Output ${negotiationId}] Received data: ${JSON.stringify(data)}`);
-        this.currentResponse = data;
+                simpleUI.logMessage(
+                  LogLevel.DEBUG,
+                  `[Output ${negotiationId}] Received data: ${JSON.stringify(data)}`,
+                );
+                this.currentResponse = data;
 
-        // Log Hagni's response via UI
-        simpleUI.logAgentAction("Response Output", `Hagni (to ${negotiationId}): ${message}`);
+                // Log Hagni's response via UI
+                simpleUI.logAgentAction(
+                  'Response Output',
+                  `Hagni (to ${negotiationId}): ${message}`,
+                );
 
-        // --- Update State based on Outcome ---
-        if (state.negotiationActive) {
-            if (extractedOffer !== undefined) {
-                state.lastPlayerOffer = extractedOffer; // Store the offer LLM extracted
-                 simpleUI.logMessage(LogLevel.DEBUG, `[Output ${negotiationId}] Updated lastPlayerOffer to extracted value: ${extractedOffer}`);
-            }
+                // --- Update State based on Outcome ---
+                if (state.negotiationActive) {
+                  if (extractedOffer !== undefined) {
+                    state.lastPlayerOffer = extractedOffer; // Store the offer LLM extracted
+                    simpleUI.logMessage(
+                      LogLevel.DEBUG,
+                      `[Output ${negotiationId}] Updated lastPlayerOffer to extracted value: ${extractedOffer}`,
+                    );
+                  }
 
-            switch (outcome) {
-              case "asking":
-                 simpleUI.logMessage(LogLevel.INFO, `[Output ${negotiationId}] Hagni is asking initial price.`);
-                // No state change needed besides what context create did
-                break;
-              case "accepted":
-                state.negotiationActive = false;
-                // Price was player's offer
-                simpleUI.logMessage(LogLevel.INFO, `[Output ${negotiationId}] Hagni accepted offer.`);
-                break;
-              case "rejected":
-                simpleUI.logMessage(LogLevel.INFO, `[Output ${negotiationId}] Hagni rejected offer.`);
-                break;
-              case "countered":
-                if (counterPrice !== undefined && counterPrice < state.currentAskingPrice) {
-                  state.currentAskingPrice = counterPrice; // Update asking price
-                  simpleUI.logMessage(LogLevel.INFO, `[Output ${negotiationId}] Hagni countered. New asking price: ${counterPrice.toFixed(2)}`);
+                  switch (outcome) {
+                    case 'asking':
+                      simpleUI.logMessage(
+                        LogLevel.INFO,
+                        `[Output ${negotiationId}] Hagni is asking initial price.`,
+                      );
+                      // No state change needed besides what context create did
+                      break;
+                    case 'accepted':
+                      state.negotiationActive = false;
+                      // Price was player's offer
+                      simpleUI.logMessage(
+                        LogLevel.INFO,
+                        `[Output ${negotiationId}] Hagni accepted offer.`,
+                      );
+                      break;
+                    case 'rejected':
+                      simpleUI.logMessage(
+                        LogLevel.INFO,
+                        `[Output ${negotiationId}] Hagni rejected offer.`,
+                      );
+                      break;
+                    case 'countered':
+                      if (
+                        counterPrice !== undefined &&
+                        counterPrice < state.currentAskingPrice
+                      ) {
+                        state.currentAskingPrice = counterPrice; // Update asking price
+                        simpleUI.logMessage(
+                          LogLevel.INFO,
+                          `[Output ${negotiationId}] Hagni countered. New asking price: ${counterPrice.toFixed(2)}`,
+                        );
+                      } else {
+                        simpleUI.logMessage(
+                          LogLevel.WARN,
+                          `[Output ${negotiationId}] Outcome 'countered' but invalid/missing counterPrice (${counterPrice}). State not updated.`,
+                        );
+                      }
+                      break;
+                    case 'informing':
+                      simpleUI.logMessage(
+                        LogLevel.INFO,
+                        `[Output ${negotiationId}] Hagni provided information.`,
+                      );
+                      // No price/status change usually
+                      break;
+                    case 'ended': // Explicitly ended by LLM or action
+                      state.negotiationActive = false;
+                      simpleUI.logMessage(
+                        LogLevel.INFO,
+                        `[Output ${negotiationId}] Negotiation ended via output.`,
+                      );
+                      break;
+                  }
+                  // Persist changes made in this handler
+                  // await ctx.updateMemory(state); // updateMemory might not exist on OutputCallContext, state is auto-persisted
                 } else {
-                   simpleUI.logMessage(LogLevel.WARN, `[Output ${negotiationId}] Outcome 'countered' but invalid/missing counterPrice (${counterPrice}). State not updated.`);
+                  simpleUI.logMessage(
+                    LogLevel.DEBUG,
+                    `[Output ${negotiationId}] Negotiation was already inactive. No state changes.`,
+                  );
                 }
-                break;
-              case "informing":
-                 simpleUI.logMessage(LogLevel.INFO, `[Output ${negotiationId}] Hagni provided information.`);
-                // No price/status change usually
-                break;
-               case "ended": // Explicitly ended by LLM or action
-                  state.negotiationActive = false;
-                  simpleUI.logMessage(LogLevel.INFO, `[Output ${negotiationId}] Negotiation ended via output.`);
-                  break;
-            }
-             // Persist changes made in this handler
-             // await ctx.updateMemory(state); // updateMemory might not exist on OutputCallContext, state is auto-persisted
-        } else {
-             simpleUI.logMessage(LogLevel.DEBUG, `[Output ${negotiationId}] Negotiation was already inactive. No state changes.`);
-        }
-      },
-    }),
-  },
-}),],
-      memory: { 
-        store: createMemoryStore(), 
+              },
+            }),
+          },
+        }),
+      ],
+      memory: {
+        store: createMemoryStore(),
         vector: createVectorStore(),
-      }
+      },
     });
 
-    simpleUI.logMessage(LogLevel.INFO, "Hagni agent background loop started.");
+    simpleUI.logMessage(LogLevel.INFO, 'Hagni agent background loop started.');
   }
 
   /**
@@ -365,14 +462,16 @@ export class AiAgentService {
       rarityBonus: Record<string, number>;
       itemCounts: Record<string, number>;
     },
-    config: { // Allow passing config per negotiation
-        minSellRatio: number;
-        maxDiscount: number;
-    }
-  ): Promise<void> { // Returns void, interaction happens via agent loop & outputs
+    config: {
+      // Allow passing config per negotiation
+      minSellRatio: number;
+      maxDiscount: number;
+    },
+  ): Promise<void> {
+    // Returns void, interaction happens via agent loop & outputs
     simpleUI.logMessage(
       LogLevel.INFO,
-      `Service: Received request to start negotiation: ${negotiationId}`
+      `Service: Received request to start negotiation: ${negotiationId}`,
     );
 
     // We don't directly run the agent here. Instead, we emit an event
@@ -384,46 +483,51 @@ export class AiAgentService {
     // The framework should call 'create' if it doesn't exist.
     // We pass the necessary args for creation.
     // try {
-        console.log(`Unique ID: ${negotiationId}, Item Data: ${JSON.stringify(itemData)}, Config: ${JSON.stringify(config)}`);
-        await this.agent.start();
-        await this.agent.run({
-          context: this.goalContext,
-          args: {
-          // Use the context type defined in the extension
-          type: "hagniNegotiation",
-          // Provide the initial arguments matching the context schema
-          uniqueNegotiationId: negotiationId,
-          baseValue: itemData.baseValue,
-          rarityBonus: itemData.rarityBonus,
-          itemCountsByRarity: itemData.itemCounts,
-          minSellRatio: 0.75, // Example: Hagni won't go below 75% of calculated value
-          maxDiscount: 0.15, // Example: Hagni offers max 15% discount per counter-offer step
-        },
-          config: {
-            allowActions: true,
-            allowOutputs: true,
-            temperature: this.config.temperature,
-            maxTokens: this.config.maxTokens,
-            stop: [
-              '</response>',
-              '</reasoning>',
-              '```',
-              '\\n',
-              'The current context',
-              'Given that',
-              'Based on',
-              'As an AI',
-            ],
-          },
-        });
-        console.log(this.goalContext.args);
-        simpleUI.logMessage(LogLevel.INFO, `[${negotiationId}] Context ensured/created.`);
-        return this.currentResponse; // Return the current response if needed
+    console.log(
+      `Unique ID: ${negotiationId}, Item Data: ${JSON.stringify(itemData)}, Config: ${JSON.stringify(config)}`,
+    );
+    await this.agent.start();
+    await this.agent.run({
+      context: this.goalContext,
+      args: {
+        // Use the context type defined in the extension
+        type: 'hagniNegotiation',
+        // Provide the initial arguments matching the context schema
+        uniqueNegotiationId: negotiationId,
+        baseValue: itemData.baseValue,
+        rarityBonus: itemData.rarityBonus,
+        itemCountsByRarity: itemData.itemCounts,
+        minSellRatio: 0.75, // Example: Hagni won't go below 75% of calculated value
+        maxDiscount: 0.15, // Example: Hagni offers max 15% discount per counter-offer step
+      },
+      config: {
+        allowActions: true,
+        allowOutputs: true,
+        temperature: this.config.temperature,
+        maxTokens: this.config.maxTokens,
+        stop: [
+          '</response>',
+          '</reasoning>',
+          '```',
+          '\\n',
+          'The current context',
+          'Given that',
+          'Based on',
+          'As an AI',
+        ],
+      },
+    });
+    console.log(this.goalContext.args);
+    simpleUI.logMessage(
+      LogLevel.INFO,
+      `[${negotiationId}] Context ensured/created.`,
+    );
+    return this.currentResponse; // Return the current response if needed
 
-        // Now that the context exists, the agent's next loop *should*
-        // render the context, see lastPlayerRawMessage is null, and trigger
-        // the initial response via the output. No explicit 'run' needed here.
-        // The agent runs autonomously based on its loop interval.
+    // Now that the context exists, the agent's next loop *should*
+    // render the context, see lastPlayerRawMessage is null, and trigger
+    // the initial response via the output. No explicit 'run' needed here.
+    // The agent runs autonomously based on its loop interval.
 
     // }
     // catch (error) {
@@ -438,36 +542,55 @@ export class AiAgentService {
    */
   public async handlePlayerMessage(
     negotiationId: string,
-    playerMessage: string
-  ): Promise<void> { // Returns void, interaction happens via agent loop & outputs
+    playerMessage: string,
+  ): Promise<any> {
+    // Returns void, interaction happens via agent loop & outputs
     simpleUI.logMessage(
       LogLevel.INFO,
-      `Service: Received player message for ${negotiationId}: "${playerMessage}"`
+      `Service: Received player message for ${negotiationId}: "${playerMessage}"`,
     );
 
-    // Emit an event that the 'playerMessageInput' is listening for.
-    // This will trigger the input handler, update the state, and allow the agent
-    // to process the message on its next cycle.
+    // Create a promise that resolves when currentResponse changes
+    const responsePromise = new Promise((resolve) => {
+      const checkResponse = () => {
+        if (this.currentResponse !== null) {
+          resolve(this.currentResponse);
+        } else {
+          setTimeout(checkResponse, 100); // Check every 100ms
+        }
+      };
+      checkResponse();
+    });
+
+    // Reset current response and emit the event
     this.currentResponse = null;
-    playerInteractionEmitter.emit("playerSendsMessage", {
+    playerInteractionEmitter.emit('playerSendsMessage', {
       uniqueNegotiationId: negotiationId,
       playerMessage: playerMessage,
     });
-    setTimeout(()=>{
-      while (!this.currentResponse) {
-        console.log(this.currentResponse);
-      }
-      return this.currentResponse; // Return the current response if needed
-    },10000)
 
-    // We don't need to call agent.run() here. The input system handles getting
-    // the data into the agent's memory, and the agent's loop will pick it up.
+    // Wait for the response with a timeout
+    try {
+      const response = await Promise.race([
+        responsePromise,
+        new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('Response timeout')), 10000)
+        )
+      ]);
+      return response;
+    } catch (error) {
+      simpleUI.logMessage(
+        LogLevel.ERROR,
+        `Timeout waiting for response in negotiation ${negotiationId}: ${error.message}`
+      );
+      throw error;
+    }
   }
 
   // Optional: Method to gracefully stop the agent
   public stopAgent(): void {
-      this.agent.stop();
-      simpleUI.logMessage(LogLevel.INFO, "Hagni agent stopped.");
+    this.agent.stop();
+    simpleUI.logMessage(LogLevel.INFO, 'Hagni agent stopped.');
   }
 }
 
