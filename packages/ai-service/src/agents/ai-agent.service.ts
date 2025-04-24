@@ -544,12 +544,14 @@ export class AiAgentService {
     negotiationId: string,
     playerMessage: string,
   ): Promise<any> {
-    // Returns void, interaction happens via agent loop & outputs
+    console.log('~~~~~~~~ NBW: Player message received ~~~~~~~~~~');
     simpleUI.logMessage(
       LogLevel.INFO,
       `Service: Received player message for ${negotiationId}: "${playerMessage}"`,
     );
 
+    // Reset current response and emit the event
+    this.currentResponse = null;
     // Create a promise that resolves when currentResponse changes
     const responsePromise = new Promise((resolve) => {
       const checkResponse = () => {
@@ -561,9 +563,6 @@ export class AiAgentService {
       };
       checkResponse();
     });
-
-    // Reset current response and emit the event
-    this.currentResponse = null;
     playerInteractionEmitter.emit('playerSendsMessage', {
       uniqueNegotiationId: negotiationId,
       playerMessage: playerMessage,
