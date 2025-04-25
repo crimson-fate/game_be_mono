@@ -1,5 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsNumber, IsObject, IsString } from 'class-validator';
+import {
+  IsBoolean,
+  IsNumber,
+  IsObject,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class CreateAgentFarmDto {
   @ApiProperty({ description: 'Wallet address of the player' })
@@ -8,22 +14,23 @@ export class CreateAgentFarmDto {
 
   @ApiProperty({ description: 'Whether the player is currently farming' })
   @IsBoolean()
-  isFarming: boolean;
+  isFarming?: boolean;
 
   @ApiProperty({ description: 'Start time of farming in milliseconds' })
   @IsNumber()
-  startTime: number;
+  startTime?: number;
 
   @ApiProperty({ description: 'Duration of farming in milliseconds' })
   @IsNumber()
-  duration: number;
+  duration?: number;
 
   @ApiProperty({
     description: 'Item counts by rarity',
     example: { common: 0, rare: 0, epic: 0, legendary: 0 },
   })
   @IsObject()
-  itemCounts: {
+  @IsOptional()
+  itemCounts?: {
     common: number;
     rare: number;
     epic: number;
@@ -48,8 +55,9 @@ export class UpdateAgentFarmDto {
     description: 'Item counts by rarity',
     example: { common: 0, rare: 0, epic: 0, legendary: 0 },
   })
+  @IsOptional()
   @IsObject()
-  itemCounts: {
+  itemCounts?: {
     common: number;
     rare: number;
     epic: number;

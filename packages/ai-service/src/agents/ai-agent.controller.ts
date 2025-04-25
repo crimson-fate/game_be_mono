@@ -201,10 +201,10 @@ export class AiAgentController {
     try {
       const data = await this.aiAgentService.getAgentFarmData(walletAddress);
       if (!data) {
-        throw new HttpException(
-          'Agent farm data not found',
-          HttpStatus.NOT_FOUND,
-        );
+        const data = await this.aiAgentService.createAgentFarmData({
+          walletAddress: walletAddress,
+        });
+        return data;
       }
       return data;
     } catch (error) {
