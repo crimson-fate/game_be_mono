@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AiAgentModule } from './agents/ai-agent.module';
-import { DatabaseModule } from './database/database.module';
 
 @Module({
   imports: [
@@ -9,7 +8,6 @@ import { DatabaseModule } from './database/database.module';
       isGlobal: true,
       envFilePath: '.env',
     }),
-    DatabaseModule,
 
     AiAgentModule,
   ],

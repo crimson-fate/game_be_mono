@@ -7,11 +7,16 @@ import {
   ChatHistorySchema,
 } from '@app/shared/models/schema/chat-history.schema';
 import { ChatHistoryService } from './services/chat-history.service';
+import {
+  AgentPlayerData,
+  AgentPlayerDataSchema,
+} from '@app/shared/models/schema/agent-player-data.schema';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: ChatHistory.name, schema: ChatHistorySchema },
+      { name: AgentPlayerData.name, schema: AgentPlayerDataSchema },
     ]),
   ],
   controllers: [AiAgentController],

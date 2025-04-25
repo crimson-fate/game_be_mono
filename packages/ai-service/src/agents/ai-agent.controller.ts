@@ -6,16 +6,22 @@ import {
   Query,
   HttpException,
   HttpStatus,
+  Param,
+  Delete,
+  Put,
 } from '@nestjs/common';
 import { AiAgentService } from './ai-agent.service';
 import { ChatDto, ChatResponseDto } from './dto/chat.dto';
+import { CreateAgentFarmDto, UpdateAgentFarmDto } from './dto/agent-farm.dto';
+import {
+  ApiOperation,
+  ApiResponse,
+  ApiQuery,
+  ApiTags,
+  ApiParam,
+} from '@nestjs/swagger';
 
-import { ApiOperation, ApiResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
-
-import { ChatHistoryResponseDto } from './dto/chat-history-response.dto';
-import { ChatHistoryQueryDto } from './dto/chat-history.dto';
-
-@ApiTags('AI Chat')
+@ApiTags('AI Agent')
 @Controller('ai')
 export class AiAgentController {
   constructor(private readonly aiAgentService: AiAgentService) {}
@@ -164,6 +170,128 @@ export class AiAgentController {
         'An error occurred while processing your request',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
+    }
+  }
+
+  @Post('farm')
+  @ApiOperation({ summary: 'Create new agent farm data' })
+  @ApiResponse({
+    status: 201,
+    description: 'Agent farm data created successfully',
+  })
+  async createAgentFarm(@Body() createAgentFarmDto: CreateAgentFarmDto) {
+    try {
+      return await this.aiAgentService.createAgentFarmData(createAgentFarmDto);
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  @Get('farm/:walletAddress')
+  @ApiOperation({ summary: 'Get agent farm data by wallet address' })
+  @ApiParam({
+    name: 'walletAddress',
+    description: 'Wallet address of the player',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Returns agent farm data',
+  })
+  async getAgentFarm(@Param('walletAddress') walletAddress: string) {
+    try {
+      const data = await this.aiAgentService.getAgentFarmData(walletAddress);
+      if (!data) {
+        throw new HttpException(
+          'Agent farm data not found',
+          HttpStatus.NOT_FOUND,
+        );
+      }
+      return data;
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  @Put('farm/:walletAddress')
+  @ApiOperation({ summary: 'Update agent farm data' })
+  @ApiParam({
+    name: 'walletAddress',
+    description: 'Wallet address of the player',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Agent farm data updated successfully',
+  })
+  async updateAgentFarm(
+    @Param('walletAddress') walletAddress: string,
+    @Body() updateAgentFarmDto: UpdateAgentFarmDto,
+  ) {
+    try {
+      const data = await this.aiAgentService.updateAgentFarmData(
+        walletAddress,
+        updateAgentFarmDto,
+      );
+      if (!data) {
+        throw new HttpException(
+          'Agent farm data not found',
+          HttpStatus.NOT_FOUND,
+        );
+      }
+      return data;
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  @Delete('farm/:walletAddress')
+  @ApiOperation({ summary: 'Delete agent farm data' })
+  @ApiParam({
+    name: 'walletAddress',
+    description: 'Wallet address of the player',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Agent farm data deleted successfully',
+  })
+  async deleteAgentFarm(@Param('walletAddress') walletAddress: string) {
+    try {
+      const data = await this.aiAgentService.deleteAgentFarmData(walletAddress);
+      if (!data) {
+        throw new HttpException(
+          'Agent farm data not found',
+          HttpStatus.NOT_FOUND,
+        );
+      }
+      return data;
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  @Post('farm/:walletAddress/claim')
+  @ApiOperation({ summary: 'Claim farming rewards' })
+  @ApiParam({
+    name: 'walletAddress',
+    description: 'Wallet address of the player',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Rewards claimed successfully',
+  })
+  async claimReward(@Param('walletAddress') walletAddress: string) {
+    try {
+      return await this.aiAgentService.claimReward(walletAddress);
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 }

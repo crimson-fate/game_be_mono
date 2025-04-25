@@ -3,36 +3,34 @@ import { Document } from 'mongoose';
 
 export type InventoryUserDocument = InventoryUser & Document;
 
-@Schema({ timestamps: true })
+@Schema()
 export class InventoryUser {
-  @Prop({ required: true, index: true, unique: true })
+  @Prop({ required: true, unique: true })
   walletAddress: string;
 
   @Prop({ type: Object, required: true, default: {} })
   inventory: {
-    items: Array<{
-      itemId: string;
-      quantity: number;
-      metadata?: Record<string, any>;
+    sortByType: boolean;
+    lstOwned: Array<{
+      randomSkill: boolean;
+      randomAttribute: boolean;
+      equipemntID: string;
+      currrentRarity: number;
+      baseAttribute: number;
+      skillLink: number;
+      currentUpradeLevel: number;
+      isNewEquipment: boolean;
+      lstSubAttributeKey: string[];
+      resourceValue: number;
     }>;
-    equipment: Array<{
-      equipmentId: string;
-      level: number;
-      stats: Record<string, number>;
-      metadata?: Record<string, any>;
-    }>;
-    resources: Record<string, number>;
+    dicEquippedKey: Record<string, string>;
   };
 
   @Prop({ type: Object, required: true, default: {} })
   stats: {
-    totalItems: number;
     totalEquipment: number;
     lastUpdated: Date;
   };
-
-  @Prop({ type: Object })
-  metadata?: Record<string, any>;
 }
 
-export const InventoryUserSchema = SchemaFactory.createForClass(InventoryUser); 
+export const InventoryUserSchema = SchemaFactory.createForClass(InventoryUser);

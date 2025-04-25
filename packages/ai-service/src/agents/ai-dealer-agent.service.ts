@@ -12,20 +12,15 @@ import {
   extension,
   output, // Using output to send response back
   input, // Using input to receive player messages
-  type ActionCallContext,
-  type Memory,
-  type AnyContext,
   type AnyAgent,
   createVectorStore,
 } from '@daydreamsai/core';
-// import { cliExtension } from "@daydreamsai/cli"; // Can remove if not using CLI directly
+
 import { z } from 'zod';
 import { groq } from '@ai-sdk/groq';
 import { simpleUI } from './simple-ui/simple-ui'; // Assuming simple-ui.ts exists
 import { AiAgentConfigService } from '../config/ai-agent.config';
-// import { RateLimiterService } from './services/rate-limiter.service'; // Keep if needed
-// import { ChatHistoryService } from './services/chat-history.service'; // Keep if needed
-import { ResponseParser } from './parsers/response.parser'; // Keep if needed
+
 import { EventEmitter } from 'events'; // Using EventEmitter for simulating input
 
 // Simulation Event Emitter for player messages
@@ -573,15 +568,15 @@ export class AiAgentService {
     try {
       const response = await Promise.race([
         responsePromise,
-        new Promise((_, reject) => 
-          setTimeout(() => reject(new Error('Response timeout')), 10000)
-        )
+        new Promise((_, reject) =>
+          setTimeout(() => reject(new Error('Response timeout')), 10000),
+        ),
       ]);
       return response;
     } catch (error) {
       simpleUI.logMessage(
         LogLevel.ERROR,
-        `Timeout waiting for response in negotiation ${negotiationId}: ${error.message}`
+        `Timeout waiting for response in negotiation ${negotiationId}: ${error.message}`,
       );
       throw error;
     }

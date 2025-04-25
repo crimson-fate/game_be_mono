@@ -10,11 +10,8 @@ import {
   createMemoryStore,
   // createVectorStore, // Optional, depends on complexity needed
   extension,
-  output, // Using output to send response back
-  input, // Using input to receive player messages
-  type ActionCallContext,
-  type Memory,
-  type AnyContext,
+  output,
+  input,
   type AnyAgent,
   createVectorStore,
 } from '@daydreamsai/core';
@@ -23,12 +20,13 @@ import { z } from 'zod';
 import { groq } from '@ai-sdk/groq';
 import { simpleUI } from './simple-ui/simple-ui'; // Assuming simple-ui.ts exists
 import { AiAgentConfigService } from '../config/ai-agent.config';
-// import { RateLimiterService } from './services/rate-limiter.service'; // Keep if needed
-// import { ChatHistoryService } from './services/chat-history.service'; // Keep if needed
-import { ResponseParser } from './parsers/response.parser'; // Keep if needed
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
+import { AgentPlayerData } from '@app/shared/models/schema/agent-player-data.schema';
+import { CreateAgentFarmDto, UpdateAgentFarmDto } from './dto/agent-farm.dto';
+
 import { EventEmitter } from 'events'; // Using EventEmitter for simulating input
 
-// Simulation Event Emitter for player messages
 const playerInteractionEmitter = new EventEmitter();
 
 // Initialize the UI
@@ -74,7 +72,10 @@ export class AiAgentService {
   // private readonly rateLimiter = RateLimiterService.getInstance(); // Keep if used
   // private readonly chatHistoryService: ChatHistoryService; // Inject if used
 
-  constructor() {
+  constructor(
+    @InjectModel(AgentPlayerData.name)
+    private readonly agentPlayerDataModel: Model<AgentPlayerData>,
+  ) {
     // Remove ChatHistoryService if not used
     this.goalContext = context({
       type: 'hagniNegotiation',
@@ -591,63 +592,57 @@ export class AiAgentService {
     this.agent.stop();
     simpleUI.logMessage(LogLevel.INFO, 'Hagni agent stopped.');
   }
+
+  public async getAgentFarmData(
+    walletAddress: string,
+  ): Promise<AgentPlayerData> {
+    return this.agentPlayerDataModel.findOne({ walletAddress }).exec();
+  }
+
+  public async claimReward(walletAddress: string): Promise<AgentPlayerData> {
+    const agentData = await this.getAgentFarmData(walletAddress);
+    if (!agentData) {
+      throw new Error('No agent farm data found for this wallet address');
+    }
+    if (agentData.startTime + agentData.duration > Date.now()) {
+      throw new Error('Farming is still active. Cannot claim rewards yet.');
+    }
+
+    // Reset farming state
+    return this.updateAgentFarmData(walletAddress, {
+      isFarming: false,
+      startTime: new Date().getTime(),
+      duration: 0,
+      itemCounts: {
+        common: 0,
+        rare: 0,
+        epic: 0,
+        legendary: 0,
+      },
+    });
+  }
+
+  async createAgentFarmData(
+    createAgentFarmDto: CreateAgentFarmDto,
+  ): Promise<AgentPlayerData> {
+    const createdAgentFarm = new this.agentPlayerDataModel(createAgentFarmDto);
+    return createdAgentFarm.save();
+  }
+
+  async updateAgentFarmData(
+    walletAddress: string,
+    updateAgentFarmDto: UpdateAgentFarmDto,
+  ): Promise<AgentPlayerData> {
+    return this.agentPlayerDataModel
+      .findOneAndUpdate(
+        { walletAddress },
+        { $set: updateAgentFarmDto },
+        { new: true },
+      )
+      .exec();
+  }
+
+  async deleteAgentFarmData(walletAddress: string): Promise<AgentPlayerData> {
+    return this.agentPlayerDataModel.findOneAndDelete({ walletAddress }).exec();
+  }
 }
-
-// --- Example Instantiation and Usage (within a NestJS context or standalone) ---
-
-// Assume AiAgentConfigService is properly configured and available
-
-// // If running outside NestJS:
-// const agentService = new AiAgentService();
-
-// async function runSimulation() {
-//     console.log("--- Starting Simulation ---");
-
-//     const negId = `sim_${Date.now()}`;
-//     const itemInfo = { baseValue: 25, rarityBonus: { common: 0, rare: 15 }, itemCounts: { common: 10, rare: 3 } }; // Value = 25*10 + (25+15)*3 = 250 + 120 = 370
-//     const negConfig = { minSellRatio: 0.7, maxDiscount: 0.2 }; // Min = 259
-
-//     // 1. Start negotiation
-//     await agentService.startNewHagniNegotiation(negId, "Moonpetal", itemInfo, negConfig);
-//     console.log(`--- Waiting for Hagni's opening... (Check UI/Logs) ---`);
-//     await new Promise(resolve => setTimeout(resolve, 3000)); // Wait for agent's first turn
-
-//     // 2. Player offers low
-//     console.log(`\n--- Sending player message: "How about 200 gold?" ---`);
-//     await agentService.handlePlayerMessage(negId, "How about 200 gold?"); // Below min
-//     console.log(`--- Waiting for Hagni's rejection... (Check UI/Logs) ---`);
-//     await new Promise(resolve => setTimeout(resolve, 5000)); // Wait longer for LLM call
-
-//     // --- Start a second negotiation ---
-//     const negId2 = `sim_${Date.now()}_2`;
-//      const itemInfo2 = { baseValue: 50, rarityBonus: { epic: 100 }, itemCounts: { epic: 2 } }; // Value = (50+100)*2 = 300
-//      const negConfig2 = { minSellRatio: 0.8, maxDiscount: 0.15 }; // Min = 240
-
-//      await agentService.startNewHagniNegotiation(negId2, "Star Shard", itemInfo2, negConfig2);
-//      console.log(`\n--- Waiting for Hagni's opening for ${negId2}... (Check UI/Logs) ---`);
-//      await new Promise(resolve => setTimeout(resolve, 3000));
-
-//      // Player offers between min and current
-//      console.log(`\n--- Sending player message to ${negId2}: "I can do 250." ---`);
-//      await agentService.handlePlayerMessage(negId2, "I can do 250."); // 240 <= 250 < 300
-//      console.log(`--- Waiting for Hagni's counter... (Check UI/Logs) ---`);
-//      await new Promise(resolve => setTimeout(resolve, 5000)); // Expect counter > 250, < 300
-
-//      // Player accepts (hypothetical counter = 280)
-//      console.log(`\n--- Sending player message to ${negId2}: "Okay, 280 sounds good" ---`);
-//      await agentService.handlePlayerMessage(negId2, "Okay, 280 sounds good");
-//      console.log(`--- Waiting for Hagni's acceptance... (Check UI/Logs) ---`);
-//      await new Promise(resolve => setTimeout(resolve, 5000));
-
-//     console.log("\n--- Simulation Ended ---");
-//     // agentService.stopAgent(); // Stop agent if needed
-// }
-
-// runSimulation().catch(console.error);
-
-// // Graceful shutdown handler
-// process.on('SIGINT', () => {
-//   console.log("SIGINT received. Stopping agent...");
-//   // agentService.stopAgent(); // Ensure agent is stopped
-//   process.exit(0);
-// });
