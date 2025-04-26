@@ -87,7 +87,7 @@ export class AiAgentService {
         baseValue: z.number().positive().optional(),
         rarityBonus: z.record(z.string(), z.number().nonnegative()).optional(),
         itemCountsByRarity: z
-          .record(z.string(), z.number().int().positive())
+          .record(z.string(), z.number().int())
           .optional(),
         minSellRatio: z.number().min(0).max(1).optional(),
         maxDiscount: z.number().min(0).max(1).optional(),
@@ -129,7 +129,7 @@ export class AiAgentService {
 
         simpleUI.logMessage(
           LogLevel.INFO,
-          `[Context ${args.uniqueNegotiationId}] Create. Items: ${itemDescription}, Calc Value: ${calculatedValue.toFixed(2)}, Min Acceptable: ${minAcceptablePrice.toFixed(2)}`,
+          `[Context ${args.uniqueNegotiationId}] Create. Items: ${itemDescription}, Calc Value: ${calculatedValue.toFixed(0)}, Min Acceptable: ${minAcceptablePrice.toFixed(0)}`,
         );
 
         return {
@@ -192,19 +192,19 @@ export class AiAgentService {
         if (!hagniState.negotiationActive) {
           taskDescription = 'The negotiation is concluded. Do nothing further.';
         } else if (hagniState.lastPlayerRawMessage === null) {
-          taskDescription = `This is the start. Use 'hagniResponseOutput' to greet the player, describe the items ('${hagniState.itemDescription}'), and state your initial asking price of ${hagniState.calculatedValue.toFixed(2)} gold. Set outcome to 'asking'.`;
+          taskDescription = `This is the start. Use 'hagniResponseOutput' to greet the player, describe the items ('${hagniState.itemDescription}'), and state your initial asking price of ${hagniState.calculatedValue.toFixed(0)} gold. Set outcome to 'asking'.`;
         } else {
-          taskDescription = `Analyze the player's last message: "${hagniState.lastPlayerRawMessage}". Follow the 'Offer Processing' rules carefully. Extract any numerical offer. Decide whether to accept, reject, counter, or inform based on the extracted offer (or lack thereof) compared to your current asking price (${hagniState.currentAskingPrice.toFixed(2)}) and minimum price (${hagniState.minAcceptablePrice.toFixed(2)}). Use the 'hagniResponseOutput' action with your decision and conversational response.`;
+          taskDescription = `Analyze the player's last message: "${hagniState.lastPlayerRawMessage}". Follow the 'Offer Processing' rules carefully. Extract any numerical offer. Decide whether to accept, reject, counter, or inform based on the extracted offer (or lack thereof) compared to your current asking price (${hagniState.currentAskingPrice.toFixed(0)}) and minimum price (${hagniState.minAcceptablePrice.toFixed(0)}). Use the 'hagniResponseOutput' action with your decision and conversational response.`;
         }
 
         return render(hagniTemplate, {
           uniqueNegotiationId: hagniState.uniqueNegotiationId,
           itemDescription: hagniState.itemDescription,
-          calculatedValue: hagniState.calculatedValue.toFixed(2),
-          minAcceptablePrice: hagniState.minAcceptablePrice.toFixed(2),
+          calculatedValue: hagniState.calculatedValue.toFixed(0),
+          minAcceptablePrice: hagniState.minAcceptablePrice.toFixed(0),
           minSellRatio: (hagniState.minSellRatio * 100).toFixed(0) + '%',
           maxDiscount: hagniState.maxDiscount.toFixed(2), // Show decimal discount limit
-          currentAskingPrice: hagniState.currentAskingPrice.toFixed(2),
+          currentAskingPrice: hagniState.currentAskingPrice.toFixed(0),
           lastPlayerRawMessage: hagniState.lastPlayerRawMessage, // Pass the raw message
           lastPlayerRawMessageFormatted: hagniState.lastPlayerRawMessage
             ? `'${hagniState.lastPlayerRawMessage}'`
@@ -213,6 +213,7 @@ export class AiAgentService {
           taskDescription: taskDescription,
         });
       },
+      maxSteps: 1,
     });
     // Create the Hagni agent instance
     this.agent = createDreams({
@@ -358,6 +359,7 @@ export class AiAgentService {
                   LogLevel.DEBUG,
                   `[Output ${negotiationId}] Received data: ${JSON.stringify(data)}`,
                 );
+
                 this.currentResponse = data;
 
                 // Log Hagni's response via UI
@@ -385,7 +387,7 @@ export class AiAgentService {
                       // No state change needed besides what context create did
                       break;
                     case 'accepted':
-                      state.negotiationActive = false;
+                      // state.negotiationActive = false;
                       // Price was player's offer
                       simpleUI.logMessage(
                         LogLevel.INFO,
@@ -406,7 +408,7 @@ export class AiAgentService {
                         state.currentAskingPrice = counterPrice; // Update asking price
                         simpleUI.logMessage(
                           LogLevel.INFO,
-                          `[Output ${negotiationId}] Hagni countered. New asking price: ${counterPrice.toFixed(2)}`,
+                          `[Output ${negotiationId}] Hagni countered. New asking price: ${counterPrice.toFixed(0)}`,
                         );
                       } else {
                         simpleUI.logMessage(
@@ -597,29 +599,6 @@ export class AiAgentService {
     walletAddress: string,
   ): Promise<AgentPlayerData> {
     return this.agentPlayerDataModel.findOne({ walletAddress }).exec();
-  }
-
-  public async claimReward(walletAddress: string): Promise<AgentPlayerData> {
-    const agentData = await this.getAgentFarmData(walletAddress);
-    if (!agentData) {
-      throw new Error('No agent farm data found for this wallet address');
-    }
-    if (agentData.startTime + agentData.duration > Date.now()) {
-      throw new Error('Farming is still active. Cannot claim rewards yet.');
-    }
-
-    // Reset farming state
-    return this.updateAgentFarmData(walletAddress, {
-      isFarming: false,
-      startTime: new Date().getTime(),
-      duration: 0,
-      itemCounts: {
-        common: 0,
-        rare: 0,
-        epic: 0,
-        legendary: 0,
-      },
-    });
   }
 
   async createAgentFarmData(

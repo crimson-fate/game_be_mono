@@ -26,15 +26,15 @@ export class CreateAgentFarmDto {
 
   @ApiProperty({
     description: 'Item counts by rarity',
-    example: { common: 0, rare: 0, epic: 0, legendary: 0 },
+    example: { common: 0, great: 0, rare: 0, epic: 0},
   })
   @IsObject()
   @IsOptional()
   itemCounts?: {
     common: number;
+    great: number;
     rare: number;
     epic: number;
-    legendary: number;
   };
 }
 
@@ -53,14 +53,14 @@ export class UpdateAgentFarmDto {
 
   @ApiProperty({
     description: 'Item counts by rarity',
-    example: { common: 0, rare: 0, epic: 0, legendary: 0 },
+    example: { common: 0, great: 0, rare: 0, epic: 0 },
   })
   @IsOptional()
   @IsObject()
   itemCounts?: {
     common: number;
+    great: number;
     rare: number;
     epic: number;
-    legendary: number;
   };
 }

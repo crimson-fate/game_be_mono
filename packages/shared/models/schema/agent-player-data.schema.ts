@@ -20,9 +20,9 @@ export class AgentPlayerData {
   @Prop({ type: Object, required: true, default: {} })
   itemCounts: {
     common: number;
+    great: number;
     rare: number;
     epic: number;
-    legendary: number;
   };
 }
 
