@@ -19,9 +19,6 @@ async function bootstrap() {
 
   app.enableCors({
     origin: '*',
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    allowedHeaders: 'Authorization,Content-Type, Accept',
-    credentials: true,
   });
   // app.use(bodyParser.json({ limit: '10mb' }));
   // app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
