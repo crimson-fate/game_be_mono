@@ -20,11 +20,14 @@ import {
   ApiTags,
   ApiParam,
 } from '@nestjs/swagger';
+import { AiDealerAgentService } from './ai-dealer-agent.service';
 
 @ApiTags('AI Agent')
 @Controller('ai')
 export class AiAgentController {
-  constructor(private readonly aiAgentService: AiAgentService) {}
+  constructor(
+    private readonly aiAgentService: AiAgentService, 
+    private readonly aiDealerAgentService: AiDealerAgentService) {}
 
   // @Post('chat')
   // @ApiOperation({ summary: 'Chat with AI agent Kael' })
@@ -39,7 +42,7 @@ export class AiAgentController {
   // })
   // async chatWithKael(@Body() body: ChatDto): Promise<ChatResponseDto> {
   //   try {
-  //     const result = await this.aiAgentService.askKael(
+  //     const result = await this.aiDealerAgentService.askKael(
   //       body.message,
   //       body.walletAddress || 'unknown',
   //     );
@@ -87,14 +90,14 @@ export class AiAgentController {
 
   //   let history;
   //   if (dungeonId) {
-  //     history = await this.aiAgentService.getDungeonChatHistory(
+  //     history = await this.aiDealerAgentService.getDungeonChatHistory(
   //       walletAddress,
   //       dungeonId,
   //       limit,
   //       skip,
   //     );
   //   } else {
-  //     history = await this.aiAgentService.getChatHistory(walletAddress, limit);
+  //     history = await this.aiDealerAgentService.getChatHistory(walletAddress, limit);
   //   }
 
   //   return history.map((chat) => ({
@@ -145,6 +148,69 @@ export class AiAgentController {
     return itemCounts;
   }
 
+  @Post('normal/start')
+  @ApiOperation({ summary: 'Start chatting with agent' })
+  @ApiResponse({
+    status: 200,
+    description: 'Agent greets',
+  })
+  async startChatting(@Body() body: ChatDto): Promise<any> {
+    try {
+      const result = await this.aiAgentService.initializeFarmerAgent(body.walletAddress);
+      console.log(result);
+      return result;
+    } catch (error) {
+      console.error('Error running negotiation example:', error);
+      throw new HttpException(
+        'An error occurred while processing your request',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  @Post('normal/chat')
+  @ApiOperation({ summary: 'Chat with the agent' })
+  @ApiResponse({
+    status: 200,
+    description: 'Response from the agent',
+  })
+  async normalChat(@Body() body: ChatDto): Promise<any> {
+    try {
+      console.log('Running negotiation example...');
+      var result = await this.aiAgentService.handlePlayerMessage(
+        body.walletAddress,
+        body.message,
+      );
+      return result;
+    } catch (error) {
+      console.error('Error running negotiation example:', error);
+      throw new HttpException(
+        'An error occurred while processing your request',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  @Post('normal/end')
+  @ApiOperation({ summary: 'End the chat' })
+  @ApiResponse({
+    status: 200,
+    description: 'Chat ended successfully',
+  })
+  async endChat(@Body() body: ChatDto): Promise<any> {
+    try {
+      console.log('Ending chat...');
+      const result = await this.aiAgentService.stopAgent();
+      return result;
+    } catch (error) {
+      console.error('Error ending chat:', error);
+      throw new HttpException(
+        'An error occurred while processing your request',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
   @Post('dealer/start')
   @ApiOperation({ summary: 'Start dealing with agent' })
   @ApiResponse({
@@ -154,7 +220,7 @@ export class AiAgentController {
   async startDealing(@Body() body: ChatDto): Promise<any> {
     try {
       console.log('Running negotiation example...');
-      const data = await this.aiAgentService.getAgentFarmData(body.walletAddress);
+      const data = await this.aiDealerAgentService.getAgentFarmData(body.walletAddress);
       if (!data || !data.isFarming) {
         console.log("Can't find agent farm data or farming not started yet");
         throw new HttpException(
@@ -165,13 +231,13 @@ export class AiAgentController {
       console.log("Getting agent welcoming message...");
       const itemCounts = data.itemCounts && data.itemCounts.common ? data.itemCounts : this.calculateItemCounts(data.duration);
       console.log(itemCounts);
-      await this.aiAgentService.updateAgentFarmData(body.walletAddress, {
+      await this.aiDealerAgentService.updateAgentFarmData(body.walletAddress, {
         isFarming: data.isFarming,
         startTime: data.startTime,
         duration: data.duration,
         itemCounts: itemCounts,
       });
-      const result = await this.aiAgentService.startNewHagniNegotiation(
+      const result = await this.aiDealerAgentService.startNewHagniNegotiation(
         body.walletAddress,
         {
           baseValue: 100,
@@ -208,12 +274,12 @@ export class AiAgentController {
   async hagniChat(@Body() body: ChatDto): Promise<any> {
     try {
       console.log('Running negotiation example...');
-      var result = await this.aiAgentService.handlePlayerMessage(
+      var result = await this.aiDealerAgentService.handlePlayerMessage(
         body.walletAddress,
         body.message,
       );
       if (result.outcome && result.outcome === 'accepted') {
-        const data = await this.aiAgentService.getAgentFarmData(body.walletAddress);
+        const data = await this.aiDealerAgentService.getAgentFarmData(body.walletAddress);
         result.itemCounts = data.itemCounts;
         result.extractedOffer = result.extractedOffer;
       }
@@ -236,18 +302,18 @@ export class AiAgentController {
   async endNegotiation(@Body() body: ChatDto): Promise<any> {
     try {
       console.log('Ending negotiation...');
-      const data = await this.aiAgentService.getAgentFarmData(body.walletAddress);
+      const data = await this.aiDealerAgentService.getAgentFarmData(body.walletAddress);
       if (!data || !data.isFarming) {
         console.log("Can't find agent farm data or farming not started yet");
         return { message: 'Agent farm data not found or farming not started'};
       }
-      await this.aiAgentService.updateAgentFarmData(body.walletAddress, {
+      await this.aiDealerAgentService.updateAgentFarmData(body.walletAddress, {
         isFarming: false,
         startTime: 0,
         duration: 0,
         itemCounts: null,
       });
-      this.aiAgentService.stopAgent();
+      this.aiDealerAgentService.stopAgent();
       return { message: 'Negotiation ended successfully' };
     } catch (error) {
       console.error('Error ending negotiation:', error);
@@ -266,7 +332,7 @@ export class AiAgentController {
   })
   async createAgentFarm(@Body() createAgentFarmDto: CreateAgentFarmDto) {
     try {
-      return await this.aiAgentService.createAgentFarmData(createAgentFarmDto);
+      return await this.aiDealerAgentService.createAgentFarmData(createAgentFarmDto);
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -284,9 +350,9 @@ export class AiAgentController {
   })
   async getAgentFarm(@Param('walletAddress') walletAddress: string) {
     try {
-      const data = await this.aiAgentService.getAgentFarmData(walletAddress);
+      const data = await this.aiDealerAgentService.getAgentFarmData(walletAddress);
       if (!data) {
-        const data = await this.aiAgentService.createAgentFarmData({
+        const data = await this.aiDealerAgentService.createAgentFarmData({
           walletAddress: walletAddress,
         });
         return data;
@@ -315,7 +381,7 @@ export class AiAgentController {
     @Body() updateAgentFarmDto: UpdateAgentFarmDto,
   ) {
     try {
-      const data = await this.aiAgentService.updateAgentFarmData(
+      const data = await this.aiDealerAgentService.updateAgentFarmData(
         walletAddress,
         updateAgentFarmDto,
       );
@@ -346,7 +412,7 @@ export class AiAgentController {
   })
   async deleteAgentFarm(@Param('walletAddress') walletAddress: string) {
     try {
-      const data = await this.aiAgentService.deleteAgentFarmData(walletAddress);
+      const data = await this.aiDealerAgentService.deleteAgentFarmData(walletAddress);
       if (!data) {
         throw new HttpException(
           'Agent farm data not found',

@@ -11,6 +11,7 @@ import {
   AgentPlayerData,
   AgentPlayerDataSchema,
 } from '@app/shared/models/schema/agent-player-data.schema';
+import { AiDealerAgentService } from './ai-dealer-agent.service';
 
 @Module({
   imports: [
@@ -20,7 +21,7 @@ import {
     ]),
   ],
   controllers: [AiAgentController],
-  providers: [AiAgentService, ChatHistoryService],
-  exports: [AiAgentService],
+  providers: [AiAgentService, AiDealerAgentService, ChatHistoryService],
+  exports: [AiAgentService, AiDealerAgentService],
 })
 export class AiAgentModule {}

@@ -3,443 +3,246 @@ import {
   createDreams,
   context,
   render,
-  action, // We might still need actions like endNegotiation
   validateEnv,
   LogLevel,
   type Agent,
   createMemoryStore,
-  // createVectorStore, // Optional, depends on complexity needed
   extension,
   output,
   input,
   type AnyAgent,
   createVectorStore,
+  MemoryStore, // Keep vector store if needed for potential future memory
 } from '@daydreamsai/core';
-// import { cliExtension } from "@daydreamsai/cli"; // Can remove if not using CLI directly
 import { z } from 'zod';
 import { groq } from '@ai-sdk/groq';
 import { simpleUI } from './simple-ui/simple-ui'; // Assuming simple-ui.ts exists
 import { AiAgentConfigService } from '../config/ai-agent.config';
-import { Model } from 'mongoose';
-import { InjectModel } from '@nestjs/mongoose';
-import { AgentPlayerData } from '@app/shared/models/schema/agent-player-data.schema';
-import { CreateAgentFarmDto, UpdateAgentFarmDto } from './dto/agent-farm.dto';
+// Remove unused Mongoose/DTO imports if not persisting farmer state to DB
+// import { Model } from 'mongoose';
+// import { InjectModel } from '@nestjs/mongoose';
+// import { AgentPlayerData } from '@app/shared/models/schema/agent-player-data.schema';
+// import { CreateAgentFarmDto, UpdateAgentFarmDto } from './dto/agent-farm.dto';
 
-import { EventEmitter } from 'events'; // Using EventEmitter for simulating input
+import { EventEmitter } from 'events';
 
 const playerInteractionEmitter = new EventEmitter();
 
-// Initialize the UI
-simpleUI.initializeUI();
+// Initialize the UI (if not done elsewhere)
+// simpleUI.initializeUI(); // Assuming it's initialized where the app starts
 simpleUI.logMessage(
   LogLevel.INFO,
-  'Starting Hagni Farmstead Merchant Agent (Natural Language Mode)...',
+  'Starting Simple Farmer AI Agent...',
 );
 
-// --- Hagni Agent Definition ---
+// --- Farmer Agent Definition ---
 
-interface HagniNegotiationState {
-  // Item details
-  baseValue: number;
-  rarityBonus: Record<string, number>;
-  itemCountsByRarity: Record<string, number>;
-  itemDescription: string;
-
-  // Negotiation parameters
-  minSellRatio: number;
-  maxDiscount: number;
-
-  // Calculated values
-  calculatedValue: number;
-  minAcceptablePrice: number;
-
-  // Dynamic state
-  currentAskingPrice: number;
-  lastPlayerOffer: number | null; // Stores the *extracted* numerical offer
-  lastPlayerRawMessage: string | null; // Stores the raw message from the player
-  negotiationActive: boolean;
-  uniqueNegotiationId: string;
+interface FarmerAgentState {
+  agentId: string; // Unique ID for this farmer instance
+  lastPlayerMessage: string | null;
+  isFarming: boolean; // Is the agent currently tasked with farming?
 }
 
 // --- NestJS Service ---
 @Injectable()
 export class AiAgentService {
   private readonly logger = new Logger(AiAgentService.name);
-  private agent; // Type the agent
-  private readonly goalContext;
-  private currentResponse: any; // Store the last response from the agent
+  private agent: Agent<any>; // Type the agent appropriately if possible
+  private readonly farmerContext;
+  private currentResponseMap: Map<string, any> = new Map(); // Store responses per agentId
   private readonly config = AiAgentConfigService.getInstance().getConfig();
-  // private readonly rateLimiter = RateLimiterService.getInstance(); // Keep if used
-  // private readonly chatHistoryService: ChatHistoryService; // Inject if used
 
-  constructor(
-    @InjectModel(AgentPlayerData.name)
-    private readonly agentPlayerDataModel: Model<AgentPlayerData>,
-  ) {
-    // Remove ChatHistoryService if not used
-    this.goalContext = context({
-      type: 'hagniNegotiation',
+  // Remove DB injection if not used for this simple agent
+  constructor(/* @InjectModel(...) if needed */) {
+    // Define the context for the Farmer Agent
+    this.farmerContext = context({
+      type: 'farmerChat',
       schema: z.object({
-        uniqueNegotiationId: z
-          .string()
-          .describe('A unique ID for this specific negotiation session'),
-        // These are needed to *start* the context
-        baseValue: z.number().positive().optional(),
-        rarityBonus: z.record(z.string(), z.number().nonnegative()).optional(),
-        itemCountsByRarity: z
-          .record(z.string(), z.number().int())
-          .optional(),
-        minSellRatio: z.number().min(0).max(1).optional(),
-        maxDiscount: z.number().min(0).max(1).optional(),
+        agentId: z.string().describe('Unique identifier for this farmer agent'),
+        // No initial args needed here, state initialized in 'create'
       }),
-
-      key({ uniqueNegotiationId }) {
-        return uniqueNegotiationId;
+      key({ agentId }) {
+        return agentId; // Use agentId as the unique key for this context instance
       },
-
-      // Initialize state when context is created
-      create(state): HagniNegotiationState {
-        const args = state.args;
-        // Ensure required fields are present for creation
-        console.log(`Creating context with args: ${JSON.stringify(args)}`);
-        if (
-          !args.baseValue ||
-          !args.rarityBonus ||
-          !args.itemCountsByRarity ||
-          !args.minSellRatio ||
-          !args.maxDiscount ||
-          !args.uniqueNegotiationId
-        ) {
-          throw new Error(
-            `Cannot create negotiation context ${args.uniqueNegotiationId}: Missing required arguments.`,
-          );
-        }
-
-        let calculatedValue = 0;
-        const itemDescriptionParts: string[] = [];
-        for (const rarity in args.itemCountsByRarity) {
-          const count = args.itemCountsByRarity[rarity];
-          const bonus = args.rarityBonus[rarity] ?? 0;
-          calculatedValue += (args.baseValue + bonus) * count;
-          itemDescriptionParts.push(`${count}x ${rarity}`);
-        }
-        const itemDescription = itemDescriptionParts.join(', ');
-
-        const minAcceptablePrice = calculatedValue * args.minSellRatio;
-
+      // Initialize state when context is created for a specific agentId
+      create(state): FarmerAgentState {
+        const { agentId } = state.args;
         simpleUI.logMessage(
           LogLevel.INFO,
-          `[Context ${args.uniqueNegotiationId}] Create. Items: ${itemDescription}, Calc Value: ${calculatedValue.toFixed(0)}, Min Acceptable: ${minAcceptablePrice.toFixed(0)}`,
+          `[Context ${agentId}] Creating Farmer Agent state.`,
         );
-
         return {
-          baseValue: args.baseValue,
-          rarityBonus: args.rarityBonus,
-          itemCountsByRarity: args.itemCountsByRarity,
-          itemDescription,
-          minSellRatio: args.minSellRatio,
-          maxDiscount: args.maxDiscount,
-          calculatedValue,
-          minAcceptablePrice,
-          currentAskingPrice: calculatedValue, // Initial asking price
-          lastPlayerOffer: null,
-          lastPlayerRawMessage: null, // Initialize as null
-          negotiationActive: true,
-          uniqueNegotiationId: args.uniqueNegotiationId,
+          agentId: agentId,
+          lastPlayerMessage: null,
+          isFarming: false, // Start idle
         };
       },
-
       // Render function provides context and instructions to the LLM
       render({ memory }) {
-        const hagniState = memory as HagniNegotiationState;
-        const hagniTemplate = `
-    You are Hagni, the Farmstead Merchant AI. Your job is to negotiate sell-back prices with the player for harvested goods according to specific rules. You are friendly but firm. The negotiation is identified by ID: {{uniqueNegotiationId}}.
+        const farmerState = memory as FarmerAgentState;
+        const farmerTemplate = `
+You are a friendly AI Farmer working on a virtual farmstead. Your name is Hagni. You chat casually with the player and can undertake farming tasks in nearby dungeons.
 
-    <goal>
-    Understand the player's message. If it contains a numerical offer, evaluate it against the rules. If not, respond conversationally. Send your final response using the 'hagniResponseOutput'.
-    </goal>
+Your primary goal is to be conversational and helpful. However, you have one specific task you can perform: **farming resources in dungeons**.
 
-    ## Negotiation Rules & Logic:
-    1.  **Price Foundations**: Prices based on item value, rarity, count.
-    2.  **Minimum Price**: Cannot accept below {{minAcceptablePrice}} gold ({{minSellRatio}} of calculated value).
-    3.  **Initial Turn**: If lastPlayerRawMessage is empty, greet the player, describe the items ({{itemDescription}}), and state the initial asking price ({{calculatedValue}} gold). Use the 'hagniResponseOutput'.
-    4.  **Offer Processing**:
-        *   Analyze the player's message: '{{lastPlayerRawMessage}}'.
-        *   **Extract Offer**: Look for a clear numerical offer (e.g., "I offer 50", "how about 75 gold?", "55?"). If found, extract the number (let's call it 'extractedOffer'). If multiple numbers, use the most likely offer amount. If ambiguous or no number, assume no offer was made.
-        *   **No Offer Found**: If no clear offer is extracted, respond politely. You could reiterate your current asking price ({{currentAskingPrice}}), ask for a clearer offer, or answer a direct question if they asked one. Use 'hagniResponseOutput'.
-        *   **Offer Found (extractedOffer)**:
-            *   **Acceptance**: If extractedOffer >= {{currentAskingPrice}}, accept the offer at the player's proposed price (extractedOffer). State the acceptance clearly and mention the price. Mark the negotiation as ended. Use 'hagniResponseOutput'.
-            *   **Rejection (Below Minimum)**: If extractedOffer < {{minAcceptablePrice}}, reject the offer firmly but politely. State your absolute minimum price ({{minAcceptablePrice}}) and say you cannot go lower. Use 'hagniResponseOutput'.
-            *   **Counter-Offer**: If {{minAcceptablePrice}} <= extractedOffer < {{currentAskingPrice}}, calculate a counter.
-                *   New Counter Price = max({{minAcceptablePrice}}, round({{currentAskingPrice}} * (1 - (random factor between 0.01 and {{maxDiscount}})) )). // Ensure discount is applied
-                *   If the calculated counter price is >= {{currentAskingPrice}}, you cannot make a lower offer; reject firmly at {{minAcceptablePrice}} and end the negotiation.
-                *   Otherwise, propose the 'New Counter Price'. Provide a brief rationale. Update your internal 'currentAskingPrice' to this new value for the *next* turn. Use 'hagniResponseOutput'.
-    5.  **Output**: ALWAYS use the 'hagniResponseOutput' action to communicate with the player. Include the final message and indicate the negotiation outcome ('accepted', 'countered', 'rejected', 'asking', 'informing').
+## Dungeon Options:
+*   **Whispering Cave (Easy):** Safer, yields basic materials like Stone and Wood reliably. Good for starting out.
+*   **Sunken Grotto (Medium):** Has tougher monsters, yields better materials like Iron Ore and Rare Herbs, but takes longer.
+*   **Dragon's Maw (Hard):** Very dangerous! High risk, but potential for valuable Gems and Powerful Artifacts. Not recommended unless prepared.
 
-    ## Current Negotiation State (ID: {{uniqueNegotiationId}}):
-    Items for Sale: {{itemDescription}}
-    Calculated Base Value: {{calculatedValue}} gold
-    Minimum Acceptable Price: {{minAcceptablePrice}} gold (Non-negotiable floor)
-    Your Current Asking Price: {{currentAskingPrice}} gold
-    Player's Last Message: {{lastPlayerRawMessageFormatted}}
-    Negotiation Active: {{negotiationActive}}
+## Your Instructions:
+1.  **Analyze Player Message:** Read the player's latest message: '{{lastPlayerMessage}}'.
+2.  **Check Current Status:** Are you already farming? ({{isFarming}})
+3.  **Detect Farming Request:** Determine if the player's message is asking you to go farm resources. Examples: "Can you go farm some wood?", "I need stone, please gather some.", "Go farm for me."
+4.  **Respond Appropriately:**
+    *   **If Currently Farming 'isFarming' is true):** Respond politely that you are currently busy farming. You don't need to detect new farm requests while already farming. Example: "Still out gathering those resources!", "Working hard in the fields right now!" Use the 'farmerResponseOutput' action with 'detectedFarmRequest: false'.
+    *   **If NOT Currently Farming ('isFarming' is false):**
+        *   **Farming Request DETECTED:** Acknowledge the request enthusiastically! You must present dungeon options and get the player's choice before starting. Use the 'farmerResponseOutput' action and set 'detectedFarmRequest: true'.
+        *   **NO Farming Request Detected:** Engage in normal, friendly conversation based on the player's message. Ask questions, share a (fake) farm anecdote, or respond directly to their topic. Example: "How's your day going?", "The crops are looking good today!", "What brings you here?". Use the 'farmerResponseOutput' action with 'detectedFarmRequest: false'.
+5.  **Output:** ALWAYS use the 'farmerResponseOutput' action to send your message back to the player. Include your conversational text and the 'detectedFarmRequest' flag (true or false).
 
-    ## Your Task:
-    {{taskDescription}}
-    `;
+## Current Situation:
+Agent ID: {{agentId}}
+Player's Last Message: {{lastPlayerMessageFormatted}}
+Currently Farming: {{isFarming}}
+
+## Your Task:
+{{taskDescription}}
+`;
 
         let taskDescription = '';
-        if (!hagniState.negotiationActive) {
-          taskDescription = 'The negotiation is concluded. Do nothing further.';
-        } else if (hagniState.lastPlayerRawMessage === null) {
-          taskDescription = `This is the start. Use 'hagniResponseOutput' to greet the player, describe the items ('${hagniState.itemDescription}'), and state your initial asking price of ${hagniState.calculatedValue.toFixed(0)} gold. Set outcome to 'asking'.`;
+        if (farmerState.lastPlayerMessage === null) {
+          taskDescription = `This is your first interaction with the player for this session (Agent ID: ${farmerState.agentId}). Greet them warmly! Use 'farmerResponseOutput' with detectedFarmRequest: false.`;
+        } else if (farmerState.isFarming) {
+          taskDescription = `You are currently farming. Respond to the player's message ('${farmerState.lastPlayerMessage}') by letting them know you're busy farming. Use 'farmerResponseOutput' with detectedFarmRequest: false.`;
         } else {
-          taskDescription = `Analyze the player's last message: "${hagniState.lastPlayerRawMessage}". Follow the 'Offer Processing' rules carefully. Extract any numerical offer. Decide whether to accept, reject, counter, or inform based on the extracted offer (or lack thereof) compared to your current asking price (${hagniState.currentAskingPrice.toFixed(0)}) and minimum price (${hagniState.minAcceptablePrice.toFixed(0)}). Use the 'hagniResponseOutput' action with your decision and conversational response.`;
+          taskDescription = `Analyze the player's message: "${farmerState.lastPlayerMessage}". Decide if it's a request to farm resources. Respond conversationally OR by acknowledging the farm request. Use 'farmerResponseOutput', setting 'detectedFarmRequest' to true ONLY if you detect a clear request for you to start farming. Otherwise, set it to false.`;
         }
 
-        return render(hagniTemplate, {
-          uniqueNegotiationId: hagniState.uniqueNegotiationId,
-          itemDescription: hagniState.itemDescription,
-          calculatedValue: hagniState.calculatedValue.toFixed(0),
-          minAcceptablePrice: hagniState.minAcceptablePrice.toFixed(0),
-          minSellRatio: (hagniState.minSellRatio * 100).toFixed(0) + '%',
-          maxDiscount: hagniState.maxDiscount.toFixed(2), // Show decimal discount limit
-          currentAskingPrice: hagniState.currentAskingPrice.toFixed(0),
-          lastPlayerRawMessage: hagniState.lastPlayerRawMessage, // Pass the raw message
-          lastPlayerRawMessageFormatted: hagniState.lastPlayerRawMessage
-            ? `'${hagniState.lastPlayerRawMessage}'`
-            : 'No message yet',
-          negotiationActive: hagniState.negotiationActive,
+        return render(farmerTemplate, {
+          agentId: farmerState.agentId,
+          isFarming: farmerState.isFarming,
+          lastPlayerMessage: farmerState.lastPlayerMessage,
+          lastPlayerMessageFormatted: farmerState.lastPlayerMessage
+            ? `'${farmerState.lastPlayerMessage}'`
+            : '(No message yet)',
           taskDescription: taskDescription,
         });
       },
-      maxSteps: 1,
+      maxSteps: 1, // Agent thinks once per input
     });
-    // Create the Hagni agent instance
+
+    // Create the Farmer agent instance
     this.agent = createDreams({
-      logger: LogLevel.INFO,
-      model: groq(this.config.model),
-      // Add inputs to the agent setup
+      logger: LogLevel.INFO, // Adjust log level as needed
+      model: groq(this.config.model), // Use your configured model
       inputs: {
         'custom:playerMessage': input({
+          // Schema for the data this input expects
           schema: z.object({
-            uniqueNegotiationId: z.string(),
-            playerMessage: z.string(), // Raw player message
+            agentId: z.string(),
+            playerMessage: z.string(),
           }),
-          subscribe: (send, agent: AnyAgent) => {
-            const listener = (messageData) => {
+          // Subscribe to the event emitter
+          subscribe: (send) => {
+            const listener = (messageData: { agentId: string, playerMessage: string }) => {
               simpleUI.logMessage(
                 LogLevel.DEBUG,
-                `[Input] Received player message event for ID: ${messageData.uniqueNegotiationId}`,
+                `[Input ${messageData.agentId}] Received player message event.`,
               );
-              // Log player message via UI
               simpleUI.logMessage(
                 LogLevel.INFO,
-                `Player (to ${messageData.uniqueNegotiationId}): ${messageData.playerMessage}`,
+                `Player (to ${messageData.agentId}): ${messageData.playerMessage}`,
               );
 
-              const targetContext = this.goalContext;
-              const contextArgs = {
-                uniqueNegotiationId: messageData.uniqueNegotiationId,
+              // Target the correct context instance using agentId
+              const contextArgs = { agentId: messageData.agentId };
+              const inputData = { // Match the input schema
+                  agentId: messageData.agentId,
+                  playerMessage: messageData.playerMessage
               };
-              const inputData = messageData;
 
-              // Update the state first (so the agent sees the latest message)
-              // Ideally, the agent framework handles getting the right context and applying the update
-              // For now, we assume the 'send' triggers the agent loop which will then read the message via context rendering
-              send(targetContext, contextArgs, inputData);
+              // Send the data to the agent, targeting the specific context
+              send(this.farmerContext, contextArgs, inputData);
             };
+
             playerInteractionEmitter.on('playerSendsMessage', listener);
-            return () => {
-              playerInteractionEmitter.off('playerSendsMessage', listener);
-              simpleUI.logMessage(
-                LogLevel.DEBUG,
-                '[Input] Detached player message listener.',
-              );
-            };
+            // Return cleanup function
+            return () => playerInteractionEmitter.off('playerSendsMessage', listener);
           },
-          // Handler to update state *before* agent thinks (optional but useful)
-          // This ensures the state reflects the message when the prompt is rendered
-          handler: async (data, ctx, agent) => {
-            const state = ctx.memory as HagniNegotiationState;
-            if (
-              state &&
-              state.uniqueNegotiationId === data.uniqueNegotiationId
-            ) {
-              state.lastPlayerRawMessage = data.playerMessage;
-              state.lastPlayerOffer = null; // Reset extracted offer until LLM processes it
-              // No need to call updateMemory here, handler modifies state for the current run
+          // Handler to update state *before* agent thinks
+          handler: async (data, ctx) => {
+            const state = ctx.memory as FarmerAgentState;
+            // Ensure we're updating the correct context instance
+            if (state && state.agentId === data.agentId) {
+              state.lastPlayerMessage = data.playerMessage;
               simpleUI.logMessage(
                 LogLevel.DEBUG,
-                `[Input Handler ${data.uniqueNegotiationId}] Updated lastPlayerRawMessage.`,
+                `[Input Handler ${data.agentId}] Updated lastPlayerMessage.`,
               );
             } else {
-              simpleUI.logMessage(
-                LogLevel.WARN,
-                `[Input Handler ${data.uniqueNegotiationId}] State mismatch or not found when updating raw message.`,
-              );
+                 simpleUI.logMessage(
+                    LogLevel.WARN,
+                    `[Input Handler ${data.agentId}] State mismatch or context not found for agentId when updating message.`
+                );
             }
-            return { data: data }; // Return original data for logging
+            // Input handlers should return the data for logging/processing
+            return { data: data };
           },
-          format: (ref) => {
-            const data = ref.data;
-            return `[InputRef ${data.uniqueNegotiationId}] Player Message: "${data.playerMessage}"`;
-          },
-          context: this.goalContext,
+          format: (ref) => `[InputRef ${ref.data.agentId}] Player Message: "${ref.data.playerMessage}"`,
+          context: this.farmerContext, // Associate input with the farmer context
         }),
       },
-      // Add extensions
       extensions: [
         extension({
-          name: 'hagni',
-          actions: [
-            // Action to explicitly end negotiation if needed (e.g., player walks away)
-            // action({
-            //   name: "endNegotiation",
-            //   description: "Forcefully end the current negotiation session.",
-            //   schema: z.object({
-            //     uniqueNegotiationId: z.string(),
-            //     reason: z.string().optional().default("Player ended interaction."),
-            //   }),
-            //   async handler(data, ctx) {
-            //     const { uniqueNegotiationId, reason } = data;
-            //     const state = ctx.agentMemory;
-            //     if (state && state.uniqueNegotiationId === uniqueNegotiationId && state.negotiationActive) {
-            //        state.negotiationActive = false;
-            //        // updateMemory might not be needed if the agent loop won't run again for this context
-            //        // await ctx.updateMemory(state);
-            //        simpleUI.logMessage(LogLevel.INFO, `[Action ${uniqueNegotiationId}] Negotiation ended. Reason: ${reason}`);
-            //        return { success: true, message: `Negotiation ${uniqueNegotiationId} ended.` };
-            //     }
-            //     return { success: false, message: `Negotiation ${uniqueNegotiationId} not active or found.` };
-            //   },
-            // }),
-          ],
-          // --- Output Definition ---
+          name: 'farmerActions',
+          // No specific actions needed for this simple version
+          actions: [],
           outputs: {
-            hagniResponseOutput: output({
+            farmerResponseOutput: output({
               description:
-                "Sends Hagni's conversational response back to the player/UI and updates negotiation state.",
+                "Sends the Farmer AI's response to the player and potentially updates the farming state.",
               schema: z.object({
-                message: z
-                  .string()
-                  .describe(
-                    'The full conversational message Hagni should say to the player.',
-                  ),
-                outcome: z
-                  .enum([
-                    'asking',
-                    'accepted',
-                    'rejected',
-                    'countered',
-                    'informing',
-                    'ended',
-                  ])
-                  .describe('The logical outcome of this turn based on rules.'),
-                // Optional fields the LLM *might* populate if it extracts/calculates them:
-                extractedOffer: z
-                  .number()
-                  .optional()
-                  .describe(
-                    "The numerical offer extracted from the player's message.",
-                  ),
-                counterPrice: z
-                  .number()
-                  .optional()
-                  .describe(
-                    "The new price Hagni is offering if outcome is 'countered'.",
-                  ),
+                message: z.string().describe('The conversational message for the player.'),
+                detectedFarmRequest: z.boolean().describe('Whether the AI detected a request to start farming in the player\'s last message.'),
               }),
               handler: async (data, ctx) => {
-                const state = ctx.memory; // Get the current state
-                const { message, outcome, extractedOffer, counterPrice } = data;
-                const negotiationId = state.uniqueNegotiationId;
+                const state = ctx.memory as FarmerAgentState;
+                const { message, detectedFarmRequest } = data;
+                const agentId = state.agentId;
 
                 simpleUI.logMessage(
                   LogLevel.DEBUG,
-                  `[Output ${negotiationId}] Received data: ${JSON.stringify(data)}`,
+                  `[Output ${agentId}] Received data: ${JSON.stringify(data)}`,
                 );
 
-                this.currentResponse = data;
-
-                // Log Hagni's response via UI
+                // Log the AI's response
                 simpleUI.logAgentAction(
-                  'Response Output',
-                  `Hagni (to ${negotiationId}): ${message}`,
+                    'Farmer Response',
+                    `Farmer ${agentId}: ${message}`
                 );
 
-                // --- Update State based on Outcome ---
-                if (state.negotiationActive) {
-                  if (extractedOffer !== undefined) {
-                    state.lastPlayerOffer = extractedOffer; // Store the offer LLM extracted
-                    simpleUI.logMessage(
-                      LogLevel.DEBUG,
-                      `[Output ${negotiationId}] Updated lastPlayerOffer to extracted value: ${extractedOffer}`,
-                    );
-                  }
+                // Store the response so the service can retrieve it
+                this.currentResponseMap.set(agentId, { message, detectedFarmRequest });
 
-                  switch (outcome) {
-                    case 'asking':
-                      simpleUI.logMessage(
-                        LogLevel.INFO,
-                        `[Output ${negotiationId}] Hagni is asking initial price.`,
-                      );
-                      // No state change needed besides what context create did
-                      break;
-                    case 'accepted':
-                      // state.negotiationActive = false;
-                      // Price was player's offer
-                      simpleUI.logMessage(
-                        LogLevel.INFO,
-                        `[Output ${negotiationId}] Hagni accepted offer.`,
-                      );
-                      break;
-                    case 'rejected':
-                      simpleUI.logMessage(
-                        LogLevel.INFO,
-                        `[Output ${negotiationId}] Hagni rejected offer.`,
-                      );
-                      break;
-                    case 'countered':
-                      if (
-                        counterPrice !== undefined &&
-                        counterPrice < state.currentAskingPrice
-                      ) {
-                        state.currentAskingPrice = counterPrice; // Update asking price
-                        simpleUI.logMessage(
-                          LogLevel.INFO,
-                          `[Output ${negotiationId}] Hagni countered. New asking price: ${counterPrice.toFixed(0)}`,
-                        );
-                      } else {
-                        simpleUI.logMessage(
-                          LogLevel.WARN,
-                          `[Output ${negotiationId}] Outcome 'countered' but invalid/missing counterPrice (${counterPrice}). State not updated.`,
-                        );
-                      }
-                      break;
-                    case 'informing':
-                      simpleUI.logMessage(
-                        LogLevel.INFO,
-                        `[Output ${negotiationId}] Hagni provided information.`,
-                      );
-                      // No price/status change usually
-                      break;
-                    case 'ended': // Explicitly ended by LLM or action
-                      state.negotiationActive = false;
-                      simpleUI.logMessage(
-                        LogLevel.INFO,
-                        `[Output ${negotiationId}] Negotiation ended via output.`,
-                      );
-                      break;
-                  }
-                  // Persist changes made in this handler
-                  // await ctx.updateMemory(state); // updateMemory might not exist on OutputCallContext, state is auto-persisted
-                } else {
+                // --- Update State based on Output ---
+                if (detectedFarmRequest && !state.isFarming) {
+                  state.isFarming = true;
                   simpleUI.logMessage(
-                    LogLevel.DEBUG,
-                    `[Output ${negotiationId}] Negotiation was already inactive. No state changes.`,
+                    LogLevel.INFO,
+                    `[Output Handler ${agentId}] State updated: isFarming set to true.`,
                   );
+                  // In a real game, you might trigger the actual farming logic here
+                } else if (!detectedFarmRequest && state.isFarming) {
+                    // Optional: Add logic here if the AI should *stop* farming based on conversation
+                    // For now, it keeps farming until explicitly told otherwise or reset.
+                    simpleUI.logMessage(
+                        LogLevel.DEBUG,
+                        `[Output Handler ${agentId}] AI is still farming. No state change.`
+                    );
                 }
+
+                // State changes are automatically persisted by the framework within the handler
               },
             }),
           },
@@ -447,181 +250,100 @@ export class AiAgentService {
       ],
       memory: {
         store: createMemoryStore(),
-        vector: createVectorStore(),
+        vector: createVectorStore(), // Keep if you plan complex memory later
       },
     });
 
-    simpleUI.logMessage(LogLevel.INFO, 'Hagni agent background loop started.');
+    // Start the agent's background processing loop
+    this.agent.start().catch(err => this.logger.error("Failed to start agent loop:", err));
+    simpleUI.logMessage(LogLevel.INFO, 'Farmer AI agent background loop started.');
   }
 
   /**
-   * Starts a new negotiation session.
-   * Called by the game logic when a player interacts with Hagni.
+   * Ensures a farmer agent instance exists for the given ID and optionally sends an initial message.
+   * Call this when the player first interacts with a specific farmer.
    */
-  public async startNewHagniNegotiation(
-    negotiationId: string,
-    itemData: {
-      baseValue: number;
-      rarityBonus: Record<string, number>;
-      itemCounts: Record<string, number>;
-    },
-    config: {
-      // Allow passing config per negotiation
-      minSellRatio: number;
-      maxDiscount: number;
-    },
-  ): Promise<void> {
-    // Returns void, interaction happens via agent loop & outputs
-    simpleUI.logMessage(
-      LogLevel.INFO,
-      `Service: Received request to start negotiation: ${negotiationId}`,
-    );
+  public async initializeFarmerAgent(agentId: string): Promise<any> {
+    simpleUI.logMessage(LogLevel.INFO, `Service: Initializing farmer agent: ${agentId}`);
+    this.currentResponseMap.delete(agentId); // Clear previous response
 
-    // We don't directly run the agent here. Instead, we emit an event
-    // that the 'startNegotiationInput' *would* listen for if it existed,
-    // OR we manually trigger the context creation process.
-    // Since we removed that input, let's manually ensure the context exists.
-
-    // Manually trigger context creation by accessing it.
-    // The framework should call 'create' if it doesn't exist.
-    // We pass the necessary args for creation.
-    // try {
-    console.log(
-      `Unique ID: ${negotiationId}, Item Data: ${JSON.stringify(itemData)}, Config: ${JSON.stringify(config)}`,
-    );
-    await this.agent.start();
-    await this.agent.run({
-      context: this.goalContext,
-      args: {
-        // Use the context type defined in the extension
-        type: 'hagniNegotiation',
-        // Provide the initial arguments matching the context schema
-        uniqueNegotiationId: negotiationId,
-        baseValue: itemData.baseValue,
-        rarityBonus: itemData.rarityBonus,
-        itemCountsByRarity: itemData.itemCounts,
-        minSellRatio: 0.75, // Example: Hagni won't go below 75% of calculated value
-        maxDiscount: 0.15, // Example: Hagni offers max 15% discount per counter-offer step
-      },
-      config: {
-        allowActions: true,
-        allowOutputs: true,
-        temperature: this.config.temperature,
-        maxTokens: this.config.maxTokens,
-        stop: [
-          '</response>',
-          '</reasoning>',
-          '```',
-          '\\n',
-          'The current context',
-          'Given that',
-          'Based on',
-          'As an AI',
-        ],
-      },
+    try {
+      // Running with context args ensures the context is created if it doesn't exist.
+      // The agent's render function will handle the initial greeting if lastPlayerMessage is null.
+      const initialRun = await this.agent.run({
+        context: this.farmerContext,
+        args: { agentId: agentId }, // Pass agentId for context creation/lookup
     });
-    console.log(this.goalContext.args);
-    simpleUI.logMessage(
-      LogLevel.INFO,
-      `[${negotiationId}] Context ensured/created.`,
-    );
-    return this.currentResponse; // Return the current response if needed
 
-    // Now that the context exists, the agent's next loop *should*
-    // render the context, see lastPlayerRawMessage is null, and trigger
-    // the initial response via the output. No explicit 'run' needed here.
-    // The agent runs autonomously based on its loop interval.
+      simpleUI.logMessage(LogLevel.INFO, `[${agentId}] Initial run completed. Waiting for potential greeting output.`);
 
-    // }
-    // catch (error) {
-    //      this.logger.error(`Failed to ensure context for negotiation ${negotiationId}: ${error}`);
-    //      simpleUI.logMessage(LogLevel.ERROR, `[${negotiationId}] Failed to start negotiation internally.`);
-    // }
+      // Wait a short moment for the initial output to be processed by the handler
+      const response = await this.waitForResponse(agentId);
+      return response;
+
+    } catch (error) {
+      this.logger.error(`Failed to initialize/run farmer agent ${agentId}: ${error}`);
+      simpleUI.logMessage(LogLevel.ERROR, `[${agentId}] Failed to initialize farmer agent.`);
+      throw error; // Re-throw or handle appropriately
+    }
   }
 
   /**
-   * Handles a raw message from the player during an ongoing negotiation.
-   * Called by the game logic (e.g., chat input).
+   * Handles a message from the player directed at a specific farmer agent.
    */
   public async handlePlayerMessage(
-    negotiationId: string,
+    agentId: string,
     playerMessage: string,
   ): Promise<any> {
-    console.log('~~~~~~~~ NBW: Player message received ~~~~~~~~~~');
     simpleUI.logMessage(
       LogLevel.INFO,
-      `Service: Received player message for ${negotiationId}: "${playerMessage}"`,
+      `Service: Received player message for ${agentId}: "${playerMessage}"`,
     );
+    this.currentResponseMap.delete(agentId); // Clear previous response for this agent
 
-    // Reset current response and emit the event
-    this.currentResponse = null;
-    // Create a promise that resolves when currentResponse changes
-    const responsePromise = new Promise((resolve) => {
+    // Emit the event that the agent's input subscriber is listening for
+    playerInteractionEmitter.emit('playerSendsMessage', {
+      agentId: agentId,
+      playerMessage: playerMessage,
+    });
+
+    // Wait for the agent to process the input and produce an output
+    try {
+        const response = await this.waitForResponse(agentId, 10000); // Wait up to 10 seconds
+        return response;
+    } catch (error) {
+        simpleUI.logMessage(
+            LogLevel.ERROR,
+            `Error waiting for response from agent ${agentId}: ${error.message}`
+        );
+        // Depending on requirements, return an error message or throw
+        return { message: "Sorry, I'm having trouble thinking right now.", detectedFarmRequest: false };
+    }
+  }
+
+  /**
+   * Helper function to wait for a response for a specific agent ID.
+   */
+  private waitForResponse(agentId: string, timeoutMs: number = 5000): Promise<any> {
+    const startTime = Date.now();
+    return new Promise((resolve, reject) => {
       const checkResponse = () => {
-        if (this.currentResponse !== null) {
-          resolve(this.currentResponse);
+        if (this.currentResponseMap.has(agentId)) {
+          resolve(this.currentResponseMap.get(agentId));
+          this.currentResponseMap.delete(agentId); // Consume the response
+        } else if (Date.now() - startTime > timeoutMs) {
+          reject(new Error(`Timeout waiting for response from agent ${agentId}`));
         } else {
-          setTimeout(checkResponse, 100); // Check every 100ms
+          setTimeout(checkResponse, 100); // Check again shortly
         }
       };
       checkResponse();
     });
-    playerInteractionEmitter.emit('playerSendsMessage', {
-      uniqueNegotiationId: negotiationId,
-      playerMessage: playerMessage,
-    });
-
-    // Wait for the response with a timeout
-    try {
-      const response = await Promise.race([
-        responsePromise,
-        new Promise((_, reject) =>
-          setTimeout(() => reject(new Error('Response timeout')), 10000),
-        ),
-      ]);
-      return response;
-    } catch (error) {
-      simpleUI.logMessage(
-        LogLevel.ERROR,
-        `Timeout waiting for response in negotiation ${negotiationId}: ${error.message}`,
-      );
-      throw error;
-    }
   }
 
   // Optional: Method to gracefully stop the agent
   public stopAgent(): void {
     this.agent.stop();
-    simpleUI.logMessage(LogLevel.INFO, 'Hagni agent stopped.');
-  }
-
-  public async getAgentFarmData(
-    walletAddress: string,
-  ): Promise<AgentPlayerData> {
-    return this.agentPlayerDataModel.findOne({ walletAddress }).exec();
-  }
-
-  async createAgentFarmData(
-    createAgentFarmDto: CreateAgentFarmDto,
-  ): Promise<AgentPlayerData> {
-    const createdAgentFarm = new this.agentPlayerDataModel(createAgentFarmDto);
-    return createdAgentFarm.save();
-  }
-
-  async updateAgentFarmData(
-    walletAddress: string,
-    updateAgentFarmDto: UpdateAgentFarmDto,
-  ): Promise<AgentPlayerData> {
-    return this.agentPlayerDataModel
-      .findOneAndUpdate(
-        { walletAddress },
-        { $set: updateAgentFarmDto },
-        { new: true },
-      )
-      .exec();
-  }
-
-  async deleteAgentFarmData(walletAddress: string): Promise<AgentPlayerData> {
-    return this.agentPlayerDataModel.findOneAndDelete({ walletAddress }).exec();
+    simpleUI.logMessage(LogLevel.INFO, 'Farmer AI agent stopped.');
   }
 }
