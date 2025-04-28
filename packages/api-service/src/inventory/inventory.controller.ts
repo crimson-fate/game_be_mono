@@ -1,4 +1,4 @@
-import { Controller, Post, Get, Put, Delete, Body } from '@nestjs/common';
+import { Controller, Post, Get, Put, Delete, Body, Query } from '@nestjs/common';
 import { InventoryService } from './inventory.service';
 import {
   CreateGameInventoryDto,
@@ -23,7 +23,7 @@ export class InventoryController {
   @ApiOperation({ summary: 'Get inventory by wallet address' })
   @ApiResponse({ status: 200, description: 'Returns the inventory' })
   @ApiResponse({ status: 404, description: 'Inventory not found' })
-  async get(@Body() dto: GetGameInventoryDto) {
+  async get(@Query() dto: GetGameInventoryDto) {
     return this.inventoryService.get(dto);
   }
 
