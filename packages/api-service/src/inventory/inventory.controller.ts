@@ -1,6 +1,10 @@
 import { Controller, Post, Get, Put, Delete, Body } from '@nestjs/common';
 import { InventoryService } from './inventory.service';
-import { CreateGameInventoryDto, UpdateGameInventoryDto, GetGameInventoryDto } from './dto/inventory.dto';
+import {
+  CreateGameInventoryDto,
+  UpdateGameInventoryDto,
+  GetGameInventoryDto,
+} from './dto/inventory.dto';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 @Controller('inventory')
@@ -37,4 +41,4 @@ export class InventoryController {
   async delete(@Body() dto: GetGameInventoryDto) {
     return this.inventoryService.delete(dto);
   }
-} 
+}

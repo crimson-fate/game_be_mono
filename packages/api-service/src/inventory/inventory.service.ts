@@ -2,8 +2,15 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
-import { CreateGameInventoryDto, UpdateGameInventoryDto, GetGameInventoryDto } from './dto/inventory.dto';
-import { InventoryUser, InventoryUserDocument } from '@app/shared/models/schema/inventory-user.schema';
+import {
+  CreateGameInventoryDto,
+  UpdateGameInventoryDto,
+  GetGameInventoryDto,
+} from './dto/inventory.dto';
+import {
+  InventoryUser,
+  InventoryUserDocument,
+} from '@app/shared/models/schema/inventory-user.schema';
 
 @Injectable()
 export class InventoryService {
@@ -13,6 +20,12 @@ export class InventoryService {
   ) {}
 
   async create(dto: CreateGameInventoryDto): Promise<InventoryUser> {
+    const inventoryExist = await this.inventoryModel.findOne({
+      walletAddress: dto.walletAddress,
+    });
+    if (inventoryExist) {
+      return inventoryExist;
+    }
     const inventory = new this.inventoryModel({
       walletAddress: dto.walletAddress,
       inventory: dto.inventory,
@@ -26,7 +39,9 @@ export class InventoryService {
   }
 
   async get(dto: GetGameInventoryDto): Promise<InventoryUser> {
-    const inventory = await this.inventoryModel.findOne({ walletAddress: dto.walletAddress });
+    const inventory = await this.inventoryModel.findOne({
+      walletAddress: dto.walletAddress,
+    });
     if (!inventory) {
       throw new NotFoundException('Inventory not found');
     }
@@ -51,9 +66,11 @@ export class InventoryService {
   }
 
   async delete(dto: GetGameInventoryDto): Promise<void> {
-    const result = await this.inventoryModel.deleteOne({ walletAddress: dto.walletAddress });
+    const result = await this.inventoryModel.deleteOne({
+      walletAddress: dto.walletAddress,
+    });
     if (result.deletedCount === 0) {
       throw new NotFoundException('Inventory not found');
     }
   }
-} 
+}
