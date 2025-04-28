@@ -3,21 +3,24 @@ import { InjectModel } from '@nestjs/mongoose';
 import { walletAddressDto } from './dto/WalletAddress.dto';
 import { Model } from 'mongoose';
 import { Seasons } from '@app/shared/models/schema/season.schema';
-import { SeasonStats } from '@app/shared/models/schema/season-stats.schema';
+import { Players } from '@app/shared/models/schema/player.schema';
 import { PlayerProgress } from '@app/shared/models/schema/player-progress.schema';
-import { formattedContractAddress } from '@app/shared/utils/formatAddress';
 import { CompleteWaveDto } from './dto/CompleteWave.dto';
 import { SeasonIdDto } from './dto/SeasonId.dto';
+import { v1 as uuidv1 } from 'uuid';
+import { PlayersService } from '../players/players.service';
+import { PlayerProgressDto } from './dto/PlayerProgress.dto';
 
 @Injectable()
 export class DungeonService {
   constructor(
     @InjectModel(Seasons.name)
     private readonly seasonModel: Model<Seasons>,
-    @InjectModel(SeasonStats.name)
-    private readonly seasonStatsModel: Model<SeasonStats>,
+    @InjectModel(Players.name)
+    private readonly PlayersModel: Model<Players>,
     @InjectModel(PlayerProgress.name)
     private readonly playerProgressModel: Model<PlayerProgress>,
+    private readonly playerService: PlayersService,
   ) {}
 
   async getCurrentSeason() {
@@ -33,40 +36,124 @@ export class DungeonService {
   async startNewGame(query: walletAddressDto) {
     const { walletAddress } = query;
 
-    const formattedAddress = formattedContractAddress(walletAddress);
     const now = Date.now();
     const currentSeason = await this.seasonModel.findOne({
       startDate: { $lte: now },
       endDate: { $gt: now },
     });
 
+    const player = await this.playerService.getOrCreeatePlayer(walletAddress);
+    await this.playerProgressModel.updateMany(
+      {
+        player: player._id,
+        season: currentSeason._id,
+        endTime: 0,
+      },
+      { $set: { endTime: now } },
+    );
+
     const newProgress = new this.playerProgressModel({
-      player: formattedAddress,
+      player: player,
       wave: 1,
+      gameId: uuidv1(),
       season: currentSeason,
       startTime: now,
       endTime: 0,
       isCompleted: false,
     });
 
-    return newProgress.save();
+    const progress = await (
+      await newProgress.save()
+    ).populate(['player', 'season']);
+    const result: PlayerProgressDto = {
+      player: {
+        address: progress.player.address,
+        username: progress.player.username,
+      },
+      gameId: progress.gameId.toString(),
+      wave: progress.wave,
+      season: {
+        id: progress.season._id,
+        name: progress.season.name,
+        startDate: progress.season.startDate,
+        endDate: progress.season.endDate,
+      },
+      startTime: progress.startTime,
+      endTime: progress.endTime,
+      isCompleted: progress.isCompleted,
+    };
+    return result;
   }
 
-  async completeWave(query: CompleteWaveDto) {
-    const { walletAddress, progressId } = query;
+  async getCurrentGame(query: walletAddressDto) {
+    const { walletAddress } = query;
 
-    const formattedAddress = formattedContractAddress(walletAddress);
+    const player = await this.playerService.getOrCreeatePlayer(walletAddress);
+
     const now = Date.now();
     const currentSeason = await this.seasonModel.findOne({
       startDate: { $lte: now },
       endDate: { $gt: now },
     });
 
-    const playerProgress = await this.playerProgressModel.findOne({
-      _id: progressId,
-      player: formattedAddress,
-      season: currentSeason,
+    const playerProgress = await this.playerProgressModel
+      .findOne(
+        {
+          player: player._id,
+          season: currentSeason._id,
+          endTime: 0,
+        },
+        {},
+        { sort: { wave: -1 } },
+      )
+      .populate(['player', 'season']);
+
+    console.log(playerProgress);
+
+    if (!playerProgress) {
+      return null;
+    }
+
+    const result: PlayerProgressDto = {
+      player: {
+        address: playerProgress.player.address,
+        username: playerProgress.player.username,
+      },
+      gameId: playerProgress.gameId.toString(),
+      wave: playerProgress.wave,
+      season: {
+        id: playerProgress.season._id,
+        name: playerProgress.season.name,
+        startDate: playerProgress.season.startDate,
+        endDate: playerProgress.season.endDate,
+      },
+      startTime: playerProgress.startTime,
+      endTime: playerProgress.endTime,
+      isCompleted: playerProgress.isCompleted,
+    };
+    return result;
+  }
+
+  async completeWave(query: CompleteWaveDto) {
+    const { walletAddress, gameId } = query;
+
+    const player = await this.playerService.getOrCreeatePlayer(walletAddress);
+
+    const now = Date.now();
+    const currentSeason = await this.seasonModel.findOne({
+      startDate: { $lte: now },
+      endDate: { $gt: now },
     });
+
+    const playerProgress = await this.playerProgressModel.findOne(
+      {
+        gameId,
+        player: player._id,
+        season: currentSeason._id,
+      },
+      {},
+      { sort: { wave: -1 } },
+    );
 
     if (!playerProgress) {
       throw new HttpException(
@@ -86,42 +173,55 @@ export class DungeonService {
     playerProgress.endTime = now;
     await playerProgress.save();
 
-    await this.seasonStatsModel.findOneAndUpdate(
-      { seasonId: currentSeason._id, player: formattedAddress },
-      {
-        $inc: {
-          totalWave: 1,
-        },
-      },
-      { new: true, upsert: true },
-    );
-
     const newProgress = new this.playerProgressModel({
-      player: formattedAddress,
+      player: player,
       wave: playerProgress.wave + 1,
+      gameId,
       season: currentSeason,
       startTime: now,
       endTime: 0,
       isCompleted: false,
     });
-    return await newProgress.save();
+    const progress = await newProgress.save();
+    const result: PlayerProgressDto = {
+      player: {
+        address: progress.player.address,
+        username: progress.player.username,
+      },
+      gameId: progress.gameId.toString(),
+      wave: progress.wave,
+      season: {
+        id: progress.season._id,
+        name: progress.season.name,
+        startDate: progress.season.startDate,
+        endDate: progress.season.endDate,
+      },
+      startTime: progress.startTime,
+      endTime: progress.endTime,
+      isCompleted: progress.isCompleted,
+    };
+    return result;
   }
 
   async endWave(query: CompleteWaveDto) {
-    const { walletAddress, progressId } = query;
+    const { walletAddress, gameId } = query;
 
-    const formattedAddress = formattedContractAddress(walletAddress);
+    const player = await this.playerService.getOrCreeatePlayer(walletAddress);
     const now = Date.now();
     const currentSeason = await this.seasonModel.findOne({
       startDate: { $lte: now },
       endDate: { $gt: now },
     });
 
-    const playerProgress = await this.playerProgressModel.findOne({
-      _id: progressId,
-      player: formattedAddress,
-      season: currentSeason,
-    });
+    const playerProgress = await this.playerProgressModel.findOne(
+      {
+        gameId,
+        player: player._id,
+        season: currentSeason._id,
+      },
+      {},
+      { sort: { wave: -1 } },
+    );
 
     if (!playerProgress) {
       throw new HttpException(
@@ -138,7 +238,27 @@ export class DungeonService {
     }
 
     playerProgress.endTime = now;
-    return await playerProgress.save();
+    const progress = await (
+      await playerProgress.save()
+    ).populate(['player', 'season']);
+    const result: PlayerProgressDto = {
+      player: {
+        address: progress.player.address,
+        username: progress.player.username,
+      },
+      gameId: progress.gameId.toString(),
+      wave: progress.wave,
+      season: {
+        id: progress.season._id,
+        name: progress.season.name,
+        startDate: progress.season.startDate,
+        endDate: progress.season.endDate,
+      },
+      startTime: progress.startTime,
+      endTime: progress.endTime,
+      isCompleted: progress.isCompleted,
+    };
+    return result;
   }
 
   async getLeaderboard(query: SeasonIdDto) {
@@ -149,13 +269,79 @@ export class DungeonService {
       throw new HttpException('Season not found', HttpStatus.NOT_FOUND);
     }
 
-    const leaderboard = await this.seasonStatsModel.find(
+    const leaderboard = await this.playerProgressModel.aggregate([
       {
-        seasonId: seasonId,
+        $match: {
+          season: seasonDocument._id,
+          isCompleted: true,
+        },
       },
-      {},
-      { sort: { totalWave: -1 }, limit: 10 },
-    );
+      {
+        $group: {
+          _id: {
+            player: '$player',
+            gameId: '$gameId',
+          },
+          totalWave: { $sum: 1 },
+          startTime: { $first: '$startTime' },
+          endTime: { $last: '$endTime' },
+        },
+      },
+      {
+        $addFields: { duration: { $subtract: ['$endTime', '$startTime'] } },
+      },
+      {
+        $group: {
+          _id: '$_id.player',
+          game: {
+            $top: {
+              sortBy: { totalWave: -1, duration: 1 },
+              output: {
+                gameId: '$_id.gameId',
+                totalWave: '$totalWave',
+                startTime: '$startTime',
+                endTime: '$endTime',
+                duration: '$duration',
+              },
+            },
+          },
+        },
+      },
+      {
+        $sort: {
+          'game.totalWave': -1,
+          'game.duration': 1,
+        },
+      },
+      {
+        $limit: 50,
+      },
+      {
+        $lookup: {
+          from: 'players',
+          localField: '_id',
+          foreignField: '_id',
+          as: 'player',
+        },
+      },
+      {
+        $unwind: '$player',
+      },
+      {
+        $project: {
+          _id: 0,
+          player: {
+            address: '$player.address',
+            username: '$player.username',
+          },
+          gameId: '$game.gameId',
+          totalWave: '$game.totalWave',
+          startTime: '$game.startTime',
+          endTime: '$game.endTime',
+          duration: '$game.duration',
+        },
+      },
+    ]);
 
     return leaderboard;
   }
