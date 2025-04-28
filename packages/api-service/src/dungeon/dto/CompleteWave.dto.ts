@@ -1,7 +1,7 @@
 import { walletAddressDto } from './WalletAddress.dto';
-import { IsMongoId } from 'class-validator';
+import { IsUUID } from 'class-validator';
 
 export class CompleteWaveDto extends walletAddressDto {
-  @IsMongoId()
-  progressId: string;
+  @IsUUID()
+  gameId: string;
 }

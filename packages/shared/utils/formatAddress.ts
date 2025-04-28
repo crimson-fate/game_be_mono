@@ -10,3 +10,11 @@ export const formattedContractAddress = (contractAddress: string) => {
 
   return contractAddress.toLowerCase().trim();
 };
+
+export const unformattedContractAddress = (contractAddress: string) => {
+  while (contractAddress.startsWith('0x0')) {
+    contractAddress = contractAddress.trim().replace('0x0', '0x');
+  }
+
+  return contractAddress.toLowerCase().trim();
+};
