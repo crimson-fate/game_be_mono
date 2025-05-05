@@ -15,6 +15,7 @@ import configuration from '@app/shared/configuration';
 import { FallbackController } from './fallback.controller';
 import { InventoryModule } from './inventory/inventory.module';
 import { DungeonModule } from './dungeon/dungeon.module';
+import { PlayerResourceModule } from './player-resource/player-resource.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { DungeonModule } from './dungeon/dungeon.module';
     ZoneRewardModule,
     InventoryModule,
     DungeonModule,
+    PlayerResourceModule,
   ],
   controllers: [FallbackController],
 })

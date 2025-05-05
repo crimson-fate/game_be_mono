@@ -1,4 +1,12 @@
-import { Controller, Post, Get, Put, Delete, Body, Query } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Get,
+  Put,
+  Delete,
+  Body,
+  Query,
+} from '@nestjs/common';
 import { InventoryService } from './inventory.service';
 import {
   CreateGameInventoryDto,
