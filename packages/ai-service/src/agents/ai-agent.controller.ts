@@ -11,7 +11,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { AiAgentService } from './ai-agent.service';
-import { ChatDto, ChatResponseDto } from './dto/chat.dto';
+import { ChatDto, ChatResponseDto, WalletDto } from './dto/chat.dto';
 import { CreateAgentFarmDto, UpdateAgentFarmDto } from './dto/agent-farm.dto';
 import {
   ApiOperation,
@@ -197,7 +197,7 @@ export class AiAgentController {
     status: 200,
     description: 'Chat ended successfully',
   })
-  async endChat(@Body() body: ChatDto): Promise<any> {
+  async endChat(@Body() body: WalletDto): Promise<any> {
     try {
       console.log('Ending chat...');
       const result = await this.aiAgentService.stopAgent();
@@ -299,7 +299,7 @@ export class AiAgentController {
     status: 200,
     description: 'Negotiation ended successfully',
   })
-  async endNegotiation(@Body() body: ChatDto): Promise<any> {
+  async endNegotiation(@Body() body: WalletDto): Promise<any> {
     try {
       console.log('Ending negotiation...');
       const data = await this.aiDealerAgentService.getAgentFarmData(body.walletAddress);

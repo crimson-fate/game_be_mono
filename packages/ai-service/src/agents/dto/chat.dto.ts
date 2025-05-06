@@ -18,6 +18,16 @@ export class ChatDto {
   walletAddress?: string;
 }
 
+export class WalletDto {
+  @ApiProperty({
+    description: 'Wallet address of the user',
+    example: '0x1234567890abcdef1234567890abcdef12345678',
+    required: false,
+  })
+  @IsString()
+  walletAddress?: string;
+}
+
 // DTO for the response - can be text or operation
 export class ChatResponseDto {
   @ApiProperty({
