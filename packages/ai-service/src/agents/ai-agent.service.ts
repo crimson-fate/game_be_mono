@@ -30,10 +30,7 @@ const playerInteractionEmitter = new EventEmitter();
 
 // Initialize the UI (if not done elsewhere)
 // simpleUI.initializeUI(); // Assuming it's initialized where the app starts
-simpleUI.logMessage(
-  LogLevel.INFO,
-  'Starting Simple Farmer AI Agent...',
-);
+simpleUI.logMessage(LogLevel.INFO, 'Starting Simple Farmer AI Agent...');
 
 // --- Farmer Agent Definition ---
 
@@ -145,7 +142,10 @@ Currently Farming: {{isFarming}}
           }),
           // Subscribe to the event emitter
           subscribe: (send) => {
-            const listener = (messageData: { agentId: string, playerMessage: string }) => {
+            const listener = (messageData: {
+              agentId: string;
+              playerMessage: string;
+            }) => {
               simpleUI.logMessage(
                 LogLevel.DEBUG,
                 `[Input ${messageData.agentId}] Received player message event.`,
@@ -157,9 +157,10 @@ Currently Farming: {{isFarming}}
 
               // Target the correct context instance using agentId
               const contextArgs = { agentId: messageData.agentId };
-              const inputData = { // Match the input schema
-                  agentId: messageData.agentId,
-                  playerMessage: messageData.playerMessage
+              const inputData = {
+                // Match the input schema
+                agentId: messageData.agentId,
+                playerMessage: messageData.playerMessage,
               };
 
               // Send the data to the agent, targeting the specific context
@@ -168,7 +169,8 @@ Currently Farming: {{isFarming}}
 
             playerInteractionEmitter.on('playerSendsMessage', listener);
             // Return cleanup function
-            return () => playerInteractionEmitter.off('playerSendsMessage', listener);
+            return () =>
+              playerInteractionEmitter.off('playerSendsMessage', listener);
           },
           // Handler to update state *before* agent thinks
           handler: async (data, ctx) => {
@@ -181,15 +183,16 @@ Currently Farming: {{isFarming}}
                 `[Input Handler ${data.agentId}] Updated lastPlayerMessage.`,
               );
             } else {
-                 simpleUI.logMessage(
-                    LogLevel.WARN,
-                    `[Input Handler ${data.agentId}] State mismatch or context not found for agentId when updating message.`
-                );
+              simpleUI.logMessage(
+                LogLevel.WARN,
+                `[Input Handler ${data.agentId}] State mismatch or context not found for agentId when updating message.`,
+              );
             }
             // Input handlers should return the data for logging/processing
             return { data: data };
           },
-          format: (ref) => `[InputRef ${ref.data.agentId}] Player Message: "${ref.data.playerMessage}"`,
+          format: (ref) =>
+            `[InputRef ${ref.data.agentId}] Player Message: "${ref.data.playerMessage}"`,
           context: this.farmerContext, // Associate input with the farmer context
         }),
       },
@@ -203,8 +206,14 @@ Currently Farming: {{isFarming}}
               description:
                 "Sends the Farmer AI's response to the player and potentially updates the farming state.",
               schema: z.object({
-                message: z.string().describe('The conversational message for the player.'),
-                detectedFarmRequest: z.boolean().describe('Whether the AI detected a request to start farming in the player\'s last message.'),
+                message: z
+                  .string()
+                  .describe('The conversational message for the player.'),
+                detectedFarmRequest: z
+                  .boolean()
+                  .describe(
+                    "Whether the AI detected a request to start farming in the player's last message.",
+                  ),
               }),
               handler: async (data, ctx) => {
                 const state = ctx.memory as FarmerAgentState;
@@ -218,12 +227,15 @@ Currently Farming: {{isFarming}}
 
                 // Log the AI's response
                 simpleUI.logAgentAction(
-                    'Farmer Response',
-                    `Farmer ${agentId}: ${message}`
+                  'Farmer Response',
+                  `Farmer ${agentId}: ${message}`,
                 );
 
                 // Store the response so the service can retrieve it
-                this.currentResponseMap.set(agentId, { message, detectedFarmRequest });
+                this.currentResponseMap.set(agentId, {
+                  message,
+                  detectedFarmRequest,
+                });
 
                 // --- Update State based on Output ---
                 if (detectedFarmRequest && !state.isFarming) {
@@ -234,12 +246,12 @@ Currently Farming: {{isFarming}}
                   );
                   // In a real game, you might trigger the actual farming logic here
                 } else if (!detectedFarmRequest && state.isFarming) {
-                    // Optional: Add logic here if the AI should *stop* farming based on conversation
-                    // For now, it keeps farming until explicitly told otherwise or reset.
-                    simpleUI.logMessage(
-                        LogLevel.DEBUG,
-                        `[Output Handler ${agentId}] AI is still farming. No state change.`
-                    );
+                  // Optional: Add logic here if the AI should *stop* farming based on conversation
+                  // For now, it keeps farming until explicitly told otherwise or reset.
+                  simpleUI.logMessage(
+                    LogLevel.DEBUG,
+                    `[Output Handler ${agentId}] AI is still farming. No state change.`,
+                  );
                 }
 
                 // State changes are automatically persisted by the framework within the handler
@@ -255,8 +267,13 @@ Currently Farming: {{isFarming}}
     });
 
     // Start the agent's background processing loop
-    this.agent.start().catch(err => this.logger.error("Failed to start agent loop:", err));
-    simpleUI.logMessage(LogLevel.INFO, 'Farmer AI agent background loop started.');
+    this.agent
+      .start()
+      .catch((err) => this.logger.error('Failed to start agent loop:', err));
+    simpleUI.logMessage(
+      LogLevel.INFO,
+      'Farmer AI agent background loop started.',
+    );
   }
 
   /**
@@ -264,7 +281,10 @@ Currently Farming: {{isFarming}}
    * Call this when the player first interacts with a specific farmer.
    */
   public async initializeFarmerAgent(agentId: string): Promise<any> {
-    simpleUI.logMessage(LogLevel.INFO, `Service: Initializing farmer agent: ${agentId}`);
+    simpleUI.logMessage(
+      LogLevel.INFO,
+      `Service: Initializing farmer agent: ${agentId}`,
+    );
     this.currentResponseMap.delete(agentId); // Clear previous response
 
     try {
@@ -273,17 +293,24 @@ Currently Farming: {{isFarming}}
       const initialRun = await this.agent.run({
         context: this.farmerContext,
         args: { agentId: agentId }, // Pass agentId for context creation/lookup
-    });
+      });
 
-      simpleUI.logMessage(LogLevel.INFO, `[${agentId}] Initial run completed. Waiting for potential greeting output.`);
+      simpleUI.logMessage(
+        LogLevel.INFO,
+        `[${agentId}] Initial run completed. Waiting for potential greeting output.`,
+      );
 
       // Wait a short moment for the initial output to be processed by the handler
       const response = await this.waitForResponse(agentId);
       return response;
-
     } catch (error) {
-      this.logger.error(`Failed to initialize/run farmer agent ${agentId}: ${error}`);
-      simpleUI.logMessage(LogLevel.ERROR, `[${agentId}] Failed to initialize farmer agent.`);
+      this.logger.error(
+        `Failed to initialize/run farmer agent ${agentId}: ${error}`,
+      );
+      simpleUI.logMessage(
+        LogLevel.ERROR,
+        `[${agentId}] Failed to initialize farmer agent.`,
+      );
       throw error; // Re-throw or handle appropriately
     }
   }
@@ -309,22 +336,28 @@ Currently Farming: {{isFarming}}
 
     // Wait for the agent to process the input and produce an output
     try {
-        const response = await this.waitForResponse(agentId, 10000); // Wait up to 10 seconds
-        return response;
+      const response = await this.waitForResponse(agentId, 10000); // Wait up to 10 seconds
+      return response;
     } catch (error) {
-        simpleUI.logMessage(
-            LogLevel.ERROR,
-            `Error waiting for response from agent ${agentId}: ${error.message}`
-        );
-        // Depending on requirements, return an error message or throw
-        return { message: "Sorry, I'm having trouble thinking right now.", detectedFarmRequest: false };
+      simpleUI.logMessage(
+        LogLevel.ERROR,
+        `Error waiting for response from agent ${agentId}: ${error.message}`,
+      );
+      // Depending on requirements, return an error message or throw
+      return {
+        message: "Sorry, I'm having trouble thinking right now.",
+        detectedFarmRequest: false,
+      };
     }
   }
 
   /**
    * Helper function to wait for a response for a specific agent ID.
    */
-  private waitForResponse(agentId: string, timeoutMs: number = 5000): Promise<any> {
+  private waitForResponse(
+    agentId: string,
+    timeoutMs: number = 5000,
+  ): Promise<any> {
     const startTime = Date.now();
     return new Promise((resolve, reject) => {
       const checkResponse = () => {
@@ -332,7 +365,9 @@ Currently Farming: {{isFarming}}
           resolve(this.currentResponseMap.get(agentId));
           this.currentResponseMap.delete(agentId); // Consume the response
         } else if (Date.now() - startTime > timeoutMs) {
-          reject(new Error(`Timeout waiting for response from agent ${agentId}`));
+          reject(
+            new Error(`Timeout waiting for response from agent ${agentId}`),
+          );
         } else {
           setTimeout(checkResponse, 100); // Check again shortly
         }
