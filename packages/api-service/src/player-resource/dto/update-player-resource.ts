@@ -26,8 +26,17 @@ class SoulPieceResourceDto {
   @IsOptional() @IsNumber() @Type(() => Number) Pollute_Soul?: number;
 }
 
-export class UpdatePlayerResourceDto {
-  @IsOptional() dicCommonResource?: CommonResourceDto;
+class EnergyResourceDataDto {
+  @IsOptional() nextTimeEnergy?: Date;
+  @IsOptional() @IsNumber() @Type(() => Number) adsCount?: number;
+}
 
+export class PlayerResourceDto {
+  @IsOptional() dicCommonResource?: CommonResourceDto;
   @IsOptional() dicSoulPieceResource?: SoulPieceResourceDto;
+  @IsOptional() energyResourceData?: EnergyResourceDataDto;
+}
+
+export class UpdatePlayerResourceDto {
+  @IsOptional() resource?: PlayerResourceDto;
 }
