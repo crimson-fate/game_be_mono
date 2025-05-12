@@ -10,11 +10,12 @@ import {
   Put,
 } from '@nestjs/common';
 import { AiAgentService } from './ai-agent.service';
-import { ChatDto } from './dto/chat.dto';
+import { ChatDto, FeedbackDto } from './dto/chat.dto';
 import { CreateAgentFarmDto, UpdateAgentFarmDto } from './dto/agent-farm.dto';
 import { ApiOperation, ApiResponse, ApiTags, ApiParam } from '@nestjs/swagger';
-import { AiDealerAgentService } from './ai-dealer-agent.service';
+import { AiDealerAgentService } from './services/ai-dealer-agent.service';
 import { ChatHistoryService } from './services/chat-history.service';
+import { AiFeedbackService } from './services/ai-feedback.service';
 
 @ApiTags('AI Agent')
 @Controller('ai')
@@ -22,89 +23,9 @@ export class AiAgentController {
   constructor(
     private readonly aiAgentService: AiAgentService,
     private readonly aiDealerAgentService: AiDealerAgentService,
+    private readonly aiFeedBackService: AiFeedbackService,
     private readonly chatHistoryService: ChatHistoryService,
   ) {}
-
-  // @Post('chat')
-  // @ApiOperation({ summary: 'Chat with AI agent Kael' })
-  // @ApiResponse({
-  //   status: 200,
-  //   description: "Returns Kael's response or operation details",
-  //   type: ChatResponseDto,
-  // })
-  // @ApiResponse({
-  //   status: 429,
-  //   description: 'Rate limit exceeded',
-  // })
-  // async chatWithKael(@Body() body: ChatDto): Promise<ChatResponseDto> {
-  //   try {
-  //     const result = await this.aiDealerAgentService.askKael(
-  //       body.message,
-  //       body.walletAddress || 'unknown',
-  //     );
-
-  //     // Handle different response types from the service
-  //     if (typeof result === 'string') {
-  //       // Simple text response
-  //       return { content: result };
-  //     } else {
-  //       // Dungeon operation response
-  //       return {
-  //         content: `Executing ${result.type} operation on dungeon ${result.dungeonId}`,
-  //         operationType: result.type,
-  //         dungeonId: result.dungeonId,
-  //         details: result.details,
-  //       };
-  //     }
-  //   } catch (error) {
-  //     if (error.message.includes('Rate limit exceeded')) {
-  //       throw new HttpException(error.message, HttpStatus.TOO_MANY_REQUESTS);
-  //     }
-  //     throw new HttpException(
-  //       'An error occurred while processing your request',
-  //       HttpStatus.INTERNAL_SERVER_ERROR,
-  //     );
-  //   }
-  // }
-
-  // @Get('chat/history')
-  // @ApiOperation({ summary: 'Get chat history for a user' })
-  // @ApiQuery({ name: 'walletAddress', required: true })
-  // @ApiQuery({ name: 'limit', required: false })
-  // @ApiQuery({ name: 'skip', required: false })
-  // @ApiQuery({ name: 'isOperation', required: false })
-  // @ApiQuery({ name: 'dungeonId', required: false })
-  // @ApiResponse({
-  //   status: 200,
-  //   description: 'Returns chat history for the specified user',
-  //   type: [ChatHistoryResponseDto],
-  // })
-  // async getChatHistory(
-  //   @Query() query: ChatHistoryQueryDto,
-  // ): Promise<ChatHistoryResponseDto[]> {
-  //   const { walletAddress, limit, skip, dungeonId } = query;
-
-  //   let history;
-  //   if (dungeonId) {
-  //     history = await this.aiDealerAgentService.getDungeonChatHistory(
-  //       walletAddress,
-  //       dungeonId,
-  //       limit,
-  //       skip,
-  //     );
-  //   } else {
-  //     history = await this.aiDealerAgentService.getChatHistory(walletAddress, limit);
-  //   }
-
-  //   return history.map((chat) => ({
-  //     walletAddress: chat.walletAddress,
-  //     message: chat.message,
-  //     response: chat.response,
-  //     isOperation: chat.isOperation,
-  //     operationDetails: chat.operationDetails,
-  //     createdAt: chat.createdAt,
-  //   }));
-  // }
 
   calculateItemCounts(duration: number) {
     const durationInHours = duration / 3600;
@@ -206,7 +127,7 @@ export class AiAgentController {
     status: 200,
     description: 'Chat ended successfully',
   })
-  async endChat(@Body() body: ChatDto): Promise<any> {
+  async endChat(): Promise<any> {
     try {
       console.log('Ending chat...');
       const result = await this.aiAgentService.stopAgent();
@@ -469,6 +390,18 @@ export class AiAgentController {
         'An error occurred while processing your request',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
+    }
+  }
+
+  @Post('/feedbackGame')
+  @ApiOperation({ summary: 'Chat with the agent' })
+  async storeUserFeedback(@Body() body: FeedbackDto) {
+    try {
+      await this.aiFeedBackService.initializeAiFeedbackAgent(
+        ` ${body.walletAddress}-feedback`,
+      );
+    } catch (error) {
+      throw new HttpException('Store FeedBack Error ', 500);
     }
   }
 }

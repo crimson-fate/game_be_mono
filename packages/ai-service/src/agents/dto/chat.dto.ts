@@ -47,3 +47,21 @@ export class ChatResponseDto {
   })
   details?: Record<string, any>;
 }
+
+export class FeedbackDto {
+  @ApiProperty({
+    description: 'Wallet address of the user',
+    example: '0x1234567890abcdef1234567890abcdef12345678',
+    required: false,
+  })
+  @IsString()
+  walletAddress?: string;
+
+  @ApiProperty({
+    description: 'Message to send feedback to the AI agent',
+    example: 'Your Game Look Greate!',
+  })
+  @IsString()
+  @MinLength(1)
+  feedback: string;
+}

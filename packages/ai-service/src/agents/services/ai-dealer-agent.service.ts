@@ -3,10 +3,7 @@ import {
   createDreams,
   context,
   render,
-  action, // We might still need actions like endNegotiation
-  validateEnv,
   LogLevel,
-  type Agent,
   createMemoryStore,
   // createVectorStore, // Optional, depends on complexity needed
   extension,
@@ -18,12 +15,12 @@ import {
 // import { cliExtension } from "@daydreamsai/cli"; // Can remove if not using CLI directly
 import { z } from 'zod';
 import { groq } from '@ai-sdk/groq';
-import { simpleUI } from './simple-ui/simple-ui'; // Assuming simple-ui.ts exists
-import { AiAgentConfigService } from '../config/ai-agent.config';
+import { simpleUI } from '../simple-ui/simple-ui'; // Assuming simple-ui.ts exists
+import { AiAgentConfigService } from '../../config/ai-agent.config';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { AgentPlayerData } from '@app/shared/models/schema/agent-player-data.schema';
-import { CreateAgentFarmDto, UpdateAgentFarmDto } from './dto/agent-farm.dto';
+import { CreateAgentFarmDto, UpdateAgentFarmDto } from '../dto/agent-farm.dto';
 
 import { EventEmitter } from 'events'; // Using EventEmitter for simulating input
 
@@ -86,9 +83,7 @@ export class AiDealerAgentService {
         // These are needed to *start* the context
         baseValue: z.number().positive().optional(),
         rarityBonus: z.record(z.string(), z.number().nonnegative()).optional(),
-        itemCountsByRarity: z
-          .record(z.string(), z.number().int())
-          .optional(),
+        itemCountsByRarity: z.record(z.string(), z.number().int()).optional(),
         minSellRatio: z.number().min(0).max(1).optional(),
         maxDiscount: z.number().min(0).max(1).optional(),
       }),

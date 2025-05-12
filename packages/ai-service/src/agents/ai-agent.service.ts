@@ -3,16 +3,13 @@ import {
   createDreams,
   context,
   render,
-  validateEnv,
   LogLevel,
   type Agent,
   createMemoryStore,
   extension,
   output,
   input,
-  type AnyAgent,
   createVectorStore,
-  MemoryStore, // Keep vector store if needed for potential future memory
 } from '@daydreamsai/core';
 import { z } from 'zod';
 import { groq } from '@ai-sdk/groq';
@@ -290,7 +287,7 @@ Currently Farming: {{isFarming}}
     try {
       // Running with context args ensures the context is created if it doesn't exist.
       // The agent's render function will handle the initial greeting if lastPlayerMessage is null.
-      const initialRun = await this.agent.run({
+      await this.agent.run({
         context: this.farmerContext,
         args: { agentId: agentId }, // Pass agentId for context creation/lookup
       });
