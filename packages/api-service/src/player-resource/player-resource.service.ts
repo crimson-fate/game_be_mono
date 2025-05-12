@@ -27,8 +27,14 @@ export class PlayerResourceService {
 
       const newPlayerResource = new this.playerResourceModel({
         walletAddress,
-        dicCommonResource: {},
+        dicCommonResource: {
+          Energy: 20,
+        },
         dicSoulPieceResource: {},
+        energyResourceData: {
+          nextTimeEnergy: Date.now(),
+          adsCount: 0,
+        },
       });
 
       return await newPlayerResource.save();
@@ -51,17 +57,24 @@ export class PlayerResourceService {
 
     const updateObject: any = {};
 
-    if (updateDto.dicCommonResource) {
-      for (const key in updateDto.dicCommonResource) {
+    if (updateDto.resource.dicCommonResource) {
+      for (const key in updateDto.resource.dicCommonResource) {
         updateObject[`dicCommonResource.${key}`] =
-          updateDto.dicCommonResource[key];
+          updateDto.resource.dicCommonResource[key];
       }
     }
 
-    if (updateDto.dicSoulPieceResource) {
-      for (const key in updateDto.dicSoulPieceResource) {
+    if (updateDto.resource.dicSoulPieceResource) {
+      for (const key in updateDto.resource.dicSoulPieceResource) {
         updateObject[`dicSoulPieceResource.${key}`] =
-          updateDto.dicSoulPieceResource[key];
+          updateDto.resource.dicSoulPieceResource[key];
+      }
+    }
+
+    if (updateDto.resource.energyResourceData) {
+      for (const key in updateDto.resource.energyResourceData) {
+        updateObject[`energyResourceData.${key}`] =
+          updateDto.resource.energyResourceData[key];
       }
     }
 

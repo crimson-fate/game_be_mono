@@ -4,7 +4,7 @@ import { Document } from 'mongoose';
 export class CommonResource {
   @Prop({ default: 0 }) Coin: number;
   @Prop({ default: 0 }) Cash: number;
-  @Prop({ default: 0 }) Energy: number;
+  @Prop({ default: 20 }) Energy: number;
   @Prop({ default: 0 }) Exp: number;
   @Prop({ default: 0 }) HeroPiece: number;
   @Prop({ default: 0 }) Revival: number;
@@ -26,6 +26,14 @@ export class SoulPieceResource {
   @Prop({ default: 0 }) Mythic_Soul: number;
   @Prop({ default: 0 }) Pollute_Soul: number;
 }
+
+@Schema({ _id: false })
+export class EnergyResourceData {
+  @Prop({ default: Date.now })
+  nextTimeEnergy: Date;
+  @Prop({ default: 0 })
+  adsCount: number;
+}
 export type PlayerResourceDocument = PlayerResource & Document;
 @Schema()
 export class PlayerResource extends Document {
@@ -37,6 +45,9 @@ export class PlayerResource extends Document {
 
   @Prop({ type: SoulPieceResource, required: true })
   dicSoulPieceResource: SoulPieceResource;
+
+  @Prop({ type: EnergyResourceData, required: true })
+  energyResourceData: EnergyResourceData;
 }
 
 export const PlayerResourceSchema =
