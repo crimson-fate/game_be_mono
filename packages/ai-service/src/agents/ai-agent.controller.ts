@@ -8,16 +8,23 @@ import {
   Param,
   Delete,
   Put,
+  Logger,
 } from '@nestjs/common';
 import { AiAgentService } from './ai-agent.service';
 import {
   ChatDto,
   FeedbackDto,
-  ChatResponseDto,
+  InitializeAgentDto,
   WalletDto,
 } from './dto/chat.dto';
 import { CreateAgentFarmDto, UpdateAgentFarmDto } from './dto/agent-farm.dto';
-import { ApiOperation, ApiResponse, ApiTags, ApiParam } from '@nestjs/swagger';
+import {
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+  ApiParam,
+  ApiBody,
+} from '@nestjs/swagger';
 import { AiDealerAgentService } from './services/ai-dealer-agent.service';
 import { ChatHistoryService } from './services/chat-history.service';
 import { AiFeedbackService } from './services/ai-feedback.service';
@@ -25,6 +32,7 @@ import { AiFeedbackService } from './services/ai-feedback.service';
 @ApiTags('AI Agent')
 @Controller('ai')
 export class AiAgentController {
+  private readonly logger = new Logger(AiAgentController.name);
   constructor(
     private readonly aiAgentService: AiAgentService,
     private readonly aiDealerAgentService: AiDealerAgentService,
@@ -398,15 +406,74 @@ export class AiAgentController {
     }
   }
 
-  @Post('/feedbackGame')
-  @ApiOperation({ summary: 'Chat with the agent' })
-  async storeUserFeedback(@Body() body: FeedbackDto) {
-    try {
-      await this.aiFeedBackService.initializeAiFeedbackAgent(
-        ` ${body.walletAddress}-feedback`,
+  @Post('/initializeFeedback')
+  @ApiOperation({
+    summary: 'Initializes the feedback agent for a user and gets a greeting.',
+  })
+  async initializeAgent(@Body() body: InitializeAgentDto) {
+    // Simple DTO for walletAddress
+    if (!body.walletAddress) {
+      throw new HttpException(
+        'walletAddress is required',
+        HttpStatus.BAD_REQUEST,
       );
+    }
+    const agentId = `${body.walletAddress}-feedback`; // Consistent agentId
+    this.logger.log(`Initializing feedback agent for: ${agentId}`);
+    try {
+      const response =
+        await this.aiFeedBackService.initializeAiFeedbackAgent(agentId);
+      return response;
     } catch (error) {
-      throw new HttpException('Store FeedBack Error ', 500);
+      this.logger.error(
+        `Error initializing agent ${agentId}: ${error.message}`,
+        error.stack,
+      );
+      throw new HttpException(
+        'Failed to initialize feedback agent',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  @Post('/submitFeedback') // Renamed for clarity
+  @ApiOperation({
+    summary: 'Submit user feedback for AI processing and storage.',
+  })
+  async submitUserFeedback(@Body() feedbackDto: FeedbackDto) {
+    if (!feedbackDto.walletAddress || !feedbackDto.feedbackMessage) {
+      throw new HttpException(
+        'walletAddress and feedbackMessage are required',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const agentId = `${feedbackDto.walletAddress}-feedback`; // Consistent agentId
+    this.logger.log(
+      `Received feedback from ${agentId}: "${feedbackDto.feedbackMessage}"`,
+    );
+
+    try {
+      const aiResponse = await this.aiFeedBackService.handlePlayerMessage(
+        agentId,
+        feedbackDto.feedbackMessage, // Pass the actual feedback message
+      );
+
+      this.logger.log(`AI response to ${agentId}: ${aiResponse.message}`);
+      return {
+        userFeedback: feedbackDto.feedbackMessage,
+        aiReply: aiResponse.message,
+        feedbackProcessed: aiResponse.detectedFeedback,
+      };
+    } catch (error) {
+      this.logger.error(
+        `Error processing feedback for ${agentId}: ${error.message}`,
+        error.stack,
+      );
+      throw new HttpException(
+        'Error processing feedback',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 }

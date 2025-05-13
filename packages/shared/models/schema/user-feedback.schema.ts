@@ -27,8 +27,10 @@ export class UserFeedbackData {
 
   @Prop({
     type: Number,
+    min: 1,
+    max: 10,
   })
-  aiScore: number; // How helpful it is (0–1)
+  aiScore: number;
 }
 export const UserFeedbackDataSchema =
   SchemaFactory.createForClass(UserFeedbackData);

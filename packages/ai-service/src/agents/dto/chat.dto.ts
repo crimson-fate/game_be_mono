@@ -1,4 +1,4 @@
-import { IsString, MinLength } from 'class-validator';
+import { IsNotEmpty, IsString, MinLength } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 export class ChatDto {
   @ApiProperty({
@@ -58,14 +58,25 @@ export class ChatResponseDto {
   details?: Record<string, any>;
 }
 
+export class InitializeAgentDto {
+  @ApiProperty({
+    description: 'Wallet address of the user',
+    example: '0x1234567890abcdef1234567890abcdef12345678',
+    required: true,
+  })
+  @IsString()
+  @IsNotEmpty()
+  walletAddress: string;
+}
 export class FeedbackDto {
   @ApiProperty({
     description: 'Wallet address of the user',
     example: '0x1234567890abcdef1234567890abcdef12345678',
-    required: false,
+    required: true,
   })
   @IsString()
-  walletAddress?: string;
+  @IsNotEmpty()
+  walletAddress: string;
 
   @ApiProperty({
     description: 'Message to send feedback to the AI agent',
@@ -73,5 +84,5 @@ export class FeedbackDto {
   })
   @IsString()
   @MinLength(1)
-  feedback: string;
+  feedbackMessage: string;
 }
