@@ -97,8 +97,12 @@ export class AiAgentController {
   })
   async startChatting(@Body() body: ChatDto): Promise<any> {
     try {
-      const result = await this.aiAgentService.initializeFarmerAgent(
+      const data = await this.aiDealerAgentService.getAgentFarmData(
         body.walletAddress,
+      );
+      const result = await this.aiAgentService.initialize(
+        body.walletAddress,
+        data ? data.isFarming : false,
       );
       console.log(result);
       return result;
@@ -119,34 +123,17 @@ export class AiAgentController {
   })
   async normalChat(@Body() body: ChatDto): Promise<any> {
     try {
-      console.log('Running negotiation example...');
-      const result = await this.aiAgentService.handlePlayerMessage(
+      const data = await this.aiDealerAgentService.getAgentFarmData(
+        body.walletAddress,
+      );
+      const result = await this.aiAgentService.handleMessage(
         body.walletAddress,
         body.message,
+        data ? data.isFarming : false,
       );
       return result;
     } catch (error) {
       console.error('Error running negotiation example:', error);
-      throw new HttpException(
-        'An error occurred while processing your request',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
-  }
-
-  @Post('normal/end')
-  @ApiOperation({ summary: 'End the chat' })
-  @ApiResponse({
-    status: 200,
-    description: 'Chat ended successfully',
-  })
-  async endChat(@Body() body: WalletDto): Promise<any> {
-    try {
-      console.log('Ending chat...');
-      const result = await this.aiAgentService.stopAgent();
-      return result;
-    } catch (error) {
-      console.error('Error ending chat:', error);
       throw new HttpException(
         'An error occurred while processing your request',
         HttpStatus.INTERNAL_SERVER_ERROR,
@@ -185,7 +172,7 @@ export class AiAgentController {
         duration: data.duration,
         itemCounts: itemCounts,
       });
-      const result = await this.aiDealerAgentService.startNewHagniNegotiation(
+      const result = await this.aiDealerAgentService.initialize(
         body.walletAddress,
         {
           baseValue: 100,
@@ -222,7 +209,7 @@ export class AiAgentController {
   async hagniChat(@Body() body: ChatDto): Promise<any> {
     try {
       console.log('Running negotiation example...');
-      const result = await this.aiDealerAgentService.handlePlayerMessage(
+      const result = await this.aiDealerAgentService.handleMessage(
         body.walletAddress,
         body.message,
       );
@@ -232,6 +219,15 @@ export class AiAgentController {
         );
         result.itemCounts = data.itemCounts;
         result.extractedOffer = result.extractedOffer;
+
+        await this.aiDealerAgentService.updateAgentFarmData(body.walletAddress, {
+          isFarming: false,
+          startTime: 0,
+          duration: 0,
+          itemCounts: null,
+        });
+        this.aiDealerAgentService.reset(body.walletAddress);
+        await this.aiAgentService.reset(body.walletAddress);
       }
       return result;
     } catch (error) {
@@ -265,7 +261,7 @@ export class AiAgentController {
         duration: 0,
         itemCounts: null,
       });
-      this.aiDealerAgentService.stopAgent();
+      this.aiDealerAgentService.reset(body.walletAddress);
       return { message: 'Negotiation ended successfully' };
     } catch (error) {
       console.error('Error ending negotiation:', error);

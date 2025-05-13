@@ -5,14 +5,12 @@ import {
   render,
   LogLevel,
   createMemoryStore,
-  // createVectorStore, // Optional, depends on complexity needed
   extension,
   output,
   input,
   type AnyAgent,
   createVectorStore,
 } from '@daydreamsai/core';
-// import { cliExtension } from "@daydreamsai/cli"; // Can remove if not using CLI directly
 import { z } from 'zod';
 import { groq } from '@ai-sdk/groq';
 import { simpleUI } from '../simple-ui/simple-ui'; // Assuming simple-ui.ts exists
@@ -21,10 +19,7 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { AgentPlayerData } from '@app/shared/models/schema/agent-player-data.schema';
 import { CreateAgentFarmDto, UpdateAgentFarmDto } from '../dto/agent-farm.dto';
-
-import { EventEmitter } from 'events'; // Using EventEmitter for simulating input
-
-const playerInteractionEmitter = new EventEmitter();
+import { parseAgentResponse } from '../utils/response-parser';
 
 // Initialize the UI
 simpleUI.initializeUI();
@@ -64,23 +59,18 @@ export class AiDealerAgentService {
   private readonly logger = new Logger(AiDealerAgentService.name);
   private agent; // Type the agent
   private readonly goalContext;
-  private currentResponse: any; // Store the last response from the agent
   private readonly config = AiAgentConfigService.getInstance().getConfig();
-  // private readonly rateLimiter = RateLimiterService.getInstance(); // Keep if used
-  // private readonly chatHistoryService: ChatHistoryService; // Inject if used
 
   constructor(
     @InjectModel(AgentPlayerData.name)
     private readonly agentPlayerDataModel: Model<AgentPlayerData>,
   ) {
-    // Remove ChatHistoryService if not used
     this.goalContext = context({
       type: 'hagniNegotiation',
       schema: z.object({
         uniqueNegotiationId: z
           .string()
           .describe('A unique ID for this specific negotiation session'),
-        // These are needed to *start* the context
         baseValue: z.number().positive().optional(),
         rarityBonus: z.record(z.string(), z.number().nonnegative()).optional(),
         itemCountsByRarity: z.record(z.string(), z.number().int()).optional(),
@@ -214,48 +204,15 @@ export class AiDealerAgentService {
     this.agent = createDreams({
       logger: LogLevel.INFO,
       model: groq(this.config.model),
-      // Add inputs to the agent setup
       inputs: {
         'custom:playerMessage': input({
           schema: z.object({
             uniqueNegotiationId: z.string(),
             playerMessage: z.string(), // Raw player message
           }),
-          subscribe: (send, agent: AnyAgent) => {
-            const listener = (messageData) => {
-              simpleUI.logMessage(
-                LogLevel.DEBUG,
-                `[Input] Received player message event for ID: ${messageData.uniqueNegotiationId}`,
-              );
-              // Log player message via UI
-              simpleUI.logMessage(
-                LogLevel.INFO,
-                `Player (to ${messageData.uniqueNegotiationId}): ${messageData.playerMessage}`,
-              );
-
-              const targetContext = this.goalContext;
-              const contextArgs = {
-                uniqueNegotiationId: messageData.uniqueNegotiationId,
-              };
-              const inputData = messageData;
-
-              // Update the state first (so the agent sees the latest message)
-              // Ideally, the agent framework handles getting the right context and applying the update
-              // For now, we assume the 'send' triggers the agent loop which will then read the message via context rendering
-              send(targetContext, contextArgs, inputData);
-            };
-            playerInteractionEmitter.on('playerSendsMessage', listener);
-            return () => {
-              playerInteractionEmitter.off('playerSendsMessage', listener);
-              simpleUI.logMessage(
-                LogLevel.DEBUG,
-                '[Input] Detached player message listener.',
-              );
-            };
-          },
           // Handler to update state *before* agent thinks (optional but useful)
           // This ensures the state reflects the message when the prompt is rendered
-          handler: async (data, ctx, agent) => {
+          handler: async (data, ctx) => {
             const state = ctx.memory as HagniNegotiationState;
             if (
               state &&
@@ -288,27 +245,6 @@ export class AiDealerAgentService {
         extension({
           name: 'hagni',
           actions: [
-            // Action to explicitly end negotiation if needed (e.g., player walks away)
-            // action({
-            //   name: "endNegotiation",
-            //   description: "Forcefully end the current negotiation session.",
-            //   schema: z.object({
-            //     uniqueNegotiationId: z.string(),
-            //     reason: z.string().optional().default("Player ended interaction."),
-            //   }),
-            //   async handler(data, ctx) {
-            //     const { uniqueNegotiationId, reason } = data;
-            //     const state = ctx.agentMemory;
-            //     if (state && state.uniqueNegotiationId === uniqueNegotiationId && state.negotiationActive) {
-            //        state.negotiationActive = false;
-            //        // updateMemory might not be needed if the agent loop won't run again for this context
-            //        // await ctx.updateMemory(state);
-            //        simpleUI.logMessage(LogLevel.INFO, `[Action ${uniqueNegotiationId}] Negotiation ended. Reason: ${reason}`);
-            //        return { success: true, message: `Negotiation ${uniqueNegotiationId} ended.` };
-            //     }
-            //     return { success: false, message: `Negotiation ${uniqueNegotiationId} not active or found.` };
-            //   },
-            // }),
           ],
           // --- Output Definition ---
           outputs: {
@@ -354,8 +290,6 @@ export class AiDealerAgentService {
                   LogLevel.DEBUG,
                   `[Output ${negotiationId}] Received data: ${JSON.stringify(data)}`,
                 );
-
-                this.currentResponse = data;
 
                 // Log Hagni's response via UI
                 simpleUI.logAgentAction(
@@ -445,6 +379,8 @@ export class AiDealerAgentService {
         vector: createVectorStore(),
       },
     });
+    
+    this.agent.start();
 
     simpleUI.logMessage(LogLevel.INFO, 'Hagni agent background loop started.');
   }
@@ -453,7 +389,7 @@ export class AiDealerAgentService {
    * Starts a new negotiation session.
    * Called by the game logic when a player interacts with Hagni.
    */
-  public async startNewHagniNegotiation(
+  public async initialize(
     negotiationId: string,
     itemData: {
       baseValue: number;
@@ -484,8 +420,7 @@ export class AiDealerAgentService {
     console.log(
       `Unique ID: ${negotiationId}, Item Data: ${JSON.stringify(itemData)}, Config: ${JSON.stringify(config)}`,
     );
-    await this.agent.start();
-    await this.agent.run({
+    var response = await this.agent.run({
       context: this.goalContext,
       args: {
         // Use the context type defined in the extension
@@ -515,12 +450,13 @@ export class AiDealerAgentService {
         ],
       },
     });
+    response = parseAgentResponse(response);
     console.log(this.goalContext.args);
     simpleUI.logMessage(
       LogLevel.INFO,
       `[${negotiationId}] Context ensured/created.`,
     );
-    return this.currentResponse; // Return the current response if needed
+    return response;
 
     // Now that the context exists, the agent's next loop *should*
     // render the context, see lastPlayerRawMessage is null, and trigger
@@ -538,62 +474,52 @@ export class AiDealerAgentService {
    * Handles a raw message from the player during an ongoing negotiation.
    * Called by the game logic (e.g., chat input).
    */
-  public async handlePlayerMessage(
+  public async handleMessage(
     negotiationId: string,
-    playerMessage: string,
+    message: string,
   ): Promise<any> {
     console.log('~~~~~~~~ NBW: Player message received ~~~~~~~~~~');
     simpleUI.logMessage(
       LogLevel.INFO,
-      `Service: Received player message for ${negotiationId}: "${playerMessage}"`,
+      `Service: Received player message for ${negotiationId}: "${message}"`,
     );
 
-    // Reset current response and emit the event
-    this.currentResponse = null;
-    // Create a promise that resolves when currentResponse changes
-    const responsePromise = new Promise((resolve) => {
-      const checkResponse = () => {
-        if (this.currentResponse !== null) {
-          resolve(this.currentResponse);
-        } else {
-          setTimeout(checkResponse, 100); // Check every 100ms
-        }
-      };
-      checkResponse();
+    var response = await this.agent.send({
+      context: this.goalContext,
+      args: {
+        type: 'hagniNegotiation',
+        uniqueNegotiationId: negotiationId,
+        playerMessage: message,
+      },
+      input: {
+        type: 'custom:playerMessage',
+        data: {
+          uniqueNegotiationId: negotiationId,
+          playerMessage: message,
+        },
+      }
     });
-    playerInteractionEmitter.emit('playerSendsMessage', {
-      uniqueNegotiationId: negotiationId,
-      playerMessage: playerMessage,
-    });
-
-    // Wait for the response with a timeout
-    try {
-      const response = await Promise.race([
-        responsePromise,
-        new Promise((_, reject) =>
-          setTimeout(() => reject(new Error('Response timeout')), 10000),
-        ),
-      ]);
-      return response;
-    } catch (error) {
-      simpleUI.logMessage(
-        LogLevel.ERROR,
-        `Timeout waiting for response in negotiation ${negotiationId}: ${error.message}`,
-      );
-      throw error;
-    }
+    response = parseAgentResponse(response);
+    simpleUI.logMessage(
+      LogLevel.INFO,
+      `[${negotiationId}] Player message processed.`,
+    );
+    return response;
   }
 
-  // Optional: Method to gracefully stop the agent
-  public stopAgent(): void {
-    this.agent.stop();
-    simpleUI.logMessage(LogLevel.INFO, 'Hagni agent stopped.');
+  public async reset(negotiationId: string): Promise<void> {
+    await this.agent.deleteContext('hagniNegotiation:', negotiationId);
   }
 
   public async getAgentFarmData(
     walletAddress: string,
   ): Promise<AgentPlayerData> {
-    return this.agentPlayerDataModel.findOne({ walletAddress }).exec();
+    const result = await this.agentPlayerDataModel.findOne({ walletAddress }).exec();
+    if (!result) {
+      await this.createAgentFarmData({ walletAddress, startTime: 0, duration: 0, isFarming: false });
+      return this.agentPlayerDataModel.findOne({ walletAddress }).exec();
+    }
+    return result;
   }
 
   async createAgentFarmData(
