@@ -11,17 +11,28 @@ import {
   AgentPlayerData,
   AgentPlayerDataSchema,
 } from '@app/shared/models/schema/agent-player-data.schema';
-import { AiDealerAgentService } from './ai-dealer-agent.service';
+import { AiDealerAgentService } from './services/ai-dealer-agent.service';
+import { AiFeedbackService } from './services/ai-feedback.service';
+import {
+  UserFeedbackData,
+  UserFeedbackDataSchema,
+} from '@app/shared/models/schema/user-feedback.schema';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: ChatHistory.name, schema: ChatHistorySchema },
       { name: AgentPlayerData.name, schema: AgentPlayerDataSchema },
+      { name: UserFeedbackData.name, schema: UserFeedbackDataSchema },
     ]),
   ],
   controllers: [AiAgentController],
-  providers: [AiAgentService, AiDealerAgentService, ChatHistoryService],
+  providers: [
+    AiAgentService,
+    AiDealerAgentService,
+    ChatHistoryService,
+    AiFeedbackService,
+  ],
   exports: [AiAgentService, AiDealerAgentService],
 })
 export class AiAgentModule {}

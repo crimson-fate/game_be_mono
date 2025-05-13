@@ -10,11 +10,17 @@ import {
   Put,
 } from '@nestjs/common';
 import { AiAgentService } from './ai-agent.service';
-import { ChatDto, ChatResponseDto, WalletDto } from './dto/chat.dto';
+import {
+  ChatDto,
+  FeedbackDto,
+  ChatResponseDto,
+  WalletDto,
+} from './dto/chat.dto';
 import { CreateAgentFarmDto, UpdateAgentFarmDto } from './dto/agent-farm.dto';
 import { ApiOperation, ApiResponse, ApiTags, ApiParam } from '@nestjs/swagger';
-import { AiDealerAgentService } from './ai-dealer-agent.service';
+import { AiDealerAgentService } from './services/ai-dealer-agent.service';
 import { ChatHistoryService } from './services/chat-history.service';
+import { AiFeedbackService } from './services/ai-feedback.service';
 
 @ApiTags('AI Agent')
 @Controller('ai')
@@ -22,6 +28,7 @@ export class AiAgentController {
   constructor(
     private readonly aiAgentService: AiAgentService,
     private readonly aiDealerAgentService: AiDealerAgentService,
+    private readonly aiFeedBackService: AiFeedbackService,
     private readonly chatHistoryService: ChatHistoryService,
   ) {}
 
@@ -108,7 +115,6 @@ export class AiAgentController {
   })
   async normalChat(@Body() body: ChatDto): Promise<any> {
     try {
-      console.log('Running negotiation example...');
       const data = await this.aiDealerAgentService.getAgentFarmData(
         body.walletAddress,
       );
@@ -126,26 +132,6 @@ export class AiAgentController {
       );
     }
   }
-
-  // @Post('normal/end')
-  // @ApiOperation({ summary: 'End the chat' })
-  // @ApiResponse({
-  //   status: 200,
-  //   description: 'Chat ended successfully',
-  // })
-  // async endChat(@Body() body: WalletDto): Promise<any> {
-  //   try {
-  //     console.log('Ending chat...');
-  //     const result = await this.aiAgentService.stopAgent();
-  //     return result;
-  //   } catch (error) {
-  //     console.error('Error ending chat:', error);
-  //     throw new HttpException(
-  //       'An error occurred while processing your request',
-  //       HttpStatus.INTERNAL_SERVER_ERROR,
-  //     );
-  //   }
-  // }
 
   @Post('dealer/start')
   @ApiOperation({ summary: 'Start dealing with agent' })
@@ -405,6 +391,18 @@ export class AiAgentController {
         'An error occurred while processing your request',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
+    }
+  }
+
+  @Post('/feedbackGame')
+  @ApiOperation({ summary: 'Chat with the agent' })
+  async storeUserFeedback(@Body() body: FeedbackDto) {
+    try {
+      await this.aiFeedBackService.initializeAiFeedbackAgent(
+        ` ${body.walletAddress}-feedback`,
+      );
+    } catch (error) {
+      throw new HttpException('Store FeedBack Error ', 500);
     }
   }
 }

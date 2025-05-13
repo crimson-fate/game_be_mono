@@ -3,23 +3,18 @@ import {
   createDreams,
   context,
   render,
-  validateEnv,
   LogLevel,
   type Agent,
   createMemoryStore,
   extension,
   output,
   input,
-  type AnyAgent,
   createVectorStore,
-  MemoryStore, // Keep vector store if needed for potential future memory
 } from '@daydreamsai/core';
 import { z } from 'zod';
 import { groq } from '@ai-sdk/groq';
-import { simpleUI } from './simple-ui/simple-ui'; // Assuming simple-ui.ts exists
+import { simpleUI } from './simple-ui/simple-ui'; 
 import { AiAgentConfigService } from '../config/ai-agent.config';
-
-import { EventEmitter } from 'events';
 import { parseAgentResponse } from './utils/response-parser';
 
 simpleUI.logMessage(LogLevel.INFO, 'Starting Simple Farmer AI Agent...');

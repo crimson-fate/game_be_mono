@@ -1,7 +1,10 @@
 import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { AppModule } from '../../app.module';
-import { mockGameInventoryData, mockUpdateGameInventoryData } from './mock-data';
+import {
+  mockGameInventoryData,
+  mockUpdateGameInventoryData,
+} from './mock-data';
 import supertest from 'supertest';
 
 describe('InventoryController (e2e)', () => {
@@ -29,8 +32,12 @@ describe('InventoryController (e2e)', () => {
         .send(mockGameInventoryData)
         .expect(201)
         .expect((res) => {
-          expect(res.body.walletAddress).toBe(mockGameInventoryData.walletAddress);
-          expect(res.body.inventory.sortByType).toBe(mockGameInventoryData.inventory.sortByType);
+          expect(res.body.walletAddress).toBe(
+            mockGameInventoryData.walletAddress,
+          );
+          expect(res.body.inventory.sortByType).toBe(
+            mockGameInventoryData.inventory.sortByType,
+          );
           expect(res.body.inventory.lstOwned).toHaveLength(1);
           expect(res.body.stats.totalEquipment).toBe(1);
         });
@@ -44,8 +51,12 @@ describe('InventoryController (e2e)', () => {
         .send({ walletAddress: mockGameInventoryData.walletAddress })
         .expect(200)
         .expect((res) => {
-          expect(res.body.walletAddress).toBe(mockGameInventoryData.walletAddress);
-          expect(res.body.inventory.sortByType).toBe(mockGameInventoryData.inventory.sortByType);
+          expect(res.body.walletAddress).toBe(
+            mockGameInventoryData.walletAddress,
+          );
+          expect(res.body.inventory.sortByType).toBe(
+            mockGameInventoryData.inventory.sortByType,
+          );
           expect(res.body.inventory.lstOwned).toHaveLength(1);
         });
     });
@@ -65,8 +76,12 @@ describe('InventoryController (e2e)', () => {
         .send(mockUpdateGameInventoryData)
         .expect(200)
         .expect((res) => {
-          expect(res.body.walletAddress).toBe(mockUpdateGameInventoryData.walletAddress);
-          expect(res.body.inventory.sortByType).toBe(mockUpdateGameInventoryData.inventory.sortByType);
+          expect(res.body.walletAddress).toBe(
+            mockUpdateGameInventoryData.walletAddress,
+          );
+          expect(res.body.inventory.sortByType).toBe(
+            mockUpdateGameInventoryData.inventory.sortByType,
+          );
           expect(res.body.inventory.lstOwned[0].currentUpradeLevel).toBe(3);
           expect(res.body.inventory.lstOwned[0].currrentRarity).toBe(2);
         });
@@ -88,4 +103,4 @@ describe('InventoryController (e2e)', () => {
         .expect(404);
     });
   });
-}); 
+});

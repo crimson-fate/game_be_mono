@@ -43,7 +43,7 @@ export class AiAgentConfigService {
         : 0.1,
       maxTokens: process.env.AI_MAX_TOKENS
         ? parseInt(process.env.AI_MAX_TOKENS)
-        : 1000,
+        : 3000,
       maxRetries: process.env.AI_MAX_RETRIES
         ? parseInt(process.env.AI_MAX_RETRIES)
         : 3,

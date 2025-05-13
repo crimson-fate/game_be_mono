@@ -26,7 +26,7 @@ export class CreateAgentFarmDto {
 
   @ApiProperty({
     description: 'Item counts by rarity',
-    example: { common: 0, great: 0, rare: 0, epic: 0},
+    example: { common: 0, great: 0, rare: 0, epic: 0 },
   })
   @IsObject()
   @IsOptional()
