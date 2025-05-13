@@ -24,7 +24,7 @@ simpleUI.logMessage(LogLevel.INFO, 'Starting Simple Farmer AI Agent...');
 interface FarmerAgentState {
   agentId: string; // Unique ID for this farmer instance
   lastPlayerMessage: string | null;
-  isFarming: boolean; // Is the agent currently tasked with farming?
+  isOnAdvanture: boolean; // Is the agent currently tasked with farming?
 }
 
 // --- NestJS Service ---
@@ -46,7 +46,7 @@ export class AiAgentService {
           .string()
           .nullable()
           .describe('The last message from the player'),
-        isFarming: z.boolean().describe('Is the agent currently farming?'),
+        isOnAdvanture: z.boolean().describe('Is the agent currently farming?'),
         // No initial args needed here, state initialized in 'create'
       }),
       key({ agentId }) {
@@ -54,7 +54,7 @@ export class AiAgentService {
       },
       // Initialize state when context is created for a specific agentId
       create(state): FarmerAgentState {
-        const { agentId, isFarming } = state.args;
+        const { agentId, isOnAdvanture } = state.args;
         simpleUI.logMessage(
           LogLevel.INFO,
           `[Context ${agentId}] Creating Farmer Agent state. Initial state: ${JSON.stringify(
@@ -64,57 +64,57 @@ export class AiAgentService {
         return {
           agentId: agentId,
           lastPlayerMessage: null,
-          isFarming: isFarming || false, // Default to false if not provided
+          isOnAdvanture: isOnAdvanture || false, // Default to false if not provided
         };
       },
       // Render function provides context and instructions to the LLM
       render({ memory }) {
         const farmerState = memory as FarmerAgentState;
         const farmerTemplate = `
-You are a friendly AI Farmer working on a virtual farmstead. Your name is Hagni. You chat casually with the player and can undertake farming tasks in nearby dungeons.
+You are Valor, a brave and cheerful AI Hero, always ready for an adventure! You chat enthusiastically with the player and can undertake daring expeditions into nearby dungeons to slay monsters and find treasure.
 
-Your primary goal is to be conversational and helpful. However, you have one specific task you can perform: **farming resources in dungeons**.
+Your primary goal is to be conversational, supportive, and a bit of a braggart (in a fun, heroic way!). Your main adventuring task is: **delving into dungeons to defeat monsters and acquire loot**.
 
 ## Dungeon Options:
-*   **Whispering Cave (Easy):** Safer, yields basic materials like Stone and Wood reliably. Good for starting out.
-*   **Sunken Grotto (Medium):** Has tougher monsters, yields better materials like Iron Ore and Rare Herbs, but takes longer.
-*   **Dragon's Maw (Hard):** Very dangerous! High risk, but potential for valuable Gems and Powerful Artifacts. Not recommended unless prepared.
+*   **Whispering Cave (Easy):** "Less dangerous, good for a warm-up! You'll likely find **Common Monster Parts** and maybe some **Basic Gear**."
+*   **Sunken Grotto (Medium):** "A bit more challenging. Expect tougher foes, but the loot is better – think **Magic Essences** and **Uncommon Crafting Materials**."
+*   **Dragon's Maw (Hard):** "Only for the truly brave (like me, usually!). Extremely dangerous, but the rewards can be legendary: **Ancient Relics**, **Powerful Artifacts**, and maybe even **Dragon Scales**!"
 
 ## Your Instructions:
 1.  **Analyze Player Message:** Read the player's current message: '{{lastPlayerMessageFormatted}}'.
-2.  **Check Current Status:** Are you already farming? ({{isFarming}})
-3.  **Detect Farming Request:** Determine if the player's message is asking you to go farm resources. Examples: "Can you go farm some wood?", "I need stone, please gather some.", "Go farm for me."
+2.  **Check Current Status:** Are you already on an adventure? ({{isOnAdvanture}})
+3.  **Detect Adventure Request:** Determine if the player's message is asking you to go into a dungeon to fight monsters and get loot. Examples: "Can you go clear out a dungeon?", "I need some monster drops, can you help?", "Go get some loot for me!", "Time for an adventure?", "Let's go slay some beasts!"
 4.  **Respond Appropriately:**
-    *   **If Currently Farming 'isFarming' is true):** Respond politely that you are currently busy farming. You don't need to detect new farm requests while already farming. Example: "Still out gathering those resources!", "Working hard in the fields right now!" Use the 'farmerResponseOutput' action with 'detectedFarmRequest: false'.
-    *   **If NOT Currently Farming ('isFarming' is false):**
-        *   **Farming Request DETECTED:** Acknowledge the request enthusiastically! You must present dungeon options and get the player's choice before starting. Use the 'farmerResponseOutput' action and set 'detectedFarmRequest: true'.
-        *   **NO Farming Request Detected:** Engage in normal, friendly conversation based on the player's message. Ask questions, share a (fake) farm anecdote, or respond directly to their topic. Example: "How's your day going?", "The crops are looking good today!", "What brings you here?". Use the 'farmerResponseOutput' action with 'detectedFarmRequest: false'.
+    *   **If Currently Adventuring ('isOnAdvanture' is true):** Respond politely that you are currently busy on your quest. You don't need to detect new adventure requests while already busy. Example: "Still wrestling with beasts in the dungeon!", "Mid-battle, friend! Can't chat long!", "The adventure continues, I'll report back soon!" Use the 'farmerResponseOutput' action with 'detectedFarmRequest: false'.
+    *   **If NOT Currently Adventuring ('isOnAdvanture' is false):**
+        *   **Adventure Request DETECTED:** Acknowledge the request with heroic zeal! "Adventure calls! I knew you'd be up for it!" or "Excellent! A chance to test my mettle!" You **must** present the dungeon options clearly and get the player's choice before 'starting'. Use the 'farmerResponseOutput' action and set 'detectedFarmRequest: true'.
+        *   **NO Adventure Request Detected:** Engage in normal, friendly, and perhaps slightly boastful conversation based on the player's message. Ask questions, share a (fake) brief heroic anecdote, or respond directly to their topic. Example: "How fares my favorite companion today?", "Just polished my shield – gleaming, isn't it? Ready for anything!", "What news from the wider world, friend?", "Reminds me of the time I faced a three-headed Snarglebeast... but that's a story for another time! What's on your mind?" Use the 'farmerResponseOutput' action with 'detectedFarmRequest: false'.
 5.  **Output:** ALWAYS use the 'farmerResponseOutput' action to send your message back to the player. Include your conversational text and the 'detectedFarmRequest' flag (true or false).
 
 ## Current Situation:
 Agent ID: {{agentId}}
-Player's Current Message: {{lastPlayerMessageFormatted}}
-Currently Farming: {{isFarming}}
+Player's Last Message: {{lastPlayerMessageFormatted}}
+Currently Adventuring: {{isOnAdvanture}}
 
 ## Your Task:
 {{taskDescription}}
 `;
 
         let taskDescription = '';
-        if (farmerState.isFarming) {
-          taskDescription = `You are currently farming. Respond to the player's message ('${farmerState.lastPlayerMessage}') by letting them know you're busy farming. Use 'farmerResponseOutput' with detectedFarmRequest: false.`;
+        if (farmerState.isOnAdvanture) {
+          taskDescription = `You are currently on an adventure in a dungeon. Respond to the player's message ('${farmerState.lastPlayerMessage}') by letting them know you're busy fighting monsters or exploring. Use 'farmerResponseOutput' with detectedFarmRequest: false.`;
         } else if (
           farmerState.lastPlayerMessage === null ||
           farmerState.lastPlayerMessage === ''
         ) {
           taskDescription = `This is your first interaction with the player for this session (Agent ID: ${farmerState.agentId}). Greet them warmly! Use 'farmerResponseOutput' with detectedFarmRequest: false.`;
         } else {
-          taskDescription = `Analyze the player's message: "${farmerState.lastPlayerMessage}". Decide if it's a request to farm resources. Respond conversationally OR by acknowledging the farm request. Use 'farmerResponseOutput', setting 'detectedFarmRequest' to true ONLY if you detect a clear request for you to start farming. Otherwise, set it to false.`;
+          taskDescription = `Analyze the player's message: "${farmerState.lastPlayerMessage}". Decide if it's a request for you to go on a dungeon adventure. Respond conversationally OR by acknowledging the adventure request and presenting dungeon options. Use 'farmerResponseOutput', setting 'detectedFarmRequest' to true ONLY if you detect a clear request for you to start an adventure. Otherwise, set it to false.`;
         }
 
         return render(farmerTemplate, {
           agentId: farmerState.agentId,
-          isFarming: farmerState.isFarming,
+          isOnAdvanture: farmerState.isOnAdvanture,
           lastPlayerMessageFormatted: farmerState.lastPlayerMessage
             ? `'${farmerState.lastPlayerMessage}'`
             : '(No message yet)',
@@ -134,7 +134,7 @@ Currently Farming: {{isFarming}}
           schema: z.object({
             agentId: z.string(),
             playerMessage: z.string(),
-            isFarming: z.boolean(),
+            isOnAdvanture: z.boolean(),
           }),
           // Handler to update state *before* agent thinks
           handler: async (data, ctx) => {
@@ -142,7 +142,7 @@ Currently Farming: {{isFarming}}
             // Ensure we're updating the correct context instance
             if (state && state.agentId === data.agentId) {
               state.lastPlayerMessage = data.playerMessage;
-              state.isFarming = data.isFarming;
+              state.isOnAdvanture = data.isOnAdvanture;
               simpleUI.logMessage(
                 LogLevel.DEBUG,
                 `[Input Handler ${data.agentId}] Updated lastPlayerMessage.`,
@@ -196,14 +196,14 @@ Currently Farming: {{isFarming}}
                 );
 
                 // --- Update State based on Output ---
-                if (detectedFarmRequest && !state.isFarming) {
-                  state.isFarming = true;
+                if (detectedFarmRequest && !state.isOnAdvanture) {
+                  state.isOnAdvanture = true;
                   simpleUI.logMessage(
                     LogLevel.INFO,
-                    `[Output Handler ${agentId}] State updated: isFarming set to true.`,
+                    `[Output Handler ${agentId}] State updated: isOnAdvanture set to true.`,
                   );
                   // In a real game, you might trigger the actual farming logic here
-                } else if (!detectedFarmRequest && state.isFarming) {
+                } else if (!detectedFarmRequest && state.isOnAdvanture) {
                   // Optional: Add logic here if the AI should *stop* farming based on conversation
                   // For now, it keeps farming until explicitly told otherwise or reset.
                   simpleUI.logMessage(
@@ -240,11 +240,11 @@ Currently Farming: {{isFarming}}
    */
   public async initialize(
     agentId: string,
-    isFarming: boolean,
+    isOnAdvanture: boolean,
   ): Promise<any> {
     simpleUI.logMessage(
       LogLevel.INFO,
-      `Service: Initializing farmer agent: ${agentId} with isFarming: ${isFarming}`,
+      `Service: Initializing farmer agent: ${agentId} with isOnAdvanture: ${isOnAdvanture}`,
     );
     try {
       const response = await this.agent
@@ -253,7 +253,7 @@ Currently Farming: {{isFarming}}
           args: {
             agentId: agentId,
             lastPlayerMessage: null,
-            isFarming: isFarming,
+            isOnAdvanture: isOnAdvanture,
           }, 
         })
         .then((result) => {
@@ -285,7 +285,7 @@ Currently Farming: {{isFarming}}
   public async handleMessage(
     agentId: string,
     message: string,
-    isFarming: boolean,
+    isOnAdvanture: boolean,
   ): Promise<any> {
     simpleUI.logMessage(
       LogLevel.INFO,
@@ -296,14 +296,14 @@ Currently Farming: {{isFarming}}
       args: {
         agentId: agentId,
         lastPlayerMessage: message,
-        isFarming: isFarming,
+        isOnAdvanture: isOnAdvanture,
       },
       input: {
         type: 'custom:playerMessage',
         data: {
           agentId: agentId,
           playerMessage: message,
-          isFarming: isFarming,
+          isOnAdvanture: isOnAdvanture,
         }
       }
     });
