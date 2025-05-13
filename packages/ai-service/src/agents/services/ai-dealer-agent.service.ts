@@ -417,61 +417,72 @@ export class AiDealerAgentService {
       maxDiscount: number;
     },
   ): Promise<void> {
-    // Returns void, interaction happens via agent loop & outputs
-    simpleUI.logMessage(
-      LogLevel.INFO,
-      `Service: Received request to start negotiation: ${negotiationId}`,
-    );
+    while (true) {
+      try {
+        // Returns void, interaction happens via agent loop & outputs
+        simpleUI.logMessage(
+          LogLevel.INFO,
+          `Service: Received request to start negotiation: ${negotiationId}`,
+        );
 
-    // We don't directly run the agent here. Instead, we emit an event
-    // that the 'startNegotiationInput' *would* listen for if it existed,
-    // OR we manually trigger the context creation process.
-    // Since we removed that input, let's manually ensure the context exists.
+        // We don't directly run the agent here. Instead, we emit an event
+        // that the 'startNegotiationInput' *would* listen for if it existed,
+        // OR we manually trigger the context creation process.
+        // Since we removed that input, let's manually ensure the context exists.
 
-    // Manually trigger context creation by accessing it.
-    // The framework should call 'create' if it doesn't exist.
-    // We pass the necessary args for creation.
-    // try {
-    console.log(
-      `Unique ID: ${negotiationId}, Item Data: ${JSON.stringify(itemData)}, Config: ${JSON.stringify(config)}`,
-    );
-    var response = await this.agent.run({
-      context: this.goalContext,
-      args: {
-        // Use the context type defined in the extension
-        type: 'hagniNegotiation',
-        // Provide the initial arguments matching the context schema
-        uniqueNegotiationId: negotiationId,
-        baseValue: itemData.baseValue,
-        rarityBonus: itemData.rarityBonus,
-        itemCountsByRarity: itemData.itemCounts,
-        minSellRatio: 0.75, // Example: Hagni won't go below 75% of calculated value
-        maxDiscount: 0.15, // Example: Hagni offers max 15% discount per counter-offer step
-      },
-      config: {
-        allowActions: true,
-        allowOutputs: true,
-        temperature: this.config.temperature,
-        maxTokens: this.config.maxTokens,
-        stop: [
-          '</response>',
-          '</reasoning>',
-          '```',
-          '\\n',
-          'The current context',
-          'Given that',
-          'Based on',
-          'As an AI',
-        ],
-      },
-    });
-    response = parseAgentResponse(response);
-    console.log(this.goalContext.args);
-    simpleUI.logMessage(
-      LogLevel.INFO,
-      `[${negotiationId}] Context ensured/created.`,
-    );
-    return response;
+        // Manually trigger context creation by accessing it.
+        // The framework should call 'create' if it doesn't exist.
+        // We pass the necessary args for creation.
+        // try {
+        console.log(
+          `Unique ID: ${negotiationId}, Item Data: ${JSON.stringify(itemData)}, Config: ${JSON.stringify(config)}`,
+        );
+        var response = await this.agent.run({
+          context: this.goalContext,
+          args: {
+            // Use the context type defined in the extension
+            type: 'hagniNegotiation',
+            // Provide the initial arguments matching the context schema
+            uniqueNegotiationId: negotiationId,
+            baseValue: itemData.baseValue,
+            rarityBonus: itemData.rarityBonus,
+            itemCountsByRarity: itemData.itemCounts,
+            minSellRatio: 0.75, // Example: Hagni won't go below 75% of calculated value
+            maxDiscount: 0.15, // Example: Hagni offers max 15% discount per counter-offer step
+          },
+          config: {
+            allowActions: true,
+            allowOutputs: true,
+            temperature: this.config.temperature,
+            maxTokens: this.config.maxTokens,
+            stop: [
+              '</response>',
+              '</reasoning>',
+              '```',
+              '\\n',
+              'The current context',
+              'Given that',
+              'Based on',
+              'As an AI',
+            ],
+          },
+        });
+        response = parseAgentResponse(response);
+        console.log(this.goalContext.args);
+        simpleUI.logMessage(
+          LogLevel.INFO,
+          `[${negotiationId}] Context ensured/created.`,
+        );
+        return response;
+      } catch (error) {
+        simpleUI.logMessage(
+          LogLevel.ERROR,
+          `[${negotiationId}] Failed to ensure context: ${error}`,
+        );
+        // Retry after a short delay
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+      }
+    }
 
     // Now that the context exists, the agent's next loop *should*
     // render the context, see lastPlayerRawMessage is null, and trigger
@@ -493,33 +504,43 @@ export class AiDealerAgentService {
     negotiationId: string,
     message: string,
   ): Promise<any> {
-    console.log('~~~~~~~~ NBW: Player message received ~~~~~~~~~~');
-    simpleUI.logMessage(
-      LogLevel.INFO,
-      `Service: Received player message for ${negotiationId}: "${message}"`,
-    );
+    try {
+      simpleUI.logMessage(
+        LogLevel.INFO,
+        `Service: Received player message for ${negotiationId}: "${message}"`,
+      );
 
-    var response = await this.agent.send({
-      context: this.goalContext,
-      args: {
-        type: 'hagniNegotiation',
-        uniqueNegotiationId: negotiationId,
-        playerMessage: message,
-      },
-      input: {
-        type: 'custom:playerMessage',
-        data: {
+      var response = await this.agent.send({
+        context: this.goalContext,
+        args: {
+          type: 'hagniNegotiation',
           uniqueNegotiationId: negotiationId,
           playerMessage: message,
         },
-      }
-    });
-    response = parseAgentResponse(response);
-    simpleUI.logMessage(
-      LogLevel.INFO,
-      `[${negotiationId}] Player message processed.`,
-    );
-    return response;
+        input: {
+          type: 'custom:playerMessage',
+          data: {
+            uniqueNegotiationId: negotiationId,
+            playerMessage: message,
+          },
+        }
+      });
+      response = parseAgentResponse(response);
+      simpleUI.logMessage(
+        LogLevel.INFO,
+        `[${negotiationId}] Player message processed.`,
+      );
+      return response;
+    } catch (error) {
+      simpleUI.logMessage(
+        LogLevel.ERROR,
+        `[${negotiationId}] Failed to process player message: ${error}`,
+      );
+      return {
+        message: 'Sorry, I am unable to respond right now.',
+        detectedFarmRequest: false,
+      };
+    }
   }
 
   public async reset(negotiationId: string): Promise<void> {

@@ -268,14 +268,10 @@ Currently Adventuring: {{isOnAdvanture}}
       simpleUI.logMessage(LogLevel.INFO, `[${agentId}] Initial run completed.`);
       return response;
     } catch (error) {
-      this.logger.error(
-        `Failed to initialize/run farmer agent ${agentId}: ${error}`,
-      );
-      simpleUI.logMessage(
-        LogLevel.ERROR,
-        `[${agentId}] Failed to initialize farmer agent.`,
-      );
-      throw error; // Re-throw or handle appropriately
+      return {
+        message: 'Sorry, I am unable to respond right now.',
+        detectedFarmRequest: false,
+      }
     }
   }
 
@@ -291,23 +287,30 @@ Currently Adventuring: {{isOnAdvanture}}
       LogLevel.INFO,
       `Service: Received player message for ${agentId}: "${message}"`,
     );
-    const response = await this.agent.send({
-      context: this.farmerContext,
-      args: {
-        agentId: agentId,
-        lastPlayerMessage: message,
-        isOnAdvanture: isOnAdvanture,
-      },
-      input: {
-        type: 'custom:playerMessage',
-        data: {
+    try {
+      const response = await this.agent.send({
+        context: this.farmerContext,
+        args: {
           agentId: agentId,
-          playerMessage: message,
+          lastPlayerMessage: message,
           isOnAdvanture: isOnAdvanture,
+        },
+        input: {
+          type: 'custom:playerMessage',
+          data: {
+            agentId: agentId,
+            playerMessage: message,
+            isOnAdvanture: isOnAdvanture,
+          }
         }
+      });
+      return parseAgentResponse(response);
+    } catch (error) {
+      return {
+        message: 'Sorry, I am unable to respond right now.',
+        detectedFarmRequest: false,
       }
-    });
-    return parseAgentResponse(response);
+    }
   }
 
   public async reset(agentId: string): Promise<void> {
