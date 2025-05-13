@@ -4,7 +4,7 @@ import {
   teardownTestApp as baseTeardownTestApp,
 } from '../../../test/setup';
 import { InventoryModule } from '../inventory.module';
-import { MongooseModule } from '@nestjs/mongoose';
+
 import {
   InventoryUser,
   InventoryUserSchema,

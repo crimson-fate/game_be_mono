@@ -14,4 +14,4 @@ export class ZoneRewardController {
   async uploadZoneRewardFile(@Body() body: { fileContent: string }) {
     return this.zoneRewardService.uploadZoneRewardFile(body.fileContent);
   }
-} 
+}
