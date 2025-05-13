@@ -18,18 +18,11 @@ import { z } from 'zod';
 import { groq } from '@ai-sdk/groq';
 import { simpleUI } from './simple-ui/simple-ui'; // Assuming simple-ui.ts exists
 import { AiAgentConfigService } from '../config/ai-agent.config';
-// Remove unused Mongoose/DTO imports if not persisting farmer state to DB
-// import { Model } from 'mongoose';
-// import { InjectModel } from '@nestjs/mongoose';
-// import { AgentPlayerData } from '@app/shared/models/schema/agent-player-data.schema';
-// import { CreateAgentFarmDto, UpdateAgentFarmDto } from './dto/agent-farm.dto';
 
 import { EventEmitter } from 'events';
 
 const playerInteractionEmitter = new EventEmitter();
 
-// Initialize the UI (if not done elsewhere)
-// simpleUI.initializeUI(); // Assuming it's initialized where the app starts
 simpleUI.logMessage(LogLevel.INFO, 'Starting Simple Farmer AI Agent...');
 
 // --- Farmer Agent Definition ---
@@ -56,6 +49,13 @@ export class AiAgentService {
       type: 'farmerChat',
       schema: z.object({
         agentId: z.string().describe('Unique identifier for this farmer agent'),
+        lastPlayerMessage: z
+          .string()
+          .nullable()
+          .describe('The last message from the player'),
+        isFarming: z
+          .boolean()
+          .describe('Is the agent currently farming?'),
         // No initial args needed here, state initialized in 'create'
       }),
       key({ agentId }) {
@@ -63,15 +63,17 @@ export class AiAgentService {
       },
       // Initialize state when context is created for a specific agentId
       create(state): FarmerAgentState {
-        const { agentId } = state.args;
+        const { agentId, isFarming } = state.args;
         simpleUI.logMessage(
           LogLevel.INFO,
-          `[Context ${agentId}] Creating Farmer Agent state.`,
+          `[Context ${agentId}] Creating Farmer Agent state. Initial state: ${JSON.stringify(
+            state.args,
+          )}`,
         );
         return {
           agentId: agentId,
           lastPlayerMessage: null,
-          isFarming: false, // Start idle
+          isFarming: isFarming || false, // Default to false if not provided
         };
       },
       // Render function provides context and instructions to the LLM
@@ -88,7 +90,7 @@ Your primary goal is to be conversational and helpful. However, you have one spe
 *   **Dragon's Maw (Hard):** Very dangerous! High risk, but potential for valuable Gems and Powerful Artifacts. Not recommended unless prepared.
 
 ## Your Instructions:
-1.  **Analyze Player Message:** Read the player's latest message: '{{lastPlayerMessage}}'.
+1.  **Analyze Player Message:** Read the player's current message: '{{lastPlayerMessageFormatted}}'.
 2.  **Check Current Status:** Are you already farming? ({{isFarming}})
 3.  **Detect Farming Request:** Determine if the player's message is asking you to go farm resources. Examples: "Can you go farm some wood?", "I need stone, please gather some.", "Go farm for me."
 4.  **Respond Appropriately:**
@@ -100,7 +102,7 @@ Your primary goal is to be conversational and helpful. However, you have one spe
 
 ## Current Situation:
 Agent ID: {{agentId}}
-Player's Last Message: {{lastPlayerMessageFormatted}}
+Player's Current Message: {{lastPlayerMessageFormatted}}
 Currently Farming: {{isFarming}}
 
 ## Your Task:
@@ -108,10 +110,10 @@ Currently Farming: {{isFarming}}
 `;
 
         let taskDescription = '';
-        if (farmerState.lastPlayerMessage === null) {
-          taskDescription = `This is your first interaction with the player for this session (Agent ID: ${farmerState.agentId}). Greet them warmly! Use 'farmerResponseOutput' with detectedFarmRequest: false.`;
-        } else if (farmerState.isFarming) {
+        if (farmerState.isFarming) {
           taskDescription = `You are currently farming. Respond to the player's message ('${farmerState.lastPlayerMessage}') by letting them know you're busy farming. Use 'farmerResponseOutput' with detectedFarmRequest: false.`;
+        } else if (farmerState.lastPlayerMessage === null || farmerState.lastPlayerMessage === '') {
+          taskDescription = `This is your first interaction with the player for this session (Agent ID: ${farmerState.agentId}). Greet them warmly! Use 'farmerResponseOutput' with detectedFarmRequest: false.`;
         } else {
           taskDescription = `Analyze the player's message: "${farmerState.lastPlayerMessage}". Decide if it's a request to farm resources. Respond conversationally OR by acknowledging the farm request. Use 'farmerResponseOutput', setting 'detectedFarmRequest' to true ONLY if you detect a clear request for you to start farming. Otherwise, set it to false.`;
         }
@@ -119,7 +121,6 @@ Currently Farming: {{isFarming}}
         return render(farmerTemplate, {
           agentId: farmerState.agentId,
           isFarming: farmerState.isFarming,
-          lastPlayerMessage: farmerState.lastPlayerMessage,
           lastPlayerMessageFormatted: farmerState.lastPlayerMessage
             ? `'${farmerState.lastPlayerMessage}'`
             : '(No message yet)',
@@ -139,12 +140,14 @@ Currently Farming: {{isFarming}}
           schema: z.object({
             agentId: z.string(),
             playerMessage: z.string(),
+            isFarming: z.boolean(),
           }),
           // Subscribe to the event emitter
           subscribe: (send) => {
             const listener = (messageData: {
               agentId: string;
               playerMessage: string;
+              isFarming: boolean;
             }) => {
               simpleUI.logMessage(
                 LogLevel.DEBUG,
@@ -156,11 +159,16 @@ Currently Farming: {{isFarming}}
               );
 
               // Target the correct context instance using agentId
-              const contextArgs = { agentId: messageData.agentId };
+              const contextArgs = { 
+                agentId: messageData.agentId,
+                lastPlayerMessage: messageData.playerMessage,
+                isFarming: messageData.isFarming,
+              };
               const inputData = {
                 // Match the input schema
                 agentId: messageData.agentId,
                 playerMessage: messageData.playerMessage,
+                isFarming: messageData.isFarming,
               };
 
               // Send the data to the agent, targeting the specific context
@@ -178,6 +186,10 @@ Currently Farming: {{isFarming}}
             // Ensure we're updating the correct context instance
             if (state && state.agentId === data.agentId) {
               state.lastPlayerMessage = data.playerMessage;
+              if (data.playerMessage === null) {
+                ctx.workingMemory = null; // Clear working memory if no message
+              }
+              state.isFarming = data.isFarming; 
               simpleUI.logMessage(
                 LogLevel.DEBUG,
                 `[Input Handler ${data.agentId}] Updated lastPlayerMessage.`,
@@ -200,7 +212,24 @@ Currently Farming: {{isFarming}}
         extension({
           name: 'farmerActions',
           // No specific actions needed for this simple version
-          actions: [],
+          actions: [
+            // {
+            //   name: 'startNewChat',
+            //   description: 'Starts a new chat with the player.',
+            //   schema: z.object({
+            //     agentId: z.string(),
+            //   }),
+            //   handler: async (data, ctx) => {
+            //     const state = ctx.memory as FarmerAgentState;
+            //     simpleUI.logMessage(
+            //       LogLevel.INFO,
+            //       `[Action ${state.agentId}] Starting new chat.`,
+            //     );
+            //     state.lastPlayerMessage = null; // Clear last message
+            //     state.isFarming = false; // Reset farming state
+            //   },
+            // }
+          ],
           outputs: {
             farmerResponseOutput: output({
               description:
@@ -215,7 +244,7 @@ Currently Farming: {{isFarming}}
                     "Whether the AI detected a request to start farming in the player's last message.",
                   ),
               }),
-              handler: async (data, ctx) => {
+              handler: async (data, ctx, agent) => {
                 const state = ctx.memory as FarmerAgentState;
                 const { message, detectedFarmRequest } = data;
                 const agentId = state.agentId;
@@ -237,9 +266,12 @@ Currently Farming: {{isFarming}}
                   detectedFarmRequest,
                 });
 
+                console.log("Context memory: ");
+                console.log(ctx.workingMemory);
                 // --- Update State based on Output ---
                 if (detectedFarmRequest && !state.isFarming) {
                   state.isFarming = true;
+                  ctx.workingMemory.inputs
                   simpleUI.logMessage(
                     LogLevel.INFO,
                     `[Output Handler ${agentId}] State updated: isFarming set to true.`,
@@ -280,10 +312,10 @@ Currently Farming: {{isFarming}}
    * Ensures a farmer agent instance exists for the given ID and optionally sends an initial message.
    * Call this when the player first interacts with a specific farmer.
    */
-  public async initializeFarmerAgent(agentId: string): Promise<any> {
+  public async initializeFarmerAgent(agentId: string, isFarming: boolean): Promise<any> {
     simpleUI.logMessage(
       LogLevel.INFO,
-      `Service: Initializing farmer agent: ${agentId}`,
+      `Service: Initializing farmer agent: ${agentId} with isFarming: ${isFarming}`,
     );
     this.currentResponseMap.delete(agentId); // Clear previous response
 
@@ -292,7 +324,13 @@ Currently Farming: {{isFarming}}
       // The agent's render function will handle the initial greeting if lastPlayerMessage is null.
       const initialRun = await this.agent.run({
         context: this.farmerContext,
-        args: { agentId: agentId }, // Pass agentId for context creation/lookup
+        args: { agentId: agentId, lastPlayerMessage: null, isFarming: isFarming }, // Pass agentId for context creation/lookup
+      }).then((result) => {
+        simpleUI.logMessage(
+          LogLevel.INFO,
+          `[${agentId}] Initial run result: ${JSON.stringify(result)}`,
+        );
+        return result;
       });
 
       simpleUI.logMessage(
@@ -321,6 +359,7 @@ Currently Farming: {{isFarming}}
   public async handlePlayerMessage(
     agentId: string,
     playerMessage: string,
+    isFarming: boolean,
   ): Promise<any> {
     simpleUI.logMessage(
       LogLevel.INFO,
@@ -332,6 +371,7 @@ Currently Farming: {{isFarming}}
     playerInteractionEmitter.emit('playerSendsMessage', {
       agentId: agentId,
       playerMessage: playerMessage,
+      isFarming: isFarming
     });
 
     // Wait for the agent to process the input and produce an output
@@ -377,8 +417,21 @@ Currently Farming: {{isFarming}}
   }
 
   // Optional: Method to gracefully stop the agent
-  public stopAgent(): void {
-    this.agent.stop();
-    simpleUI.logMessage(LogLevel.INFO, 'Farmer AI agent stopped.');
+  public async stopAgent(agentId: string): Promise<void> {
+    // let contextState = await (await this.agent.getContextById("farmerChat:" + agentId))
+    await this.agent.deleteContext("farmerChat:" + agentId);
+    // if (contextState) {
+    //   console.log(`Args for agent ${agentId}:`, contextState.args);
+    //   console.log(`Memory for agent ${agentId}:`, contextState.memory);
+    //   contextState.args.isFarming = false; // Reset farming state
+    //   contextState.args.lastPlayerMessage = null; // Clear last message
+    //   contextState.memory.isFarming = false; // Reset memory state
+    //   contextState.memory.lastPlayerMessage = null; // Clear memory message
+    //   this.agent.saveContext(contextState); // Persist changes
+    //   simpleUI.logMessage(
+    //     LogLevel.INFO,
+    //     `Farmer agent ${agentId} stopped and state reset.`,
+    //   );
+    // }
   }
 }

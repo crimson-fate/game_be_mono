@@ -450,6 +450,8 @@ export class AiDealerAgentService {
         vector: createVectorStore(),
       },
     });
+    
+    this.agent.start();
 
     simpleUI.logMessage(LogLevel.INFO, 'Hagni agent background loop started.');
   }
@@ -489,7 +491,6 @@ export class AiDealerAgentService {
     console.log(
       `Unique ID: ${negotiationId}, Item Data: ${JSON.stringify(itemData)}, Config: ${JSON.stringify(config)}`,
     );
-    await this.agent.start();
     await this.agent.run({
       context: this.goalContext,
       args: {
@@ -589,6 +590,9 @@ export class AiDealerAgentService {
     }
   }
 
+  public clearNegotiationState(negotiationId: string): void {
+  }
+
   // Optional: Method to gracefully stop the agent
   public stopAgent(): void {
     this.agent.stop();
@@ -598,7 +602,12 @@ export class AiDealerAgentService {
   public async getAgentFarmData(
     walletAddress: string,
   ): Promise<AgentPlayerData> {
-    return this.agentPlayerDataModel.findOne({ walletAddress }).exec();
+    const result = await this.agentPlayerDataModel.findOne({ walletAddress }).exec();
+    if (!result) {
+      await this.createAgentFarmData({ walletAddress, startTime: 0, duration: 0, isFarming: false });
+      return this.agentPlayerDataModel.findOne({ walletAddress }).exec();
+    }
+    return result;
   }
 
   async createAgentFarmData(
