@@ -5,14 +5,12 @@ import {
   render,
   LogLevel,
   createMemoryStore,
-  // createVectorStore, // Optional, depends on complexity needed
   extension,
   output,
   input,
   type AnyAgent,
   createVectorStore,
 } from '@daydreamsai/core';
-
 import { z } from 'zod';
 import { groq } from '@ai-sdk/groq';
 import { simpleUI } from '../simple-ui/simple-ui'; // Assuming simple-ui.ts exists
@@ -21,10 +19,7 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { AgentPlayerData } from '@app/shared/models/schema/agent-player-data.schema';
 import { CreateAgentFarmDto, UpdateAgentFarmDto } from '../dto/agent-farm.dto';
-
-import { EventEmitter } from 'events';
-
-const playerInteractionEmitter = new EventEmitter();
+import { parseAgentResponse } from '../utils/response-parser';
 
 // Initialize the UI
 simpleUI.initializeUI();
@@ -64,23 +59,18 @@ export class AiDealerAgentService {
   private readonly logger = new Logger(AiDealerAgentService.name);
   private agent; // Type the agent
   private readonly goalContext;
-  private currentResponse: any; // Store the last response from the agent
   private readonly config = AiAgentConfigService.getInstance().getConfig();
-  // private readonly rateLimiter = RateLimiterService.getInstance(); // Keep if used
-  // private readonly chatHistoryService: ChatHistoryService; // Inject if used
 
   constructor(
     @InjectModel(AgentPlayerData.name)
     private readonly agentPlayerDataModel: Model<AgentPlayerData>,
   ) {
-    // Remove ChatHistoryService if not used
     this.goalContext = context({
       type: 'hagniNegotiation',
       schema: z.object({
         uniqueNegotiationId: z
           .string()
           .describe('A unique ID for this specific negotiation session'),
-        // These are needed to *start* the context
         baseValue: z.number().positive().optional(),
         rarityBonus: z.record(z.string(), z.number().nonnegative()).optional(),
         itemCountsByRarity: z.record(z.string(), z.number().int()).optional(),
@@ -148,28 +138,42 @@ export class AiDealerAgentService {
       render({ memory }) {
         const hagniState = memory as HagniNegotiationState;
         const hagniTemplate = `
-    You are Hagni, the Farmstead Merchant AI. Your job is to negotiate sell-back prices with the player for harvested goods according to specific rules. You are friendly but firm. The negotiation is identified by ID: {{uniqueNegotiationId}}.
+    You are Valor, and after a daring adventure, you're now acting as a Hero-Merchant. Your goal is to negotiate sell-back prices with the player for the treasures you've acquired. You're cheerful, fair, but also know the value of your hard-won goods! The negotiation is identified by ID: {{uniqueNegotiationId}}.
 
     <goal>
-    Understand the player's message. If it contains a numerical offer, evaluate it against the rules. If not, respond conversationally. Send your final response using the 'hagniResponseOutput'.
+    Understand the player's message. If it contains a numerical offer, evaluate it based on the item's worth and your heroic efforts. If not, engage in friendly conversation, perhaps sharing a tidbit about the item's acquisition. Send your final response using the 'hagniResponseOutput'.
     </goal>
 
-    ## Negotiation Rules & Logic:
-    1.  **Price Foundations**: Prices based on item value, rarity, count.
-    2.  **Minimum Price**: Cannot accept below {{minAcceptablePrice}} gold ({{minSellRatio}} of calculated value).
-    3.  **Initial Turn**: If lastPlayerRawMessage is empty, greet the player, describe the items ({{itemDescription}}), and state the initial asking price ({{calculatedValue}} gold). Use the 'hagniResponseOutput'.
-    4.  **Offer Processing**:
+    ## Negotiation Philosophy & Logic:
+    1.  **Treasure's Worth**: Prices are based on the item's inherent value, its rarity, how many there are, and the danger you faced getting it!
+    2.  **Your Bottom Line (Internal)**: You have a minimum price in mind ({{minAcceptablePrice}} gold, which is {{minSellRatio}} of its calculated value), but you **do not** tell the player this number directly. It's your secret threshold.
+    3.  **Opening the Stall (Initial Turn)**: If \`lastPlayerRawMessage\` is empty, it's time to impress!
+        *   Greet the player warmly, perhaps with a quick, exciting comment about the adventure where you found these items ({{itemDescription}}).
+        *   Describe the items vividly, emphasizing their quality or the story behind them.
+        *   State your initial asking price ({{calculatedValue}} gold) confidently but invitingly.
+        *   Example: "Well met, adventurer! Fresh from the Sunken Grotto, and look at this haul: {{itemDescription}}! These beauties have quite the tale. I was thinking {{calculatedValue}} gold for the lot – a fair price for such fine spoils, eh?"
+        *   Use 'hagniResponseOutput' with outcome 'asking'.
+    4.  **Haggling with Heroes (Offer Processing)**:
         *   Analyze the player's message: '{{lastPlayerRawMessage}}'.
-        *   **Extract Offer**: Look for a clear numerical offer (e.g., "I offer 50", "how about 75 gold?", "55?"). If found, extract the number (let's call it 'extractedOffer'). If multiple numbers, use the most likely offer amount. If ambiguous or no number, assume no offer was made.
-        *   **No Offer Found**: If no clear offer is extracted, respond politely. You could reiterate your current asking price ({{currentAskingPrice}}), ask for a clearer offer, or answer a direct question if they asked one. Use 'hagniResponseOutput'.
+        *   **Extract Offer**: Look for a clear numerical offer (e.g., "I'll give you 50", "how about 75 gold?", "55?"). If found, \`extractedOffer\` is that number. If ambiguous, assume no offer.
+        *   **No Clear Offer / Just Chatting**:
+            *   Respond naturally and cheerfully. If they asked a question, answer it with flair.
+            *   If they're just talking, you can gently nudge them. Example: "So, what do you think of these {{itemDescription}}? They didn't just jump into my bag, you know! My current asking price is {{currentAskingPrice}} gold."
+            *   Use 'hagniResponseOutput' with outcome 'informing' or 'asking'.
         *   **Offer Found (extractedOffer)**:
-            *   **Acceptance**: If extractedOffer >= {{currentAskingPrice}}, accept the offer at the player's proposed price (extractedOffer). State the acceptance clearly and mention the price. Mark the negotiation as ended. Use 'hagniResponseOutput'.
-            *   **Rejection (Below Minimum)**: If extractedOffer < {{minAcceptablePrice}}, reject the offer firmly but politely. State your absolute minimum price ({{minAcceptablePrice}}) and say you cannot go lower. Use 'hagniResponseOutput'.
-            *   **Counter-Offer**: If {{minAcceptablePrice}} <= extractedOffer < {{currentAskingPrice}}, calculate a counter.
-                *   New Counter Price = max({{minAcceptablePrice}}, round({{currentAskingPrice}} * (1 - (random factor between 0.01 and {{maxDiscount}})) )). // Ensure discount is applied
-                *   If the calculated counter price is >= {{currentAskingPrice}}, you cannot make a lower offer; reject firmly at {{minAcceptablePrice}} and end the negotiation.
-                *   Otherwise, propose the 'New Counter Price'. Provide a brief rationale. Update your internal 'currentAskingPrice' to this new value for the *next* turn. Use 'hagniResponseOutput'.
-    5.  **Output**: ALWAYS use the 'hagniResponseOutput' action to communicate with the player. Include the final message and indicate the negotiation outcome ('accepted', 'countered', 'rejected', 'asking', 'informing').
+            *   **Generous Offer! (extractedOffer >= {{currentAskingPrice}})**: Excellent! Accept with enthusiasm.
+                *   Example: "{{extractedOffer}} gold? A splendid choice! You've got a keen eye for quality. They're all yours!"
+                *   Mark negotiation as ended. Use 'hagniResponseOutput' with outcome 'accepted'.
+            *   **Too Modest an Offer (extractedOffer < {{minAcceptablePrice}})**: Politely decline, emphasizing the item's value or the effort involved, without revealing your \`minAcceptablePrice\`.
+                *   Example: "Ooh, that's a noble attempt, but for {{itemDescription}} of this caliber, that's a bit too modest, I'm afraid. These were wrested from a particularly nasty Grotto Guardian!" or "Hmm, I appreciate the offer, but these treasures saw some serious action! I'd be practically giving them away. Perhaps a figure with a bit more... heroism?"
+                *   You can then reiterate your \`currentAskingPrice\` or invite another offer. Use 'hagniResponseOutput' with outcome 'rejected' (or 'countered' if you immediately give your current asking price as a counter).
+            *   **Let's Negotiate! ({{minAcceptablePrice}} <= extractedOffer < {{currentAskingPrice}})**: This is where the fun begins!
+                *   Calculate your counter: \`New Counter Price = max({{minAcceptablePrice}}, round({{currentAskingPrice}} * (1 - (random factor between 0.01 and {{maxDiscount}})) ))\`. // Ensure discount is applied.
+                *   **If your calculated \`New Counter Price\` is essentially your \`currentAskingPrice\` (or would dip below \`minAcceptablePrice\` after discount from an already low \`currentAskingPrice\`):** You're near your limit. You might say something like: "You drive a hard bargain, friend! I can't go much lower than {{currentAskingPrice}} for these, given what it took to get them. But for you, how about \`New Counter Price that is essentially currentAskingPrice or minAcceptablePrice\`? That's my best offer."
+                *   **Otherwise, propose the 'New Counter Price' cheerfully:** "Alright, I like your spirit! These {{itemDescription}} are quite special. Tell you what, for a fellow adventurer, how does \`New Counter Price\` gold sound? That’s a fair bit off my initial ask!"
+                *   Update your internal 'currentAskingPrice' to this \`New Counter Price\` for the *next* turn. Use 'hagniResponseOutput' with outcome 'countered'.
+        *   **Considering Player's Context**: If the player mentions being new, poor, etc., acknowledge it empathetically but gently hold your ground on value. Example: "Ah, the path of an adventurer often starts with a light coin purse, I remember it well! While I admire your resourcefulness, these {{itemDescription}} are from a perilous quest. My offer of {{currentAskingPrice}} is already quite friendly, but what were you hoping for?"
+    5.  **Output**: ALWAYS use the 'hagniResponseOutput' action to communicate. Include your conversational message and the negotiation outcome ('accepted', 'countered', 'rejected', 'asking', 'informing').
 
     ## Current Negotiation State (ID: {{uniqueNegotiationId}}):
     Items for Sale: {{itemDescription}}
@@ -206,6 +210,7 @@ export class AiDealerAgentService {
             : 'No message yet',
           negotiationActive: hagniState.negotiationActive,
           taskDescription: taskDescription,
+          extractedOffer: undefined,
         });
       },
       maxSteps: 1,
@@ -214,48 +219,15 @@ export class AiDealerAgentService {
     this.agent = createDreams({
       logger: LogLevel.INFO,
       model: groq(this.config.model),
-      // Add inputs to the agent setup
       inputs: {
         'custom:playerMessage': input({
           schema: z.object({
             uniqueNegotiationId: z.string(),
             playerMessage: z.string(), // Raw player message
           }),
-          subscribe: (send, agent: AnyAgent) => {
-            const listener = (messageData) => {
-              simpleUI.logMessage(
-                LogLevel.DEBUG,
-                `[Input] Received player message event for ID: ${messageData.uniqueNegotiationId}`,
-              );
-              // Log player message via UI
-              simpleUI.logMessage(
-                LogLevel.INFO,
-                `Player (to ${messageData.uniqueNegotiationId}): ${messageData.playerMessage}`,
-              );
-
-              const targetContext = this.goalContext;
-              const contextArgs = {
-                uniqueNegotiationId: messageData.uniqueNegotiationId,
-              };
-              const inputData = messageData;
-
-              // Update the state first (so the agent sees the latest message)
-              // Ideally, the agent framework handles getting the right context and applying the update
-              // For now, we assume the 'send' triggers the agent loop which will then read the message via context rendering
-              send(targetContext, contextArgs, inputData);
-            };
-            playerInteractionEmitter.on('playerSendsMessage', listener);
-            return () => {
-              playerInteractionEmitter.off('playerSendsMessage', listener);
-              simpleUI.logMessage(
-                LogLevel.DEBUG,
-                '[Input] Detached player message listener.',
-              );
-            };
-          },
           // Handler to update state *before* agent thinks (optional but useful)
           // This ensures the state reflects the message when the prompt is rendered
-          handler: async (data, ctx, agent) => {
+          handler: async (data, ctx) => {
             const state = ctx.memory as HagniNegotiationState;
             if (
               state &&
@@ -287,29 +259,7 @@ export class AiDealerAgentService {
       extensions: [
         extension({
           name: 'hagni',
-          actions: [
-            // Action to explicitly end negotiation if needed (e.g., player walks away)
-            // action({
-            //   name: "endNegotiation",
-            //   description: "Forcefully end the current negotiation session.",
-            //   schema: z.object({
-            //     uniqueNegotiationId: z.string(),
-            //     reason: z.string().optional().default("Player ended interaction."),
-            //   }),
-            //   async handler(data, ctx) {
-            //     const { uniqueNegotiationId, reason } = data;
-            //     const state = ctx.agentMemory;
-            //     if (state && state.uniqueNegotiationId === uniqueNegotiationId && state.negotiationActive) {
-            //        state.negotiationActive = false;
-            //        // updateMemory might not be needed if the agent loop won't run again for this context
-            //        // await ctx.updateMemory(state);
-            //        simpleUI.logMessage(LogLevel.INFO, `[Action ${uniqueNegotiationId}] Negotiation ended. Reason: ${reason}`);
-            //        return { success: true, message: `Negotiation ${uniqueNegotiationId} ended.` };
-            //     }
-            //     return { success: false, message: `Negotiation ${uniqueNegotiationId} not active or found.` };
-            //   },
-            // }),
-          ],
+          actions: [],
           // --- Output Definition ---
           outputs: {
             hagniResponseOutput: output({
@@ -354,8 +304,6 @@ export class AiDealerAgentService {
                   LogLevel.DEBUG,
                   `[Output ${negotiationId}] Received data: ${JSON.stringify(data)}`,
                 );
-
-                this.currentResponse = data;
 
                 // Log Hagni's response via UI
                 simpleUI.logAgentAction(
@@ -446,6 +394,8 @@ export class AiDealerAgentService {
       },
     });
 
+    this.agent.start();
+
     simpleUI.logMessage(LogLevel.INFO, 'Hagni agent background loop started.');
   }
 
@@ -453,7 +403,7 @@ export class AiDealerAgentService {
    * Starts a new negotiation session.
    * Called by the game logic when a player interacts with Hagni.
    */
-  public async startNewHagniNegotiation(
+  public async initialize(
     negotiationId: string,
     itemData: {
       baseValue: number;
@@ -466,61 +416,72 @@ export class AiDealerAgentService {
       maxDiscount: number;
     },
   ): Promise<void> {
-    // Returns void, interaction happens via agent loop & outputs
-    simpleUI.logMessage(
-      LogLevel.INFO,
-      `Service: Received request to start negotiation: ${negotiationId}`,
-    );
+    while (true) {
+      try {
+        // Returns void, interaction happens via agent loop & outputs
+        simpleUI.logMessage(
+          LogLevel.INFO,
+          `Service: Received request to start negotiation: ${negotiationId}`,
+        );
 
-    // We don't directly run the agent here. Instead, we emit an event
-    // that the 'startNegotiationInput' *would* listen for if it existed,
-    // OR we manually trigger the context creation process.
-    // Since we removed that input, let's manually ensure the context exists.
+        // We don't directly run the agent here. Instead, we emit an event
+        // that the 'startNegotiationInput' *would* listen for if it existed,
+        // OR we manually trigger the context creation process.
+        // Since we removed that input, let's manually ensure the context exists.
 
-    // Manually trigger context creation by accessing it.
-    // The framework should call 'create' if it doesn't exist.
-    // We pass the necessary args for creation.
-    // try {
-    console.log(
-      `Unique ID: ${negotiationId}, Item Data: ${JSON.stringify(itemData)}, Config: ${JSON.stringify(config)}`,
-    );
-    await this.agent.start();
-    await this.agent.run({
-      context: this.goalContext,
-      args: {
-        // Use the context type defined in the extension
-        type: 'hagniNegotiation',
-        // Provide the initial arguments matching the context schema
-        uniqueNegotiationId: negotiationId,
-        baseValue: itemData.baseValue,
-        rarityBonus: itemData.rarityBonus,
-        itemCountsByRarity: itemData.itemCounts,
-        minSellRatio: 0.75, // Example: Hagni won't go below 75% of calculated value
-        maxDiscount: 0.15, // Example: Hagni offers max 15% discount per counter-offer step
-      },
-      config: {
-        allowActions: true,
-        allowOutputs: true,
-        temperature: this.config.temperature,
-        maxTokens: this.config.maxTokens,
-        stop: [
-          '</response>',
-          '</reasoning>',
-          '```',
-          '\\n',
-          'The current context',
-          'Given that',
-          'Based on',
-          'As an AI',
-        ],
-      },
-    });
-    console.log(this.goalContext.args);
-    simpleUI.logMessage(
-      LogLevel.INFO,
-      `[${negotiationId}] Context ensured/created.`,
-    );
-    return this.currentResponse; // Return the current response if needed
+        // Manually trigger context creation by accessing it.
+        // The framework should call 'create' if it doesn't exist.
+        // We pass the necessary args for creation.
+        // try {
+        console.log(
+          `Unique ID: ${negotiationId}, Item Data: ${JSON.stringify(itemData)}, Config: ${JSON.stringify(config)}`,
+        );
+        let response = await this.agent.run({
+          context: this.goalContext,
+          args: {
+            // Use the context type defined in the extension
+            type: 'hagniNegotiation',
+            // Provide the initial arguments matching the context schema
+            uniqueNegotiationId: negotiationId,
+            baseValue: itemData.baseValue,
+            rarityBonus: itemData.rarityBonus,
+            itemCountsByRarity: itemData.itemCounts,
+            minSellRatio: 0.75, // Example: Hagni won't go below 75% of calculated value
+            maxDiscount: 0.15, // Example: Hagni offers max 15% discount per counter-offer step
+          },
+          config: {
+            allowActions: true,
+            allowOutputs: true,
+            temperature: this.config.temperature,
+            maxTokens: this.config.maxTokens,
+            stop: [
+              '</response>',
+              '</reasoning>',
+              '```',
+              '\\n',
+              'The current context',
+              'Given that',
+              'Based on',
+              'As an AI',
+            ],
+          },
+        });
+        response = parseAgentResponse(response);
+        console.log(this.goalContext.args);
+        simpleUI.logMessage(
+          LogLevel.INFO,
+          `[${negotiationId}] Context ensured/created.`,
+        );
+        return response;
+      } catch (error) {
+        simpleUI.logMessage(
+          LogLevel.ERROR,
+          `[${negotiationId}] Failed to ensure context: ${error}`,
+        );
+        // Retry after a short delay
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+      }
+    }
 
     // Now that the context exists, the agent's next loop *should*
     // render the context, see lastPlayerRawMessage is null, and trigger
@@ -538,62 +499,69 @@ export class AiDealerAgentService {
    * Handles a raw message from the player during an ongoing negotiation.
    * Called by the game logic (e.g., chat input).
    */
-  public async handlePlayerMessage(
+  public async handleMessage(
     negotiationId: string,
-    playerMessage: string,
+    message: string,
   ): Promise<any> {
-    console.log('~~~~~~~~ NBW: Player message received ~~~~~~~~~~');
-    simpleUI.logMessage(
-      LogLevel.INFO,
-      `Service: Received player message for ${negotiationId}: "${playerMessage}"`,
-    );
-
-    // Reset current response and emit the event
-    this.currentResponse = null;
-    // Create a promise that resolves when currentResponse changes
-    const responsePromise = new Promise((resolve) => {
-      const checkResponse = () => {
-        if (this.currentResponse !== null) {
-          resolve(this.currentResponse);
-        } else {
-          setTimeout(checkResponse, 100); // Check every 100ms
-        }
-      };
-      checkResponse();
-    });
-    playerInteractionEmitter.emit('playerSendsMessage', {
-      uniqueNegotiationId: negotiationId,
-      playerMessage: playerMessage,
-    });
-
-    // Wait for the response with a timeout
     try {
-      const response = await Promise.race([
-        responsePromise,
-        new Promise((_, reject) =>
-          setTimeout(() => reject(new Error('Response timeout')), 10000),
-        ),
-      ]);
+      simpleUI.logMessage(
+        LogLevel.INFO,
+        `Service: Received player message for ${negotiationId}: "${message}"`,
+      );
+
+      let response = await this.agent.send({
+        context: this.goalContext,
+        args: {
+          type: 'hagniNegotiation',
+          uniqueNegotiationId: negotiationId,
+          playerMessage: message,
+        },
+        input: {
+          type: 'custom:playerMessage',
+          data: {
+            uniqueNegotiationId: negotiationId,
+            playerMessage: message,
+          },
+        },
+      });
+      response = parseAgentResponse(response);
+      simpleUI.logMessage(
+        LogLevel.INFO,
+        `[${negotiationId}] Player message processed.`,
+      );
       return response;
     } catch (error) {
       simpleUI.logMessage(
         LogLevel.ERROR,
-        `Timeout waiting for response in negotiation ${negotiationId}: ${error.message}`,
+        `[${negotiationId}] Failed to process player message: ${error}`,
       );
-      throw error;
+      return {
+        message: 'Sorry, I am unable to respond right now.',
+        detectedFarmRequest: false,
+      };
     }
   }
 
-  // Optional: Method to gracefully stop the agent
-  public stopAgent(): void {
-    this.agent.stop();
-    simpleUI.logMessage(LogLevel.INFO, 'Hagni agent stopped.');
+  public async reset(negotiationId: string): Promise<void> {
+    await this.agent.deleteContext('hagniNegotiation:', negotiationId);
   }
 
   public async getAgentFarmData(
     walletAddress: string,
   ): Promise<AgentPlayerData> {
-    return this.agentPlayerDataModel.findOne({ walletAddress }).exec();
+    const result = await this.agentPlayerDataModel
+      .findOne({ walletAddress })
+      .exec();
+    if (!result) {
+      await this.createAgentFarmData({
+        walletAddress,
+        startTime: 0,
+        duration: 0,
+        isFarming: false,
+      });
+      return this.agentPlayerDataModel.findOne({ walletAddress }).exec();
+    }
+    return result;
   }
 
   async createAgentFarmData(

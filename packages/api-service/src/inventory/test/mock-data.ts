@@ -71,15 +71,15 @@ export const mockGameInventoryData = {
         isNewEquipment: false,
         lstSubAttributeKey: [
           '(Raw_Attribute_Add)(Attack)(Common)(0)(0)(0)(25)',
-          '(Raw_Attribute_Add)(Attack)(Great)(0)(0)(0)(35)'
+          '(Raw_Attribute_Add)(Attack)(Great)(0)(0)(0)(35)',
         ],
-        resourceValue: 1
-      }
+        resourceValue: 1,
+      },
     ],
     dicEquippedKey: {
-      '1': '86f56bf8-23e1-42a7-beef-8e0459dd94d0'
-    }
-  }
+      '1': '86f56bf8-23e1-42a7-beef-8e0459dd94d0',
+    },
+  },
 };
 
 export const mockUpdateGameInventoryData = {
@@ -97,14 +97,14 @@ export const mockUpdateGameInventoryData = {
         currentUpradeLevel: 3,
         isNewEquipment: true,
         lstSubAttributeKey: [
-          '(Raw_Attribute_Add)(Attack)(Common)(0)(0)(0)(25)'
+          '(Raw_Attribute_Add)(Attack)(Common)(0)(0)(0)(25)',
         ],
-        resourceValue: 2
-      }
+        resourceValue: 2,
+      },
     ],
     dicEquippedKey: {
       '1': '86f56bf8-23e1-42a7-beef-8e0459dd94d0',
-      '2': '2a83a97b-1754-4d1c-b553-03584c570871'
-    }
-  }
-}; 
+      '2': '2a83a97b-1754-4d1c-b553-03584c570871',
+    },
+  },
+};

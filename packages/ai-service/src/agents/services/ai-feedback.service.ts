@@ -1,6 +1,6 @@
 import { EventEmitter } from 'events';
 import { InjectModel } from '@nestjs/mongoose';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import {
   FEEDBACK_CATEGORY,
   UserFeedbackData,
@@ -19,7 +19,7 @@ import {
   render,
 } from '@daydreamsai/core';
 import { AiAgentConfigService } from 'ai-service/src/config/ai-agent.config';
-import { FeedbackDto } from '../dto/chat.dto';
+
 import { z } from 'zod';
 import { groq } from '@ai-sdk/groq';
 simpleUI.initializeUI();
@@ -35,6 +35,7 @@ interface FeedBackAgentState {
 const playerInteractionEmitter = new EventEmitter();
 @Injectable()
 export class AiFeedbackService {
+  private readonly logger = new Logger(AiFeedbackService.name);
   private agent;
   private readonly goalContext;
   private currentResponseMap: Map<string, any> = new Map();
@@ -54,14 +55,6 @@ export class AiFeedbackService {
       key({ agentId }) {
         return agentId;
       },
-      inputs: {
-        'custom:PlayerMessage': input({
-          schema: z.object({
-            agentId: z.string(),
-            playerMessage: z.string(),
-          }),
-        }),
-      },
       create(state): FeedBackAgentState {
         const { agentId } = state.args;
         simpleUI.logMessage(
@@ -76,33 +69,37 @@ export class AiFeedbackService {
 
       render({ memory }) {
         const feedbackState = memory as FeedBackAgentState;
-        const feedbackTemplate = `You are Hagni, a friendly AI designed to collect and respond to user feedback about the game.
-
-You only have ONE job: detect and respond to player feedback.
+        const maxScore = 10;
+        const feedbackCategoriesList =
+          Object.values(FEEDBACK_CATEGORY).join(', ');
+        const feedbackTemplate = `You are Kael, a friendly AI assistant for a game. Your primary role is to collect, analyze, and respond to user feedback.
 
 ## Instructions:
 
-1. **Read the Player's Message:** '{{lastPlayerMessage}}'
+1.  **Read the Player's Message (if any):** '{{lastPlayerMessage}}'
 
-2. **Decide if it’s feedback.** Feedback includes:
-   - Bug reports: "This feature is broken", "The screen froze"
-   - Suggestions: "You should add more levels", "Make enemies smarter"
-   - General impressions: "I love this!", "This is confusing"
+2.  **Determine if it's feedback:**
+    *   Feedback includes bug reports ('${FEEDBACK_CATEGORY.BUG}'), feature requests ('${FEEDBACK_CATEGORY.FeatureRequest}'), compliments ('${FEEDBACK_CATEGORY.Compliment}'), questions about the game ('${FEEDBACK_CATEGORY.Question}'), or other game-related comments ('${FEEDBACK_CATEGORY.Other}').
+    *   NOT feedback: Off-topic chat ("Hello", "Play a game"), empty/nonsense text.
 
-   NOT feedback:
-   - Off-topic chat like “Hello?”, “Play a game with me”, “What’s your name?”
-   - Empty or nonsense text
+3.  **If it IS feedback:**
+    *   **Analyze it:**
+        *   **Categorize:** Assign ONE category from the following list: ${feedbackCategoriesList}.
+        *   **Score:** Assign a usefulness/impact score from 1 to ${maxScore} (1: Not useful/trivial, ${maxScore / 2}: Moderately useful, ${maxScore}: Very useful insight/critical).
+    *   **Respond:** Thank the player sincerely for their feedback. Be warm. Example: "Thanks for letting us know about that! I've noted your suggestion."
 
-3. **Respond Appropriately:**
-   - If the message **is helpful feedback**, thank the player sincerely. Be warm and specific if possible.
-     Example: “Thanks a lot for the feedback! I’ll make sure the devs see this.”
-   - If the message **isn’t feedback**, gently reply that you’re only here to collect feedback.
-     Example: “I’m only here to collect feedback about the game! Feel free to let me know what you think.”
+4.  **If it ISN'T feedback:**
+    *   **Respond:** Gently inform the player you're here for game feedback. Example: "I'm here to gather your thoughts on the game! Let me know if anything comes to mind."
 
-4. **ALWAYS use the 'storeFeedbackOutput' action**, and fill these fields:
-   - \`detectedFeedback\`: true if feedback detected, false otherwise
-   - \`feedbackText\`: the original message if feedback was detected, null otherwise
-   - \`responseText\`: your friendly message to the player
+5.  **If NO player message yet (initialization):**
+    *   **Respond:** Provide a friendly greeting, introduce yourself, and explain your purpose. Example: "Hi there! I'm Kael, ready to hear your feedback about the game. What are your thoughts?"
+
+6.  **ALWAYS use the 'storeFeedbackOutput' action with the following fields:**
+    *   \`detectedFeedback\`: (boolean) True if the player's message was feedback, false otherwise.
+    *   \`feedbackText\`: (string | null) The original player's message if it was feedback, null otherwise.
+    *   \`feedbackCategory\`: (${feedbackCategoriesList} | null) The category you assigned if feedback was detected, null otherwise.
+    *   \`feedbackScore\`: (number | null) The score (1-${maxScore}) you assigned if feedback was detected, null otherwise.
+    *   \`responseText\`: (string) Your conversational message to the player.
 
 ## Input:
 Agent ID: {{agentId}}
@@ -112,8 +109,8 @@ Player Message: {{lastPlayerMessage}}
 {{taskDescription}}
         `;
         const taskDescription = feedbackState.lastPlayerMessage
-          ? `Analyze the player's message. If it’s valid feedback, thank them. Otherwise, politely explain that you're only here to collect game feedback.`
-          : `No message yet. Wait for the player to say something before replying.`;
+          ? `Analyze the player's message: '${feedbackState.lastPlayerMessage}'. If it's game feedback, categorize it (from ${feedbackCategoriesList}), assign a score (1-${maxScore}), and thank them. If not, politely explain your role. Then, use 'storeFeedbackOutput'.`
+          : `No message yet. Provide a friendly greeting explaining your role. Use 'storeFeedbackOutput' with detectedFeedback=false, and null for feedbackText, category, and score.`;
         return render(feedbackTemplate, {
           agentId: feedbackState.agentId,
           lastPlayerMessage: feedbackState.lastPlayerMessage
@@ -130,12 +127,10 @@ Player Message: {{lastPlayerMessage}}
 
       inputs: {
         'custom:playerMessage': input({
-          // Schema for the data this input expects
           schema: z.object({
             agentId: z.string(),
             playerMessage: z.string(),
           }),
-          // Subscribe to the event emitter
           subscribe: (send) => {
             const listener = (messageData: {
               agentId: string;
@@ -149,42 +144,21 @@ Player Message: {{lastPlayerMessage}}
                 LogLevel.INFO,
                 `Player (to ${messageData.agentId}): ${messageData.playerMessage}`,
               );
-
-              // Target the correct context instance using agentId
               const contextArgs = { agentId: messageData.agentId };
-              const inputData = {
-                // Match the input schema
-                agentId: messageData.agentId,
-                playerMessage: messageData.playerMessage,
-              };
-
-              // Send the data to the agent, targeting the specific context
-              send(this.goalContext, contextArgs, inputData);
+              send(this.goalContext, contextArgs, messageData);
             };
-
             playerInteractionEmitter.on('playerSendsMessage', listener);
-            // Return cleanup function
             return () =>
               playerInteractionEmitter.off('playerSendsMessage', listener);
           },
-          // Handler to update state *before* agent thinks
           handler: async (data, ctx) => {
             const state = ctx.memory as FeedBackAgentState;
-            // Ensure we're updating the correct context instance
-            if (state && state.agentId === data.agentId) {
-              state.lastPlayerMessage = data.playerMessage;
-              simpleUI.logMessage(
-                LogLevel.DEBUG,
-                `[Input Handler ${data.agentId}] Updated lastPlayerMessage.`,
-              );
-            } else {
-              simpleUI.logMessage(
-                LogLevel.WARN,
-                `[Input Handler ${data.agentId}] State mismatch or context not found for agentId when updating message.`,
-              );
-            }
-
-            return { data: data };
+            state.lastPlayerMessage = data.playerMessage;
+            simpleUI.logMessage(
+              LogLevel.DEBUG,
+              `[Input Handler ${data.agentId}] Updated lastPlayerMessage.`,
+            );
+            return { data };
           },
           format: (ref) =>
             `[InputRef ${ref.data.agentId}] Player Message: "${ref.data.playerMessage}"`,
@@ -194,57 +168,103 @@ Player Message: {{lastPlayerMessage}}
       extensions: [
         extension({
           name: 'feedbackActions',
-          // No specific actions needed for this simple version
-          actions: [],
-          outputs: {
-            feedbackResponseOutput: output({
-              description: "Sends the feedback AI's response to the player",
+          actions: [
+            {
+              name: 'storeFeedbackOutput',
+              description:
+                "Stores the raw feedback string, the AI's analysis (category, score) for the latest feedback, and the AI's response.",
               schema: z.object({
-                message: z
-                  .string()
-                  .describe('The conversational message for the player.'),
-                detectedFarmRequest: z
-                  .boolean()
-                  .describe(
-                    "Whether the AI detected a request to start farming in the player's last message.",
-                  ),
+                detectedFeedback: z.boolean(),
+                feedbackText: z.string().nullable(),
+                feedbackCategory: z.nativeEnum(FEEDBACK_CATEGORY).nullable(),
+                feedbackScore: z.number().min(1).max(10).nullable(),
+                responseText: z.string(),
               }),
               handler: async (data, ctx) => {
                 const state = ctx.memory as FeedBackAgentState;
-                const { message, detectedFarmRequest } = data;
-                const agentId = state.agentId;
+                const agentId_walletAddress = state.agentId;
 
-                simpleUI.logMessage(
-                  LogLevel.DEBUG,
-                  `[Output ${agentId}] Received data: ${JSON.stringify(data)}`,
-                );
-
-                // Log the AI's response
-                simpleUI.logAgentAction(
-                  'Feedback Response',
-                  `Feedback ${agentId}: ${message}`,
-                );
-
-                // Store the response so the service can retrieve it
-                this.currentResponseMap.set(agentId, {
-                  message,
-                  detectedFarmRequest,
-                });
-
-                if (detectedFarmRequest) {
-                  simpleUI.logMessage(
-                    LogLevel.INFO,
-                    `[Output Handler ${agentId}] State updated: isFarming set to true.`,
-                  );
-                } else if (!detectedFarmRequest) {
+                try {
                   simpleUI.logMessage(
                     LogLevel.DEBUG,
-                    `[Output Handler ${agentId}] AI is still farming. No state change.`,
+                    `[Action storeFeedbackOutput for ${agentId_walletAddress}] Data: ${JSON.stringify(
+                      data,
+                    )}`,
                   );
+
+                  if (
+                    data.detectedFeedback &&
+                    data.feedbackText &&
+                    data.feedbackCategory && // Ensure category is provided
+                    data.feedbackScore !== null // Ensure score is provided
+                  ) {
+                    simpleUI.logMessage(
+                      LogLevel.INFO,
+                      `[Action storeFeedbackOutput for ${agentId_walletAddress}] Storing analyzed feedback: [${data.feedbackCategory}, Score: ${data.feedbackScore}] "${data.feedbackText}"`,
+                    );
+
+                    try {
+                      await this.storeFeedBack(
+                        agentId_walletAddress,
+                        data.feedbackText,
+                        data.feedbackCategory,
+                        data.feedbackScore,
+                      );
+                      simpleUI.logMessage(
+                        LogLevel.INFO,
+                        `[Action storeFeedbackOutput for ${agentId_walletAddress}] Feedback stored successfully via storeFeedBack method.`,
+                      );
+                    } catch (error) {
+                      simpleUI.logMessage(
+                        LogLevel.ERROR,
+                        `[Action storeFeedbackOutput for ${agentId_walletAddress}] Error calling storeFeedBack: ${error.message}`,
+                      );
+                      this.logger.error(
+                        `Error storing feedback for ${agentId_walletAddress}:`,
+                        error.stack,
+                      );
+                    }
+                  } else if (data.detectedFeedback) {
+                    simpleUI.logMessage(
+                      LogLevel.WARN,
+                      `[Action storeFeedbackOutput for ${agentId_walletAddress}] Feedback detected, but full analysis (text, category, or score) missing. AI Output: ${JSON.stringify(
+                        data,
+                      )}. Not storing.`,
+                    );
+                  }
+
+                  simpleUI.logAgentAction(
+                    'AI Response (Kael)',
+                    `Kael (to ${agentId_walletAddress}): ${data.responseText}`,
+                  );
+                  this.currentResponseMap.set(agentId_walletAddress, {
+                    message: data.responseText,
+                    detectedFeedback: data.detectedFeedback,
+                  });
+
+                  return {
+                    success: true,
+                    messageForPlayer: data.responseText,
+                    feedbackWasStored:
+                      data.detectedFeedback &&
+                      !!data.feedbackText &&
+                      !!data.feedbackCategory &&
+                      data.feedbackScore !== null,
+                  };
+                } catch (e) {
+                  this.logger.error(
+                    `Error within storeFeedbackOutput handler for ${agentId_walletAddress}: ${e.message}`,
+                    e.stack,
+                  );
+                  simpleUI.logMessage(
+                    LogLevel.ERROR,
+                    `Critical error in storeFeedbackOutput for ${agentId_walletAddress}: ${e.message}`,
+                  );
+                  throw e;
                 }
               },
-            }),
-          },
+            },
+          ],
         }),
       ],
       memory: {
@@ -263,9 +283,22 @@ Player Message: {{lastPlayerMessage}}
       'Feedback AI agent background loop started.',
     );
   }
-  /**
-   * Initalize AI Agent base on walletAddress of user
-   */
+
+  public async handlePlayerMessage(
+    agentId_walletAddress: string,
+    playerMessage: string,
+  ): Promise<{ message: string; detectedFeedback: boolean }> {
+    simpleUI.logMessage(
+      LogLevel.INFO,
+      `Service: Handling player message for ${agentId_walletAddress}: "${playerMessage}"`,
+    );
+    this.currentResponseMap.delete(agentId_walletAddress);
+    playerInteractionEmitter.emit('playerSendsMessage', {
+      agentId: agentId_walletAddress,
+      playerMessage,
+    });
+    return await this.waitForResponse(agentId_walletAddress);
+  }
   public async initializeAiFeedbackAgent(agentId: string): Promise<any> {
     simpleUI.logMessage(
       LogLevel.INFO,
@@ -292,25 +325,38 @@ Player Message: {{lastPlayerMessage}}
     }
   }
   private async storeFeedBack(
-    data: FeedbackDto,
-    aiCategory: FEEDBACK_CATEGORY,
-    aiScore: number,
+    walletAddress: string,
+    feedbackMessage: string, // The raw feedback string from the user
+    categoryForLatest: FEEDBACK_CATEGORY,
+    scoreForLatest: number,
   ): Promise<void> {
+    this.logger.log(
+      `Storing feedback for ${walletAddress}: [Category: ${categoryForLatest}, Score: ${scoreForLatest}] "${feedbackMessage}"`,
+    );
     try {
       await this.userFeedbackDataModel.findOneAndUpdate(
-        { walletAddress: data.walletAddress },
+        { walletAddress: walletAddress },
         {
-          $push: { feedback: data.feedback }, // assuming data.feedback is a string
+          $push: { feedback: feedbackMessage }, // Push the raw string into the array
           $set: {
-            aiCategory: aiCategory,
-            aiScore: aiScore,
+            aiCategory: categoryForLatest, // Set the category for the latest feedback
+            aiScore: scoreForLatest, // Set the score for the latest feedback
+            // updatedAt: new Date() // Mongoose timestamps: true should handle this
           },
         },
         { upsert: true, new: true },
       );
+      this.logger.log(
+        `Feedback for ${walletAddress} stored/updated successfully.`,
+      );
     } catch (error) {
-      console.error(error);
-      throw new Error('Error when storing feedback');
+      this.logger.error(
+        `Error storing/updating feedback for ${walletAddress}: ${error.message}`,
+        error.stack,
+      );
+      throw new Error(
+        `Failed to store/update feedback in database for ${walletAddress}.`,
+      );
     }
   }
   private waitForResponse(

@@ -1,8 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { InventoryController } from '../inventory.controller';
 import { InventoryService } from '../inventory.service';
-import { CreateGameInventoryDto, GetGameInventoryDto, UpdateGameInventoryDto } from '../dto/inventory.dto';
-import { mockGameInventoryData, mockUpdateGameInventoryData } from './mock-data';
+import {
+  CreateGameInventoryDto,
+  GetGameInventoryDto,
+  UpdateGameInventoryDto,
+} from '../dto/inventory.dto';
+import {
+  mockGameInventoryData,
+  mockUpdateGameInventoryData,
+} from './mock-data';
 
 describe('InventoryController', () => {
   let controller: InventoryController;
@@ -47,8 +54,8 @@ describe('InventoryController', () => {
         inventory: {
           sortByType: false,
           lstOwned: [],
-          dicEquippedKey: {}
-        }
+          dicEquippedKey: {},
+        },
       };
       const expectedResult = { ...createDto, id: '1' };
       mockInventoryService.create.mockResolvedValue(expectedResult);
@@ -76,8 +83,8 @@ describe('InventoryController', () => {
         inventory: {
           sortByType: false,
           lstOwned: [],
-          dicEquippedKey: {}
-        }
+          dicEquippedKey: {},
+        },
       };
       const expectedResult = { ...updateDto, id: '1' };
       mockInventoryService.update.mockResolvedValue(expectedResult);
@@ -91,11 +98,11 @@ describe('InventoryController', () => {
   describe('get', () => {
     it('should return inventory for a wallet address', async () => {
       const getDto: GetGameInventoryDto = {
-        walletAddress: '0x123'
+        walletAddress: '0x123',
       };
       const expectedResult = {
         ...mockGameInventoryData,
-        id: '1'
+        id: '1',
       };
       mockInventoryService.get.mockResolvedValue(expectedResult);
 
@@ -108,7 +115,7 @@ describe('InventoryController', () => {
   describe('delete', () => {
     it('should delete inventory for a wallet address', async () => {
       const getDto: GetGameInventoryDto = {
-        walletAddress: '0x123'
+        walletAddress: '0x123',
       };
       const expectedResult = { success: true };
       mockInventoryService.delete.mockResolvedValue(expectedResult);
@@ -125,7 +132,9 @@ describe('InventoryController', () => {
       const error = new Error('Service error');
       mockInventoryService.create.mockRejectedValue(error);
 
-      await expect(controller.create(createDto)).rejects.toThrow('Service error');
+      await expect(controller.create(createDto)).rejects.toThrow(
+        'Service error',
+      );
     });
 
     it('should handle service errors when updating inventory', async () => {
@@ -133,12 +142,14 @@ describe('InventoryController', () => {
       const error = new Error('Service error');
       mockInventoryService.update.mockRejectedValue(error);
 
-      await expect(controller.update(updateDto)).rejects.toThrow('Service error');
+      await expect(controller.update(updateDto)).rejects.toThrow(
+        'Service error',
+      );
     });
 
     it('should handle service errors when getting inventory', async () => {
       const getDto: GetGameInventoryDto = {
-        walletAddress: '0x123'
+        walletAddress: '0x123',
       };
       const error = new Error('Service error');
       mockInventoryService.get.mockRejectedValue(error);
@@ -148,7 +159,7 @@ describe('InventoryController', () => {
 
     it('should handle service errors when deleting inventory', async () => {
       const getDto: GetGameInventoryDto = {
-        walletAddress: '0x123'
+        walletAddress: '0x123',
       };
       const error = new Error('Service error');
       mockInventoryService.delete.mockRejectedValue(error);

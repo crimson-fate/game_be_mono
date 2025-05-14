@@ -8,16 +8,23 @@ import {
   Param,
   Delete,
   Put,
+  Logger,
 } from '@nestjs/common';
 import { AiAgentService } from './ai-agent.service';
 import {
   ChatDto,
   FeedbackDto,
-  ChatResponseDto,
+  InitializeAgentDto,
   WalletDto,
 } from './dto/chat.dto';
 import { CreateAgentFarmDto, UpdateAgentFarmDto } from './dto/agent-farm.dto';
-import { ApiOperation, ApiResponse, ApiTags, ApiParam } from '@nestjs/swagger';
+import {
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+  ApiParam,
+  ApiBody,
+} from '@nestjs/swagger';
 import { AiDealerAgentService } from './services/ai-dealer-agent.service';
 import { ChatHistoryService } from './services/chat-history.service';
 import { AiFeedbackService } from './services/ai-feedback.service';
@@ -25,6 +32,7 @@ import { AiFeedbackService } from './services/ai-feedback.service';
 @ApiTags('AI Agent')
 @Controller('ai')
 export class AiAgentController {
+  private readonly logger = new Logger(AiAgentController.name);
   constructor(
     private readonly aiAgentService: AiAgentService,
     private readonly aiDealerAgentService: AiDealerAgentService,
@@ -89,8 +97,12 @@ export class AiAgentController {
   })
   async startChatting(@Body() body: ChatDto): Promise<any> {
     try {
-      const result = await this.aiAgentService.initializeFarmerAgent(
+      const data = await this.aiDealerAgentService.getAgentFarmData(
         body.walletAddress,
+      );
+      const result = await this.aiAgentService.initialize(
+        body.walletAddress,
+        data ? data.isFarming : false,
       );
       console.log(result);
       return result;
@@ -111,34 +123,17 @@ export class AiAgentController {
   })
   async normalChat(@Body() body: ChatDto): Promise<any> {
     try {
-      console.log('Running negotiation example...');
-      const result = await this.aiAgentService.handlePlayerMessage(
+      const data = await this.aiDealerAgentService.getAgentFarmData(
+        body.walletAddress,
+      );
+      const result = await this.aiAgentService.handleMessage(
         body.walletAddress,
         body.message,
+        data ? data.isFarming : false,
       );
       return result;
     } catch (error) {
       console.error('Error running negotiation example:', error);
-      throw new HttpException(
-        'An error occurred while processing your request',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
-  }
-
-  @Post('normal/end')
-  @ApiOperation({ summary: 'End the chat' })
-  @ApiResponse({
-    status: 200,
-    description: 'Chat ended successfully',
-  })
-  async endChat(@Body() body: WalletDto): Promise<any> {
-    try {
-      console.log('Ending chat...');
-      const result = await this.aiAgentService.stopAgent();
-      return result;
-    } catch (error) {
-      console.error('Error ending chat:', error);
       throw new HttpException(
         'An error occurred while processing your request',
         HttpStatus.INTERNAL_SERVER_ERROR,
@@ -177,7 +172,7 @@ export class AiAgentController {
         duration: data.duration,
         itemCounts: itemCounts,
       });
-      const result = await this.aiDealerAgentService.startNewHagniNegotiation(
+      const result = await this.aiDealerAgentService.initialize(
         body.walletAddress,
         {
           baseValue: 100,
@@ -214,7 +209,7 @@ export class AiAgentController {
   async hagniChat(@Body() body: ChatDto): Promise<any> {
     try {
       console.log('Running negotiation example...');
-      const result = await this.aiDealerAgentService.handlePlayerMessage(
+      const result = await this.aiDealerAgentService.handleMessage(
         body.walletAddress,
         body.message,
       );
@@ -224,6 +219,15 @@ export class AiAgentController {
         );
         result.itemCounts = data.itemCounts;
         result.extractedOffer = result.extractedOffer;
+
+        await this.aiDealerAgentService.updateAgentFarmData(body.walletAddress, {
+          isFarming: false,
+          startTime: 0,
+          duration: 0,
+          itemCounts: null,
+        });
+        this.aiDealerAgentService.reset(body.walletAddress);
+        await this.aiAgentService.reset(body.walletAddress);
       }
       return result;
     } catch (error) {
@@ -257,7 +261,7 @@ export class AiAgentController {
         duration: 0,
         itemCounts: null,
       });
-      this.aiDealerAgentService.stopAgent();
+      this.aiDealerAgentService.reset(body.walletAddress);
       return { message: 'Negotiation ended successfully' };
     } catch (error) {
       console.error('Error ending negotiation:', error);
@@ -398,15 +402,74 @@ export class AiAgentController {
     }
   }
 
-  @Post('/feedbackGame')
-  @ApiOperation({ summary: 'Chat with the agent' })
-  async storeUserFeedback(@Body() body: FeedbackDto) {
-    try {
-      await this.aiFeedBackService.initializeAiFeedbackAgent(
-        ` ${body.walletAddress}-feedback`,
+  @Post('/initializeFeedback')
+  @ApiOperation({
+    summary: 'Initializes the feedback agent for a user and gets a greeting.',
+  })
+  async initializeAgent(@Body() body: InitializeAgentDto) {
+    // Simple DTO for walletAddress
+    if (!body.walletAddress) {
+      throw new HttpException(
+        'walletAddress is required',
+        HttpStatus.BAD_REQUEST,
       );
+    }
+    const agentId = `${body.walletAddress}-feedback`; // Consistent agentId
+    this.logger.log(`Initializing feedback agent for: ${agentId}`);
+    try {
+      const response =
+        await this.aiFeedBackService.initializeAiFeedbackAgent(agentId);
+      return response;
     } catch (error) {
-      throw new HttpException('Store FeedBack Error ', 500);
+      this.logger.error(
+        `Error initializing agent ${agentId}: ${error.message}`,
+        error.stack,
+      );
+      throw new HttpException(
+        'Failed to initialize feedback agent',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  @Post('/submitFeedback') // Renamed for clarity
+  @ApiOperation({
+    summary: 'Submit user feedback for AI processing and storage.',
+  })
+  async submitUserFeedback(@Body() feedbackDto: FeedbackDto) {
+    if (!feedbackDto.walletAddress || !feedbackDto.feedbackMessage) {
+      throw new HttpException(
+        'walletAddress and feedbackMessage are required',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const agentId = `${feedbackDto.walletAddress}-feedback`; // Consistent agentId
+    this.logger.log(
+      `Received feedback from ${agentId}: "${feedbackDto.feedbackMessage}"`,
+    );
+
+    try {
+      const aiResponse = await this.aiFeedBackService.handlePlayerMessage(
+        agentId,
+        feedbackDto.feedbackMessage, // Pass the actual feedback message
+      );
+
+      this.logger.log(`AI response to ${agentId}: ${aiResponse.message}`);
+      return {
+        userFeedback: feedbackDto.feedbackMessage,
+        aiReply: aiResponse.message,
+        feedbackProcessed: aiResponse.detectedFeedback,
+      };
+    } catch (error) {
+      this.logger.error(
+        `Error processing feedback for ${agentId}: ${error.message}`,
+        error.stack,
+      );
+      throw new HttpException(
+        'Error processing feedback',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 }
