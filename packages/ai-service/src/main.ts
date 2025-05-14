@@ -5,9 +5,9 @@ import mongoose from 'mongoose';
 import { ValidationPipe } from '@nestjs/common';
 import { configureSwagger } from '@app/shared/config/configSwagger';
 import { configureValidation } from '@app/shared/config/configValidation';
-
+import { json, urlencoded } from 'express';
 import configuration from '@app/shared/configuration';
-import * as bodyParser from 'body-parser';
+// import * as bodyParser from 'body-parser';
 
 mongoose.set('debug', true);
 
@@ -18,8 +18,8 @@ async function bootstrap() {
   app.enableCors({
     origin: '*',
   });
-  app.use(bodyParser.json({ limit: '10mb' }));
-  app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
+  app.use(json({ limit: '50mb' }));
+  app.use(urlencoded({ extended: true, limit: '50mb' }));
   configureSwagger(app);
   configureValidation(app);
   app.useGlobalPipes(new ValidationPipe());

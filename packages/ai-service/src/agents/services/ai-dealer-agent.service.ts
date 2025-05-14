@@ -12,7 +12,7 @@ import {
   type AnyAgent,
   createVectorStore,
 } from '@daydreamsai/core';
-// import { cliExtension } from "@daydreamsai/cli"; // Can remove if not using CLI directly
+
 import { z } from 'zod';
 import { groq } from '@ai-sdk/groq';
 import { simpleUI } from '../simple-ui/simple-ui'; // Assuming simple-ui.ts exists
@@ -22,7 +22,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { AgentPlayerData } from '@app/shared/models/schema/agent-player-data.schema';
 import { CreateAgentFarmDto, UpdateAgentFarmDto } from '../dto/agent-farm.dto';
 
-import { EventEmitter } from 'events'; // Using EventEmitter for simulating input
+import { EventEmitter } from 'events';
 
 const playerInteractionEmitter = new EventEmitter();
 
