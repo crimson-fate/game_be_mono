@@ -12,11 +12,12 @@ import {
   AgentPlayerDataSchema,
 } from '@app/shared/models/schema/agent-player-data.schema';
 import { AiDealerAgentService } from './services/ai-dealer-agent.service';
-import { AiFeedbackService } from './services/ai-feedback.service';
 import {
   UserFeedbackData,
   UserFeedbackDataSchema,
 } from '@app/shared/models/schema/user-feedback.schema';
+import { FeedbackService } from './services/feedback.service';
+import { PlayerResource, PlayerResourceSchema } from '@app/shared/models/schema/player-resource.schema';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import {
       { name: ChatHistory.name, schema: ChatHistorySchema },
       { name: AgentPlayerData.name, schema: AgentPlayerDataSchema },
       { name: UserFeedbackData.name, schema: UserFeedbackDataSchema },
+      { name: PlayerResource.name, schema: PlayerResourceSchema },
     ]),
   ],
   controllers: [AiAgentController],
@@ -31,8 +33,8 @@ import {
     AiAgentService,
     AiDealerAgentService,
     ChatHistoryService,
-    AiFeedbackService,
+    FeedbackService,
   ],
-  exports: [AiAgentService, AiDealerAgentService],
+  exports: [AiAgentService, AiDealerAgentService, FeedbackService],
 })
 export class AiAgentModule {}

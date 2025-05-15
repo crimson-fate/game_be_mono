@@ -10,6 +10,8 @@ import {
   Put,
   Logger,
 } from '@nestjs/common';
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
 import { AiAgentService } from './ai-agent.service';
 import {
   ChatDto,
@@ -27,7 +29,7 @@ import {
 } from '@nestjs/swagger';
 import { AiDealerAgentService } from './services/ai-dealer-agent.service';
 import { ChatHistoryService } from './services/chat-history.service';
-import { AiFeedbackService } from './services/ai-feedback.service';
+import { PlayerResource, PlayerResourceDocument } from '@app/shared/models/schema/player-resource.schema';
 
 @ApiTags('AI Agent')
 @Controller('ai')
@@ -36,8 +38,9 @@ export class AiAgentController {
   constructor(
     private readonly aiAgentService: AiAgentService,
     private readonly aiDealerAgentService: AiDealerAgentService,
-    private readonly aiFeedBackService: AiFeedbackService,
     private readonly chatHistoryService: ChatHistoryService,
+    @InjectModel(PlayerResource.name)
+    private readonly playerResourceModel: Model<PlayerResourceDocument>,
   ) {}
 
   calculateItemCounts(duration: number) {
@@ -172,10 +175,13 @@ export class AiAgentController {
         duration: data.duration,
         itemCounts: itemCounts,
       });
+      const playerMoney = await this.playerResourceModel.findOne({
+        walletAddress: body.walletAddress,
+      });
       const result = await this.aiDealerAgentService.initialize(
         body.walletAddress,
         {
-          baseValue: 100,
+          baseValue: 50,
           rarityBonus: {
             common: 0,
             great: 10,
@@ -188,6 +194,7 @@ export class AiAgentController {
           minSellRatio: 0.5,
           maxDiscount: 1.5,
         },
+        playerMoney.dicCommonResource.Coin
       );
       console.log(result);
       return result;
@@ -208,10 +215,14 @@ export class AiAgentController {
   })
   async hagniChat(@Body() body: ChatDto): Promise<any> {
     try {
-      console.log('Running negotiation example...');
+      console.log('Running negotiation...');
+      const playerMoney = await this.playerResourceModel.findOne({
+        walletAddress: body.walletAddress,
+      });
       const result = await this.aiDealerAgentService.handleMessage(
         body.walletAddress,
         body.message,
+        playerMoney.dicCommonResource.Coin
       );
       if (result.outcome && result.outcome === 'accepted') {
         const data = await this.aiDealerAgentService.getAgentFarmData(
@@ -226,7 +237,16 @@ export class AiAgentController {
           duration: 0,
           itemCounts: null,
         });
-        this.aiDealerAgentService.reset(body.walletAddress);
+        await this.aiDealerAgentService.reset(body.walletAddress);
+        await this.aiAgentService.reset(body.walletAddress);
+      } else if (result.outcome && result.outcome === 'ended') {
+        await this.aiDealerAgentService.updateAgentFarmData(body.walletAddress, {
+          isFarming: false,
+          startTime: 0,
+          duration: 0,
+          itemCounts: null,
+        });
+        await this.aiDealerAgentService.reset(body.walletAddress);
         await this.aiAgentService.reset(body.walletAddress);
       }
       return result;
@@ -252,8 +272,8 @@ export class AiAgentController {
         body.walletAddress,
       );
       if (!data || !data.isFarming) {
-        console.log("Can't find agent farm data or farming not started yet");
-        return { message: 'Agent farm data not found or farming not started' };
+        console.log("EndDealer: Can't find agent farm data or farming not started yet");
+        return { message: 'EndDealer: Agent farm data not found or farming not started' };
       }
       await this.aiDealerAgentService.updateAgentFarmData(body.walletAddress, {
         isFarming: false,
@@ -401,75 +421,5 @@ export class AiAgentController {
       );
     }
   }
-
-  @Post('/initializeFeedback')
-  @ApiOperation({
-    summary: 'Initializes the feedback agent for a user and gets a greeting.',
-  })
-  async initializeAgent(@Body() body: InitializeAgentDto) {
-    // Simple DTO for walletAddress
-    if (!body.walletAddress) {
-      throw new HttpException(
-        'walletAddress is required',
-        HttpStatus.BAD_REQUEST,
-      );
-    }
-    const agentId = `${body.walletAddress}-feedback`; // Consistent agentId
-    this.logger.log(`Initializing feedback agent for: ${agentId}`);
-    try {
-      const response =
-        await this.aiFeedBackService.initializeAiFeedbackAgent(agentId);
-      return response;
-    } catch (error) {
-      this.logger.error(
-        `Error initializing agent ${agentId}: ${error.message}`,
-        error.stack,
-      );
-      throw new HttpException(
-        'Failed to initialize feedback agent',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
-  }
-
-  @Post('/submitFeedback') // Renamed for clarity
-  @ApiOperation({
-    summary: 'Submit user feedback for AI processing and storage.',
-  })
-  async submitUserFeedback(@Body() feedbackDto: FeedbackDto) {
-    if (!feedbackDto.walletAddress || !feedbackDto.feedbackMessage) {
-      throw new HttpException(
-        'walletAddress and feedbackMessage are required',
-        HttpStatus.BAD_REQUEST,
-      );
-    }
-
-    const agentId = `${feedbackDto.walletAddress}-feedback`; // Consistent agentId
-    this.logger.log(
-      `Received feedback from ${agentId}: "${feedbackDto.feedbackMessage}"`,
-    );
-
-    try {
-      const aiResponse = await this.aiFeedBackService.handlePlayerMessage(
-        agentId,
-        feedbackDto.feedbackMessage, // Pass the actual feedback message
-      );
-
-      this.logger.log(`AI response to ${agentId}: ${aiResponse.message}`);
-      return {
-        userFeedback: feedbackDto.feedbackMessage,
-        aiReply: aiResponse.message,
-        feedbackProcessed: aiResponse.detectedFeedback,
-      };
-    } catch (error) {
-      this.logger.error(
-        `Error processing feedback for ${agentId}: ${error.message}`,
-        error.stack,
-      );
-      throw new HttpException(
-        'Error processing feedback',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
-  }
 }
+
