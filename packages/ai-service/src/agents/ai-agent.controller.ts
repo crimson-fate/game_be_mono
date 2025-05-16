@@ -19,7 +19,7 @@ import {
   InitializeAgentDto,
   WalletDto,
 } from './dto/chat.dto';
-import { CreateAgentFarmDto, UpdateAgentFarmDto } from './dto/agent-farm.dto';
+import { BoostAgentDto, CreateAgentFarmDto, UpdateAgentFarmDto } from './dto/agent-farm.dto';
 import {
   ApiOperation,
   ApiResponse,
@@ -355,6 +355,40 @@ export class AiAgentController {
       const data = await this.aiDealerAgentService.updateAgentFarmData(
         walletAddress,
         updateAgentFarmDto,
+      );
+      if (!data) {
+        throw new HttpException(
+          'Agent farm data not found',
+          HttpStatus.NOT_FOUND,
+        );
+      }
+      return data;
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  @Put('farm/boost/:walletAddress')
+  @ApiOperation({ summary: 'Boost agent farm data' })
+  @ApiParam({
+    name: 'walletAddress',
+    description: 'Wallet address of the player',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Agent farm data boosted successfully',
+  })
+  async boostAgent(
+    @Param('walletAddress') walletAddress: string,
+    @Body() updateAgentFarmDto: BoostAgentDto,
+  ) {
+    try {
+      const data = await this.aiDealerAgentService.boostAgent(
+        walletAddress,
+        updateAgentFarmDto.duration,
       );
       if (!data) {
         throw new HttpException(

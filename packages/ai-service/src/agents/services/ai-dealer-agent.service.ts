@@ -591,6 +591,27 @@ export class AiDealerAgentService {
       .exec();
   }
 
+  async boostAgent(
+    walletAddress: string,
+    duration: number,
+  ): Promise<AgentPlayerData> {
+    const currentData = await this.agentPlayerDataModel
+      .findOne({ walletAddress })
+      .exec();
+    if (!currentData) {
+      throw new Error('No agent data found for this wallet address.');
+    }
+    currentData.startTime += duration;
+
+    return await this.agentPlayerDataModel
+      .findOneAndUpdate(
+        { walletAddress },
+        { $set: currentData },
+        { new: true },
+      )
+      .exec();
+  }
+
   async deleteAgentFarmData(walletAddress: string): Promise<AgentPlayerData> {
     return this.agentPlayerDataModel.findOneAndDelete({ walletAddress }).exec();
   }

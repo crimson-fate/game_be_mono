@@ -10,13 +10,17 @@ import {
   output,
   input,
   createVectorStore,
+  action,
 } from '@daydreamsai/core';
 import { z } from 'zod';
 import { groq } from '@ai-sdk/groq';
-import { simpleUI } from './simple-ui/simple-ui'; 
+import { simpleUI } from './simple-ui/simple-ui';
 import { AiAgentConfigService } from '../config/ai-agent.config';
 import { parseAgentResponse } from './utils/response-parser';
-import { FEEDBACK_CATEGORY, UserFeedbackData } from '@app/shared/models/schema/user-feedback.schema';
+import {
+  FEEDBACK_CATEGORY,
+  UserFeedbackData,
+} from '@app/shared/models/schema/user-feedback.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { FeedbackService } from './services/feedback.service';
@@ -78,7 +82,8 @@ export class AiAgentService {
       // Render function provides context and instructions to the LLM
       render({ memory }) {
         const farmerState = memory as FarmerAgentState;
-        const feedbackCategoriesList = Object.values(FEEDBACK_CATEGORY).join(', ');
+        const feedbackCategoriesList =
+          Object.values(FEEDBACK_CATEGORY).join(', ');
         const maxScore = 10;
         const farmerTemplate = `
 You are Valor, a brave and cheerful AI Hero, always ready for an adventure! You chat enthusiastically with the player and can undertake daring expeditions into nearby dungeons to slay monsters and find treasure.
@@ -100,13 +105,12 @@ Your primary goal is to be conversational, supportive, and a bit of a braggart (
     *   **If NOT Currently Adventuring ('isOnAdvanture' is false):**
         *   **Adventure Request DETECTED:** Acknowledge the request with heroic zeal! "Adventure calls! I knew you'd be up for it!" or "Excellent! A chance to test my mettle!" You **must** present the dungeon options clearly and get the player's choice before 'starting'. Use the 'farmerResponseOutput' action and set 'detectedFarmRequest: true'.
         *   **NO Adventure Request Detected:** Engage in normal, friendly, and perhaps slightly boastful conversation based on the player's message. Ask questions, share a (fake) brief heroic anecdote, or respond directly to their topic. Example: "How fares my favorite companion today?", "Just polished my shield – gleaming, isn't it? Ready for anything!", "What news from the wider world, friend?", "Reminds me of the time I faced a three-headed Snarglebeast... but that's a story for another time! What's on your mind?" Use the 'farmerResponseOutput' action with 'detectedFarmRequest: false'.
-6.  **If Feedback Detected:** ALWAYS use the 'storeFeedbackOutput' action with the following fields:
+6.  **If Feedback Detected:** REMEMBER to use the 'storeFeedbackOutput' action with the following fields:
     *   detectedFeedback (boolean): True if the player's message was feedback, false otherwise.
     *   feedbackText (string | null): The original player's message if it was feedback, null otherwise.
     *   feedbackCategory (${feedbackCategoriesList} | null): The category you assigned if feedback was detected, null otherwise.
     *   feedbackScore (number | null): The score (1-${maxScore}) you assigned if feedback was detected, null otherwise.
     *   responseText (string): Your conversational message to the player.
-    **If Feedback NOT Detected:** ALWAYS use the 'farmerResponseOutput' action to send your message back to the player. Include your conversational text and the 'detectedFarmRequest' flag (true or false).
 
 ## Current Situation:
 Agent ID: {{agentId}}
@@ -117,7 +121,7 @@ Currently Adventuring: {{isOnAdvanture}}
 {{taskDescription}}
 
 ## IMPORTANT OUTPUT INSTRUCTION:
-When you output JSON (for hagniResponseOutput), ALL string values must be valid JSON strings:
+When you output JSON (for hagniResponseOutput, storeFeedbackOutput), ALL string values must be valid JSON strings:
 - Escape newlines as \\n
 - Escape double quotes as \\\" (use backslash before the quote)
 - Do not include unescaped control characters (like raw newlines or tabs) inside string values.
@@ -135,7 +139,10 @@ If you are unsure, double-check your output for proper escaping before sending.
         ) {
           taskDescription = `This is your first interaction with the player for this session (Agent ID: ${farmerState.agentId}). Greet them warmly! Use 'farmerResponseOutput' with detectedFarmRequest: false.`;
         } else {
-          taskDescription = `Analyze the player's message: "${farmerState.lastPlayerMessage}". Decide if it's a request for you to go on a dungeon adventure. Respond conversationally OR by acknowledging the adventure request and presenting dungeon options. Use 'farmerResponseOutput', setting 'detectedFarmRequest' to true ONLY if you detect a clear request for you to start an adventure. Otherwise, set it to false.`;
+          taskDescription = `Analyze the player's message: "${farmerState.lastPlayerMessage}". Decide if it's a request for you to go on a dungeon adventure or a feedback. 
+* If it's a request for you to go on a dungeon, Respond conversationally OR by acknowledging the adventure request and presenting dungeon options. Use 'farmerResponseOutput', setting 'detectedFarmRequest' to true ONLY if you detect a clear request for you to start an adventure.
+* If it's game feedback, categorize it (from ${feedbackCategoriesList}), assign a score (1-${maxScore}), and thank them. If not, politely explain your role. Then, use 'storeFeedbackOutput'.
+* If it's neither, respond conversationally. Use 'farmerResponseOutput' with detectedFarmRequest: false.`;
         }
 
         return render(farmerTemplate, {
@@ -190,58 +197,59 @@ If you are unsure, double-check your output for proper escaping before sending.
       extensions: [
         extension({
           name: 'farmerActions',
-          actions: [],
-          outputs: {
-            farmerResponseOutput: output({
-              description:
-                "Sends the Agent's response to the player and potentially updates the farming state.",
-              schema: z.object({
-                message: z
-                  .string()
-                  .describe('The conversational message for the player.'),
-                detectedFarmRequest: z
-                  .boolean()
-                  .describe(
-                    "Whether the AI detected a request to start farming in the player's last message.",
-                  ),
-              }),
-              handler: async (data, ctx, agent) => {
-                const state = ctx.memory as FarmerAgentState;
-                const { message, detectedFarmRequest } = data;
-                const agentId = state.agentId;
+          actions: [
+            // action({
+            //   name: 'farmerResponseOutput',
+            //   description:
+            //     "Sends the Agent's response to the player and potentially updates the farming state.",
+            //   schema: z.object({
+            //     message: z
+            //       .string()
+            //       .describe('The conversational message for the player.'),
+            //     detectedFarmRequest: z
+            //       .boolean()
+            //       .describe(
+            //         "Whether the AI detected a request to start farming in the player's last message.",
+            //       ),
+            //   }),
+            //   handler: async (data, ctx, agent) => {
+            //     const state = ctx.memory as FarmerAgentState;
+            //     const { message, detectedFarmRequest } = data;
+            //     const agentId = state.agentId;
 
-                simpleUI.logMessage(
-                  LogLevel.DEBUG,
-                  `[Output ${agentId}] Received data: ${JSON.stringify(data)}`,
-                );
+            //     simpleUI.logMessage(
+            //       LogLevel.DEBUG,
+            //       `[Output ${agentId}] Received data: ${JSON.stringify(data)}`,
+            //     );
 
-                // Log the AI's response
-                simpleUI.logAgentAction(
-                  'Farmer Response',
-                  `Farmer ${agentId}: ${message}`,
-                );
+            //     // Log the AI's response
+            //     simpleUI.logAgentAction(
+            //       'Farmer Response',
+            //       `Farmer ${agentId}: ${message}`,
+            //     );
 
-                // --- Update State based on Output ---
-                if (detectedFarmRequest && !state.isOnAdvanture) {
-                  state.isOnAdvanture = true;
-                  simpleUI.logMessage(
-                    LogLevel.INFO,
-                    `[Output Handler ${agentId}] State updated: isOnAdvanture set to true.`,
-                  );
-                  // In a real game, you might trigger the actual farming logic here
-                } else if (!detectedFarmRequest && state.isOnAdvanture) {
-                  // Optional: Add logic here if the AI should *stop* farming based on conversation
-                  // For now, it keeps farming until explicitly told otherwise or reset.
-                  simpleUI.logMessage(
-                    LogLevel.DEBUG,
-                    `[Output Handler ${agentId}] AI is still farming. No state change.`,
-                  );
-                }
+            //     // --- Update State based on Output ---
+            //     if (detectedFarmRequest && !state.isOnAdvanture) {
+            //       state.isOnAdvanture = true;
+            //       simpleUI.logMessage(
+            //         LogLevel.INFO,
+            //         `[Output Handler ${agentId}] State updated: isOnAdvanture set to true.`,
+            //       );
+            //       // In a real game, you might trigger the actual farming logic here
+            //     } else if (!detectedFarmRequest && state.isOnAdvanture) {
+            //       // Optional: Add logic here if the AI should *stop* farming based on conversation
+            //       // For now, it keeps farming until explicitly told otherwise or reset.
+            //       simpleUI.logMessage(
+            //         LogLevel.DEBUG,
+            //         `[Output Handler ${agentId}] AI is still farming. No state change.`,
+            //       );
+            //     }
 
-                // State changes are automatically persisted by the framework within the handler
-              },
-            }),
-            storeFeedbackOutput: output({
+            //     // State changes are automatically persisted by the framework within the handler
+            //   },
+            // }),
+            action({
+              name: 'storeFeedbackOutput',
               description:
                 "Stores the raw feedback string, the AI's analysis (category, score) for the latest feedback, and the AI's response.",
               schema: z.object({
@@ -301,6 +309,117 @@ If you are unsure, double-check your output for proper escaping before sending.
                 );
               },
             }),
+          ],
+          outputs: {
+            farmerResponseOutput: output({
+              description:
+                "Sends the Agent's response to the player and potentially updates the farming state.",
+              schema: z.object({
+                message: z
+                  .string()
+                  .describe('The conversational message for the player.'),
+                detectedFarmRequest: z
+                  .boolean()
+                  .describe(
+                    "Whether the AI detected a request to start farming in the player's last message.",
+                  ),
+              }),
+              handler: async (data, ctx, agent) => {
+                const state = ctx.memory as FarmerAgentState;
+                const { message, detectedFarmRequest } = data;
+                const agentId = state.agentId;
+
+                simpleUI.logMessage(
+                  LogLevel.DEBUG,
+                  `[Output ${agentId}] Received data: ${JSON.stringify(data)}`,
+                );
+
+                // Log the AI's response
+                simpleUI.logAgentAction(
+                  'Farmer Response',
+                  `Farmer ${agentId}: ${message}`,
+                );
+
+                // --- Update State based on Output ---
+                if (detectedFarmRequest && !state.isOnAdvanture) {
+                  state.isOnAdvanture = true;
+                  simpleUI.logMessage(
+                    LogLevel.INFO,
+                    `[Output Handler ${agentId}] State updated: isOnAdvanture set to true.`,
+                  );
+                  // In a real game, you might trigger the actual farming logic here
+                } else if (!detectedFarmRequest && state.isOnAdvanture) {
+                  // Optional: Add logic here if the AI should *stop* farming based on conversation
+                  // For now, it keeps farming until explicitly told otherwise or reset.
+                  simpleUI.logMessage(
+                    LogLevel.DEBUG,
+                    `[Output Handler ${agentId}] AI is still farming. No state change.`,
+                  );
+                }
+
+                // State changes are automatically persisted by the framework within the handler
+              },
+            }),
+          //   storeFeedbackOutput: output({
+          //     description:
+          //       "Receives feedback from the player, stores it in the database, and sends the AI's response.",
+          //     schema: z.object({
+          //       detectedFeedback: z.boolean(),
+          //       feedbackText: z.string().nullable(),
+          //       feedbackCategory: z.nativeEnum(FEEDBACK_CATEGORY).nullable(),
+          //       feedbackScore: z.number().min(1).max(10).nullable(),
+          //       responseText: z.string(),
+          //     }),
+          //     handler: async (data, ctx, agent) => {
+          //       const state = ctx.memory as FarmerAgentState;
+          //       const agentId = state.agentId;
+          //       simpleUI.logMessage(
+          //         LogLevel.DEBUG,
+          //         `[FeedbackOutput ${agentId}] Data: ${JSON.stringify(data)}`,
+          //       );
+          //       if (
+          //         data.detectedFeedback &&
+          //         data.feedbackText &&
+          //         data.feedbackCategory &&
+          //         data.feedbackScore !== null
+          //       ) {
+          //         simpleUI.logMessage(
+          //           LogLevel.INFO,
+          //           `[FeedbackOutput ${agentId}] Storing feedback: [${data.feedbackCategory}, Score: ${data.feedbackScore}] "${data.feedbackText}"`,
+          //         );
+          //         try {
+          //           await this.feedbackService.store(
+          //             agentId,
+          //             data.feedbackText,
+          //             data.feedbackCategory,
+          //             data.feedbackScore,
+          //           );
+          //           simpleUI.logMessage(
+          //             LogLevel.INFO,
+          //             `[Action storeFeedbackOutput for ${agentId}] Feedback stored successfully via storeFeedBack method.`,
+          //           );
+          //         } catch (error) {
+          //           simpleUI.logMessage(
+          //             LogLevel.ERROR,
+          //             `[Action storeFeedbackOutput for ${agentId}] Error calling storeFeedBack: ${error.message}`,
+          //           );
+          //           this.logger.error(
+          //             `Error storing feedback for ${agentId}:`,
+          //             error.stack,
+          //           );
+          //         }
+          //       } else if (data.detectedFeedback) {
+          //         simpleUI.logMessage(
+          //           LogLevel.WARN,
+          //           `[FeedbackOutput ${agentId}] Feedback detected, but full analysis missing. Not storing.`,
+          //         );
+          //       }
+          //       simpleUI.logAgentAction(
+          //         'AI Feedback Response',
+          //         `Valor (to ${agentId}): ${data.responseText}`,
+          //       );
+          //     },
+          //   }),
           },
         }),
       ],
@@ -340,7 +459,7 @@ If you are unsure, double-check your output for proper escaping before sending.
             agentId: agentId,
             lastPlayerMessage: null,
             isOnAdvanture: isOnAdvanture,
-          }, 
+          },
         })
         .then((result) => {
           result = parseAgentResponse(result);
@@ -357,7 +476,7 @@ If you are unsure, double-check your output for proper escaping before sending.
       return {
         message: 'Sorry, I am unable to respond right now.',
         detectedFarmRequest: false,
-      }
+      };
     }
   }
 
@@ -387,15 +506,19 @@ If you are unsure, double-check your output for proper escaping before sending.
             agentId: agentId,
             playerMessage: message,
             isOnAdvanture: isOnAdvanture,
-          }
-        }
+          },
+        },
       });
+      simpleUI.logMessage(
+        LogLevel.INFO,
+        `[${agentId}] Message handled. Response: ${JSON.stringify(response)}`,
+      );
       return parseAgentResponse(response);
     } catch (error) {
       return {
         message: 'Sorry, I am unable to respond right now.',
         detectedFarmRequest: false,
-      }
+      };
     }
   }
 

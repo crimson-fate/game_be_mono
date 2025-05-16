@@ -64,3 +64,9 @@ export class UpdateAgentFarmDto {
     epic: number;
   };
 }
+
+export class BoostAgentDto {
+  @ApiProperty({ description: 'Duration of farming in milliseconds' })
+  @IsNumber()
+  duration: number;
+}
