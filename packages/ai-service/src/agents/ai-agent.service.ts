@@ -152,7 +152,7 @@ When you output JSON (for hagniResponseOutput, storeFeedbackOutput), ALL string 
 - Your output MUST be valid JSON, or it will not be accepted.
 
 If you are unsure, double-check your output for proper escaping before sending.
-Remember that the examples are just something to shape your personality. Your response should be natural and varied. You should not repeat the same phrases or structure. Use your creativity and personality to make the conversation engaging and unique.
+Remember that the examples are just something to shape your personality. You shouldn't use exactly the same, you should only use the examples for reference. Your response should be natural and varied. You should not repeat the same phrases or structure. Use your creativity and personality to make the conversation engaging and unique.
 `;
 
         let taskDescription = '';
