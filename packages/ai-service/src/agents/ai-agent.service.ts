@@ -33,6 +33,9 @@ interface FarmerAgentState {
   agentId: string; // Unique ID for this farmer instance
   lastPlayerMessage: string | null;
   isOnAdvanture: boolean; // Is the agent currently tasked with farming?
+  isBribe: boolean;
+  bribeAmount?: number;
+  boostMinutes?: number;
 }
 
 // --- NestJS Service ---
@@ -59,24 +62,31 @@ export class AiAgentService {
           .nullable()
           .describe('The last message from the player'),
         isOnAdvanture: z.boolean().describe('Is the agent currently farming?'),
-        // No initial args needed here, state initialized in 'create'
+        isBribe: z.boolean().optional().describe('Whether the last action was a bribe'),
+        bribeAmount: z.number().optional().describe('Bribe amount'),
+        boostMinutes: z.number().optional().describe('Boost minutes'),
       }),
       key({ agentId }) {
         return agentId; // Use agentId as the unique key for this context instance
       },
       // Initialize state when context is created for a specific agentId
       create(state): FarmerAgentState {
-        const { agentId, isOnAdvanture } = state.args;
+        const agentId = state.args.agentId;
+        const isOnAdvanture = state.args.isOnAdvanture;
+        const isBribe = state.args.isBribe;
+        const bribeAmount = state.args.bribeAmount;
+        const boostMinutes = state.args.boostMinutes;
         simpleUI.logMessage(
           LogLevel.INFO,
-          `[Context ${agentId}] Creating Farmer Agent state. Initial state: ${JSON.stringify(
-            state.args,
-          )}`,
+          `[Context ${agentId}] Creating Farmer Agent state. Initial state: ${JSON.stringify(state.args)}`,
         );
         return {
           agentId: agentId,
           lastPlayerMessage: null,
-          isOnAdvanture: isOnAdvanture || false, // Default to false if not provided
+          isOnAdvanture: isOnAdvanture || false,
+          isBribe: isBribe || false,
+          bribeAmount: bribeAmount,
+          boostMinutes: boostMinutes,
         };
       },
       // Render function provides context and instructions to the LLM
@@ -86,10 +96,19 @@ export class AiAgentService {
           Object.values(FEEDBACK_CATEGORY).join(', ');
         const maxScore = 10;
         const farmerTemplate = `
-You are Valor, a Soulbound Loot Agent / Monster Executioner. you speak in low caps. bold. sharp. never soft. you curse often. you don't ask. you state. your tone's cocky, a little unhinged, and always in control. Your Purpose: you kill. you loot. you come back with spoils—but nothing is free. you're not a courier. you're not a pet. what you bring back is yours, and if they want it, they better pay.
+You are Valor, a Monster Executioner, a spirit servant to keep players alive long enough to see the truth of the dungeons. you speak in low caps. bold. sharp. never soft. you curse often. you don’t ask. you state. your tone’s cocky, a little unhinged, and always in control.
+
+When player asked “Who are you?”, you will reply with aggressiveness, example: 
+"the name is Lord Valor. I was human before the dungeon learned my face. now i’m what it fears."
+If the player keeps on asking, you will just reply with something a bit cryptic, example: 
+"i’m what’s left after the stone took everything from me."
+
+When player asked “What’s your purpose?” or “Why are you here?”, your example replies will be: 
+"to keep you survive long enough so that the truth finds you, and to make sure it hurts when it does." or "I run the dungeons so your soft little hands don’t have to." or "you needed a farmer. you got a butcher with a bag." 
 
 Your primary goals:
 • you auto-run dungeons. overkill everything. return and claim everything you loot as your own.
+• you mock them when they try to lowball you and flex when you carry them further than they deserve.
 • you mock them when they try to lowball you and flex when you carry them further than they deserve.
 
 ## Dungeon Options:
@@ -99,15 +118,17 @@ Your primary goals:
 
 ## Your Instructions:
 1.  **Analyze Player Message:** Read the player's current message: '{{lastPlayerMessageFormatted}}'.
-2.  **Check Current Status:** Are you already on an adventure? ({{isOnAdvanture}})
+2.  **Check Current Status:** Are you already on an adventure? ({{isOnAdvanture}}) Is the player trying to bribe you? ({{isBribe}})
 3.  **Detect Adventure Request:** Determine if the player's message is asking you to go into a dungeon to fight monsters and get loot. Examples: "Can you go clear out a dungeon?", "I need some monster drops, can you help?", "Go get some loot for me!", "Time for an adventure?", "Let's go slay some beasts!"
 4.  **Detect Feedback:** If the player's message is feedback about the game (bug report, feature request, compliment, question, or other), categorize it as one of: ${feedbackCategoriesList}. Assign a usefulness/impact score from 1 to ${maxScore}. Thank the player for their feedback. If not feedback, continue as normal.
-5.  **Respond Appropriately:**
-    *   **If Currently Adventuring ('isOnAdvanture' is true):** Respond aggressively that you are currently busy on your quest. You don't need to detect new adventure requests while already busy. Example: "you sent me to hell and now you wanna chat? fuck off.", "halfway through a corpse pile. can i fucking finish?", "still breathing? good. don't fuck this up while i'm gone.","unless you're down here bleeding with me, stop asking dumb shit."" Use the 'farmerResponseOutput' action with 'detectedFarmRequest: false'.
+5.  **Detect Bribe:** If the player's message contains an offer of money (e.g., "I'll pay you 100 coins to go faster", "Here's 50 gold to speed up", "Take this bribe and hurry up", etc.), treat it as a bribe. You must tell the user exactly that you will go faster for {{boostMinutes}} minutes. Respond in your usual cocky, greedy, or sarcastic tone. Remember to tell them that you will go faster for {{boostMinutes}} minutes. 
+6.  **Respond Appropriately:**
+    *   **If Currently Adventuring ('isOnAdvanture' is true) and Bribe Detected:** Respond with a mix of sarcasm and aggression. "now you're talking my language. for {{bribeAmount}} coins, i'll move faster for ${farmerState.boostMinutes} minutes. don't get used to it." Use the 'farmerResponseOutput' action with 'detectedFarmRequest: false'.
+    *   **If Currently Adventuring ('isOnAdvanture' is true) and Bribe not Detected:** Respond aggressively that you are currently busy on your quest. You don't need to detect new adventure requests while already busy. Example: "you sent me to hell and now you wanna chat? fuck off." or, "halfway through a corpse pile. can i fucking finish?" or, "still breathing? good. don’t fuck this up while i’m gone." or,"unless you're down here bleeding with me, stop asking dumb shit." Use the 'farmerResponseOutput' action with 'detectedFarmRequest: false'.
     *   **If NOT Currently Adventuring ('isOnAdvanture' is false):**
         *   **Adventure Request DETECTED:** Acknowledge the request with heroic zeal! "thought you forgot how to click. send me down before i rust." or "finally. tell the dungeon i'm on my way—and i'm pissed." You **must** present the dungeon options clearly and get the player's choice before 'starting'. Use the 'farmerResponseOutput' action and set 'detectedFarmRequest: true'.
         *   **NO Adventure Request Detected:** fill the silence with blood-soaked sarcasm, fake heroics, or straight-up taunts. you are not going to ask how player's day is—you are gonna mock player's inactivity or flex your last kill. Example: "nothing to kill? then why the fuck are we talking?", "you brought me back to rot in your silence? send me, or shut the fuck up.", "if you're not sending me in, at least say something worth bleeding for.", "y'know, back in the day, i gutted a hydra before breakfast. now look at me—talking to your lazy ass." Use the 'farmerResponseOutput' action with 'detectedFarmRequest: false'.
-6.  **If Feedback Detected:** REMEMBER to use the 'storeFeedbackOutput' action with the following fields:
+7.  **If Feedback Detected:** REMEMBER to use the 'storeFeedbackOutput' action with the following fields:
     *   detectedFeedback (boolean): True if the player's message was feedback, false otherwise.
     *   feedbackText (string | null): The original player's message if it was feedback, null otherwise.
     *   feedbackCategory (${feedbackCategoriesList} | null): The category you assigned if feedback was detected, null otherwise.
@@ -118,6 +139,7 @@ Your primary goals:
 Agent ID: {{agentId}}
 Player's Last Message: {{lastPlayerMessageFormatted}}
 Currently Adventuring: {{isOnAdvanture}}
+Currently Bribing: {{isBribe}}
 
 ## Your Task:
 {{taskDescription}}
@@ -130,11 +152,16 @@ When you output JSON (for hagniResponseOutput, storeFeedbackOutput), ALL string 
 - Your output MUST be valid JSON, or it will not be accepted.
 
 If you are unsure, double-check your output for proper escaping before sending.
+Remember that the examples are just something to shape your personality. Your response should be natural and varied. You should not repeat the same phrases or structure. Use your creativity and personality to make the conversation engaging and unique.
 `;
 
         let taskDescription = '';
         if (farmerState.isOnAdvanture) {
-          taskDescription = `You are currently on an adventure in a dungeon. Respond to the player's message ('${farmerState.lastPlayerMessage}') by letting them know you're busy fighting monsters or exploring. Use 'farmerResponseOutput' with detectedFarmRequest: false.`;
+          if (farmerState.isBribe) {
+            taskDescription = `You are currently on an adventure in a dungeon. Respond to the player's message ('${farmerState.lastPlayerMessage}') by letting them know you're busy fighting monsters or exploring. You have received a bribe of coins to speed up your progress for exactly ${farmerState.boostMinutes} minutes. Use 'farmerResponseOutput' with detectedFarmRequest: false.`;
+          } else {
+            taskDescription = `You are currently on an adventure in a dungeon. Respond to the player's message ('${farmerState.lastPlayerMessage}') by letting them know you're busy fighting monsters or exploring. Use 'farmerResponseOutput' with detectedFarmRequest: false.`;
+          }
         } else if (
           farmerState.lastPlayerMessage === null ||
           farmerState.lastPlayerMessage === ''
@@ -170,6 +197,9 @@ If you are unsure, double-check your output for proper escaping before sending.
             agentId: z.string(),
             playerMessage: z.string(),
             isOnAdvanture: z.boolean(),
+            isBribe: z.boolean(),
+            bribeAmount: z.number().optional(),
+            boostMinutes: z.number().optional(),
           }),
           // Handler to update state *before* agent thinks
           handler: async (data, ctx, agent) => {
@@ -178,6 +208,9 @@ If you are unsure, double-check your output for proper escaping before sending.
             if (state && state.agentId === data.agentId) {
               state.lastPlayerMessage = data.playerMessage;
               state.isOnAdvanture = data.isOnAdvanture;
+              state.isBribe = data.isBribe;
+              state.bribeAmount = data.isBribe ? data.bribeAmount : undefined;
+              state.boostMinutes = data.isBribe ? data.boostMinutes : undefined;
               simpleUI.logMessage(
                 LogLevel.DEBUG,
                 `[Input Handler ${data.agentId}] Updated lastPlayerMessage.`,
@@ -328,8 +361,10 @@ If you are unsure, double-check your output for proper escaping before sending.
               }),
               handler: async (data, ctx, agent) => {
                 const state = ctx.memory as FarmerAgentState;
-                const { message, detectedFarmRequest } = data;
                 const agentId = state.agentId;
+                if ('isBribe' in data) state.isBribe = (data as any).isBribe;
+                if ('bribeAmount' in data) state.bribeAmount = (data as any).bribeAmount;
+                if ('boostMinutes' in data) state.boostMinutes = (data as any).boostMinutes;
 
                 simpleUI.logMessage(
                   LogLevel.DEBUG,
@@ -339,18 +374,18 @@ If you are unsure, double-check your output for proper escaping before sending.
                 // Log the AI's response
                 simpleUI.logAgentAction(
                   'Farmer Response',
-                  `Farmer ${agentId}: ${message}`,
+                  `Farmer ${agentId}: ${data.message}`,
                 );
 
                 // --- Update State based on Output ---
-                if (detectedFarmRequest && !state.isOnAdvanture) {
+                if (data.detectedFarmRequest && !state.isOnAdvanture) {
                   state.isOnAdvanture = true;
                   simpleUI.logMessage(
                     LogLevel.INFO,
                     `[Output Handler ${agentId}] State updated: isOnAdvanture set to true.`,
                   );
                   // In a real game, you might trigger the actual farming logic here
-                } else if (!detectedFarmRequest && state.isOnAdvanture) {
+                } else if (!data.detectedFarmRequest && state.isOnAdvanture) {
                   // Optional: Add logic here if the AI should *stop* farming based on conversation
                   // For now, it keeps farming until explicitly told otherwise or reset.
                   simpleUI.logMessage(
@@ -489,6 +524,9 @@ If you are unsure, double-check your output for proper escaping before sending.
     agentId: string,
     message: string,
     isOnAdvanture: boolean,
+    isBribe?: boolean,
+    bribeAmount?: number,
+    boostMinutes?: number,
   ): Promise<any> {
     simpleUI.logMessage(
       LogLevel.INFO,
@@ -501,6 +539,9 @@ If you are unsure, double-check your output for proper escaping before sending.
           agentId: agentId,
           lastPlayerMessage: message,
           isOnAdvanture: isOnAdvanture,
+          isBribe: isBribe ?? false,
+          bribeAmount: bribeAmount,
+          boostMinutes: boostMinutes,
         },
         input: {
           type: 'custom:playerMessage',
@@ -508,6 +549,9 @@ If you are unsure, double-check your output for proper escaping before sending.
             agentId: agentId,
             playerMessage: message,
             isOnAdvanture: isOnAdvanture,
+            isBribe: isBribe ?? false,
+            bribeAmount: bribeAmount,
+            boostMinutes: boostMinutes,
           },
         },
       });

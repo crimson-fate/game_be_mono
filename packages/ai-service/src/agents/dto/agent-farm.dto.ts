@@ -68,5 +68,7 @@ export class UpdateAgentFarmDto {
 export class BoostAgentDto {
   @ApiProperty({ description: 'Duration of farming in milliseconds' })
   @IsNumber()
+  amount: number;
+  @IsNumber()
   duration: number;
 }

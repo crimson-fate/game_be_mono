@@ -386,6 +386,18 @@ export class AiAgentController {
     @Body() updateAgentFarmDto: BoostAgentDto,
   ) {
     try {
+      const agentData = await this.aiDealerAgentService.getAgentFarmData(
+        walletAddress,
+      );
+      const message = await this.aiAgentService.handleMessage(
+        walletAddress,
+        `I'll pay you ${updateAgentFarmDto.amount} coins to go faster`,
+        agentData ? agentData.isFarming : false,
+        true,
+        updateAgentFarmDto.amount,
+        updateAgentFarmDto.duration / 60,
+      );
+
       const data = await this.aiDealerAgentService.boostAgent(
         walletAddress,
         updateAgentFarmDto.duration,
@@ -396,7 +408,7 @@ export class AiAgentController {
           HttpStatus.NOT_FOUND,
         );
       }
-      return data;
+      return message;
     } catch (error) {
       if (error instanceof HttpException) {
         throw error;
