@@ -391,7 +391,7 @@ export class AiAgentController {
       );
       const message = await this.aiAgentService.handleMessage(
         walletAddress,
-        `I'll pay you ${updateAgentFarmDto.amount} coins to go faster`,
+        `I'll pay you ${updateAgentFarmDto.amount} gems to go faster`,
         agentData ? agentData.isFarming : false,
         true,
         updateAgentFarmDto.amount,
