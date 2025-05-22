@@ -19,7 +19,11 @@ import {
   InitializeAgentDto,
   WalletDto,
 } from './dto/chat.dto';
-import { BoostAgentDto, CreateAgentFarmDto, UpdateAgentFarmDto } from './dto/agent-farm.dto';
+import {
+  BoostAgentDto,
+  CreateAgentFarmDto,
+  UpdateAgentFarmDto,
+} from './dto/agent-farm.dto';
 import {
   ApiOperation,
   ApiResponse,
@@ -29,7 +33,10 @@ import {
 } from '@nestjs/swagger';
 import { AiDealerAgentService } from './services/ai-dealer-agent.service';
 import { ChatHistoryService } from './services/chat-history.service';
-import { PlayerResource, PlayerResourceDocument } from '@app/shared/models/schema/player-resource.schema';
+import {
+  PlayerResource,
+  PlayerResourceDocument,
+} from '@app/shared/models/schema/player-resource.schema';
 
 @ApiTags('AI Agent')
 @Controller('ai')
@@ -194,7 +201,7 @@ export class AiAgentController {
           minSellRatio: 0.5,
           maxDiscount: 1.5,
         },
-        playerMoney.dicCommonResource.Coin
+        playerMoney.dicCommonResource.Coin,
       );
       console.log(result);
       return result;
@@ -222,7 +229,7 @@ export class AiAgentController {
       const result = await this.aiDealerAgentService.handleMessage(
         body.walletAddress,
         body.message,
-        playerMoney.dicCommonResource.Coin
+        playerMoney.dicCommonResource.Coin,
       );
       if (result.outcome && result.outcome === 'accepted') {
         const data = await this.aiDealerAgentService.getAgentFarmData(
@@ -231,21 +238,27 @@ export class AiAgentController {
         result.itemCounts = data.itemCounts;
         result.extractedOffer = result.extractedOffer;
 
-        await this.aiDealerAgentService.updateAgentFarmData(body.walletAddress, {
-          isFarming: false,
-          startTime: 0,
-          duration: 0,
-          itemCounts: null,
-        });
+        await this.aiDealerAgentService.updateAgentFarmData(
+          body.walletAddress,
+          {
+            isFarming: false,
+            startTime: 0,
+            duration: 0,
+            itemCounts: null,
+          },
+        );
         await this.aiDealerAgentService.reset(body.walletAddress);
         await this.aiAgentService.reset(body.walletAddress);
       } else if (result.outcome && result.outcome === 'ended') {
-        await this.aiDealerAgentService.updateAgentFarmData(body.walletAddress, {
-          isFarming: false,
-          startTime: 0,
-          duration: 0,
-          itemCounts: null,
-        });
+        await this.aiDealerAgentService.updateAgentFarmData(
+          body.walletAddress,
+          {
+            isFarming: false,
+            startTime: 0,
+            duration: 0,
+            itemCounts: null,
+          },
+        );
         await this.aiDealerAgentService.reset(body.walletAddress);
         await this.aiAgentService.reset(body.walletAddress);
       }
@@ -272,8 +285,13 @@ export class AiAgentController {
         body.walletAddress,
       );
       if (!data || !data.isFarming) {
-        console.log("EndDealer: Can't find agent farm data or farming not started yet");
-        return { message: 'EndDealer: Agent farm data not found or farming not started' };
+        console.log(
+          "EndDealer: Can't find agent farm data or farming not started yet",
+        );
+        return {
+          message:
+            'EndDealer: Agent farm data not found or farming not started',
+        };
       }
       await this.aiDealerAgentService.updateAgentFarmData(body.walletAddress, {
         isFarming: false,
@@ -386,9 +404,8 @@ export class AiAgentController {
     @Body() updateAgentFarmDto: BoostAgentDto,
   ) {
     try {
-      const agentData = await this.aiDealerAgentService.getAgentFarmData(
-        walletAddress,
-      );
+      const agentData =
+        await this.aiDealerAgentService.getAgentFarmData(walletAddress);
       const message = await this.aiAgentService.handleMessage(
         walletAddress,
         `I'll pay you ${updateAgentFarmDto.amount} gems to go faster`,
@@ -468,4 +485,3 @@ export class AiAgentController {
     }
   }
 }
-

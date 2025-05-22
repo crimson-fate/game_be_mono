@@ -17,7 +17,10 @@ import {
   UserFeedbackDataSchema,
 } from '@app/shared/models/schema/user-feedback.schema';
 import { FeedbackService } from './services/feedback.service';
-import { PlayerResource, PlayerResourceSchema } from '@app/shared/models/schema/player-resource.schema';
+import {
+  PlayerResource,
+  PlayerResourceSchema,
+} from '@app/shared/models/schema/player-resource.schema';
 
 @Module({
   imports: [

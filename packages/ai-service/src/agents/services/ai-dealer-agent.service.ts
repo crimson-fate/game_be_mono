@@ -468,7 +468,7 @@ export class AiDealerAgentService {
             allowActions: true,
             allowOutputs: true,
             temperature: this.config.temperature,
-            maxTokens: this.config.maxTokens
+            maxTokens: this.config.maxTokens,
           },
         });
         response = parseAgentResponse(response);
@@ -604,11 +604,7 @@ export class AiDealerAgentService {
     currentData.startTime += duration;
 
     return await this.agentPlayerDataModel
-      .findOneAndUpdate(
-        { walletAddress },
-        { $set: currentData },
-        { new: true },
-      )
+      .findOneAndUpdate({ walletAddress }, { $set: currentData }, { new: true })
       .exec();
   }
 

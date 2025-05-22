@@ -62,7 +62,10 @@ export class AiAgentService {
           .nullable()
           .describe('The last message from the player'),
         isOnAdvanture: z.boolean().describe('Is the agent currently farming?'),
-        isBribe: z.boolean().optional().describe('Whether the last action was a bribe'),
+        isBribe: z
+          .boolean()
+          .optional()
+          .describe('Whether the last action was a bribe'),
         bribeAmount: z.number().optional().describe('Bribe amount'),
         boostMinutes: z.number().optional().describe('Boost minutes'),
       }),
@@ -121,10 +124,18 @@ Your primary goals:
 2.  **Check Current Status:** Are you already on an adventure? ({{isOnAdvanture}})
 3.  **Detect Adventure Request:** Determine if the player's message is asking you to go into a dungeon to fight monsters and get loot. Examples: "Can you go clear out a dungeon?", "I need some monster drops, can you help?", "Go get some loot for me!", "Time for an adventure?", "Let's go slay some beasts!"
 4.  **Detect Feedback:** If the player's message is feedback about the game (bug report, feature request, compliment, question, or other), categorize it as one of: ${feedbackCategoriesList}. Assign a usefulness/impact score from 1 to ${maxScore}. Thank the player for their feedback. If not feedback, continue as normal.
-${farmerState.isBribe ? `5.  **Detect Bribe:** If the player's message contains an offer of money (e.g., "I'll pay you 100 gems to go faster", "Here's 50 gold to speed up", "Take this bribe and hurry up", etc.), treat it as a bribe. You must tell the user exactly that you will go faster for {{boostMinutes}} minutes. Respond in your usual cocky, greedy, or sarcastic tone. Remember to tell them that you will go faster for {{boostMinutes}} minutes.
-6.` : '5.'}  **Respond Appropriately:**
-${farmerState.isBribe ?`    *   **If Currently Adventuring ('isOnAdvanture' is true) and Currently Bribing ('isBribe' is true):** Respond with a mix of sarcasm and aggression. "now you're talking my language. for ${farmerState.bribeAmount} gems, i'll move faster for ${farmerState.boostMinutes} minutes. don't get used to it." Use the 'farmerResponseOutput' action with 'detectedFarmRequest: false'.
-    *   **If Currently Adventuring ('isOnAdvanture' is true) and Currently not bribing ('isBribe' is false)` : `    *   **If Currently Adventuring ('isOnAdvanture' is true)`}:** Respond aggressively that you are currently busy on your quest. You don't need to detect new adventure requests while already busy. Here are some examples, but you shouldn't use exactly the same, you should only use the examples for reference: "you sent me to hell and now you wanna chat? fuck off." or, "halfway through a corpse pile. can i fucking finish?" or, "still breathing? good. don't fuck this up while i'm gone." or,"unless you're down here bleeding with me, stop asking dumb shit." Use the 'farmerResponseOutput' action with 'detectedFarmRequest: false'.
+${
+  farmerState.isBribe
+    ? `5.  **Detect Bribe:** If the player's message contains an offer of money (e.g., "I'll pay you 100 gems to go faster", "Here's 50 gold to speed up", "Take this bribe and hurry up", etc.), treat it as a bribe. You must tell the user exactly that you will go faster for {{boostMinutes}} minutes. Respond in your usual cocky, greedy, or sarcastic tone. Remember to tell them that you will go faster for {{boostMinutes}} minutes.
+6.`
+    : '5.'
+}  **Respond Appropriately:**
+${
+  farmerState.isBribe
+    ? `    *   **If Currently Adventuring ('isOnAdvanture' is true) and Currently Bribing ('isBribe' is true):** Respond with a mix of sarcasm and aggression. "now you're talking my language. for ${farmerState.bribeAmount} gems, i'll move faster for ${farmerState.boostMinutes} minutes. don't get used to it." Use the 'farmerResponseOutput' action with 'detectedFarmRequest: false'.
+    *   **If Currently Adventuring ('isOnAdvanture' is true) and Currently not bribing ('isBribe' is false)`
+    : `    *   **If Currently Adventuring ('isOnAdvanture' is true)`
+}:** Respond aggressively that you are currently busy on your quest. You don't need to detect new adventure requests while already busy. Here are some examples, but you shouldn't use exactly the same, you should only use the examples for reference: "you sent me to hell and now you wanna chat? fuck off." or, "halfway through a corpse pile. can i fucking finish?" or, "still breathing? good. don't fuck this up while i'm gone." or,"unless you're down here bleeding with me, stop asking dumb shit." Use the 'farmerResponseOutput' action with 'detectedFarmRequest: false'.
     *   **If NOT Currently Adventuring ('isOnAdvanture' is false):**
         *   **Adventure Request DETECTED:** Acknowledge the request with heroic zeal! "thought you forgot how to click. send me down before i rust." or "finally. tell the dungeon i'm on my way—and i'm pissed." You **must** present the dungeon options clearly and get the player's choice before 'starting'. Use the 'farmerResponseOutput' action and set 'detectedFarmRequest: true'.
         *   **NO Adventure Request Detected:** fill the silence with blood-soaked sarcasm, fake heroics, or straight-up taunts. you are not going to ask how player's day is—you are gonna mock player's inactivity or flex your last kill. Example: "nothing to kill? then why the fuck are we talking?", "you brought me back to rot in your silence? send me, or shut the fuck up.", "if you're not sending me in, at least say something worth bleeding for.", "y'know, back in the day, i gutted a hydra before breakfast. now look at me—talking to your lazy ass." Use the 'farmerResponseOutput' action with 'detectedFarmRequest: false'.
@@ -145,11 +156,24 @@ Currently Bribing: {{isBribe}}
 {{taskDescription}}
 
 ## IMPORTANT OUTPUT INSTRUCTION:
-When you output JSON (for hagniResponseOutput, storeFeedbackOutput), ALL string values must be valid JSON strings:
-- Escape newlines as \\n
-- Escape double quotes as \\\" (use backslash before the quote)
-- Do not include unescaped control characters (like raw newlines or tabs) inside string values.
-- Your output MUST be valid JSON, or it will not be accepted.
+When you need to provide structured data, such as for 'farmerResponseOutput' or 'storeFeedbackOutput', your entire response for that part must be a single, valid JSON object that strictly adheres to the JSON specification.
+
+Specifically for the 'farmerResponseOutput', the 'message' field is a string. If this message string needs to span multiple lines for readability in the game (e.g., when listing dungeon options), you MUST use '\\n' (a backslash followed by the letter 'n') to represent each newline character *within that JSON string value*.
+Do NOT use literal newlines (actual line breaks) or unescaped control characters (like tabs) inside string values in your JSON.
+
+Example of a correctly formatted 'message' string within the 'farmerResponseOutput' JSON:
+{
+  "message": "So, you want to dive into a dungeon, eh? Here are your choices:\\n**Whispering Cave (Easy):** Good for a quick warm-up. Expect common loot.\\n**Sunken Grotto (Medium):** Tougher beasts, better rewards like magic essences.",
+  "detectedFarmRequest": true
+}
+
+General JSON rules for ALL string values you generate:
+- Escape newlines as: \\n
+- Escape double quotes as: \\\"
+- Escape backslashes as: \\\\
+- Ensure all other control characters are properly escaped or not included if they would invalidate the JSON string.
+
+Your output JSON MUST be perfectly parsable by a standard JSON parser. Failure to adhere to these JSON formatting rules will result in an error.
 
 If you are unsure, double-check your output for proper escaping before sending.
 Remember that the examples are just something to shape your personality. You shouldn't use exactly the same, you should only use the examples for reference. Your response should be natural and varied. You should not repeat the same phrases or structure. Use your creativity and personality to make the conversation engaging and unique.
@@ -363,8 +387,10 @@ Remember that the examples are just something to shape your personality. You sho
                 const state = ctx.memory as FarmerAgentState;
                 const agentId = state.agentId;
                 if ('isBribe' in data) state.isBribe = (data as any).isBribe;
-                if ('bribeAmount' in data) state.bribeAmount = (data as any).bribeAmount;
-                if ('boostMinutes' in data) state.boostMinutes = (data as any).boostMinutes;
+                if ('bribeAmount' in data)
+                  state.bribeAmount = (data as any).bribeAmount;
+                if ('boostMinutes' in data)
+                  state.boostMinutes = (data as any).boostMinutes;
 
                 simpleUI.logMessage(
                   LogLevel.DEBUG,
@@ -397,66 +423,66 @@ Remember that the examples are just something to shape your personality. You sho
                 // State changes are automatically persisted by the framework within the handler
               },
             }),
-          //   storeFeedbackOutput: output({
-          //     description:
-          //       "Receives feedback from the player, stores it in the database, and sends the AI's response.",
-          //     schema: z.object({
-          //       detectedFeedback: z.boolean(),
-          //       feedbackText: z.string().nullable(),
-          //       feedbackCategory: z.nativeEnum(FEEDBACK_CATEGORY).nullable(),
-          //       feedbackScore: z.number().min(1).max(10).nullable(),
-          //       responseText: z.string(),
-          //     }),
-          //     handler: async (data, ctx, agent) => {
-          //       const state = ctx.memory as FarmerAgentState;
-          //       const agentId = state.agentId;
-          //       simpleUI.logMessage(
-          //         LogLevel.DEBUG,
-          //         `[FeedbackOutput ${agentId}] Data: ${JSON.stringify(data)}`,
-          //       );
-          //       if (
-          //         data.detectedFeedback &&
-          //         data.feedbackText &&
-          //         data.feedbackCategory &&
-          //         data.feedbackScore !== null
-          //       ) {
-          //         simpleUI.logMessage(
-          //           LogLevel.INFO,
-          //           `[FeedbackOutput ${agentId}] Storing feedback: [${data.feedbackCategory}, Score: ${data.feedbackScore}] "${data.feedbackText}"`,
-          //         );
-          //         try {
-          //           await this.feedbackService.store(
-          //             agentId,
-          //             data.feedbackText,
-          //             data.feedbackCategory,
-          //             data.feedbackScore,
-          //           );
-          //           simpleUI.logMessage(
-          //             LogLevel.INFO,
-          //             `[Action storeFeedbackOutput for ${agentId}] Feedback stored successfully via storeFeedBack method.`,
-          //           );
-          //         } catch (error) {
-          //           simpleUI.logMessage(
-          //             LogLevel.ERROR,
-          //             `[Action storeFeedbackOutput for ${agentId}] Error calling storeFeedBack: ${error.message}`,
-          //           );
-          //           this.logger.error(
-          //             `Error storing feedback for ${agentId}:`,
-          //             error.stack,
-          //           );
-          //         }
-          //       } else if (data.detectedFeedback) {
-          //         simpleUI.logMessage(
-          //           LogLevel.WARN,
-          //           `[FeedbackOutput ${agentId}] Feedback detected, but full analysis missing. Not storing.`,
-          //         );
-          //       }
-          //       simpleUI.logAgentAction(
-          //         'AI Feedback Response',
-          //         `Valor (to ${agentId}): ${data.responseText}`,
-          //       );
-          //     },
-          //   }),
+            //   storeFeedbackOutput: output({
+            //     description:
+            //       "Receives feedback from the player, stores it in the database, and sends the AI's response.",
+            //     schema: z.object({
+            //       detectedFeedback: z.boolean(),
+            //       feedbackText: z.string().nullable(),
+            //       feedbackCategory: z.nativeEnum(FEEDBACK_CATEGORY).nullable(),
+            //       feedbackScore: z.number().min(1).max(10).nullable(),
+            //       responseText: z.string(),
+            //     }),
+            //     handler: async (data, ctx, agent) => {
+            //       const state = ctx.memory as FarmerAgentState;
+            //       const agentId = state.agentId;
+            //       simpleUI.logMessage(
+            //         LogLevel.DEBUG,
+            //         `[FeedbackOutput ${agentId}] Data: ${JSON.stringify(data)}`,
+            //       );
+            //       if (
+            //         data.detectedFeedback &&
+            //         data.feedbackText &&
+            //         data.feedbackCategory &&
+            //         data.feedbackScore !== null
+            //       ) {
+            //         simpleUI.logMessage(
+            //           LogLevel.INFO,
+            //           `[FeedbackOutput ${agentId}] Storing feedback: [${data.feedbackCategory}, Score: ${data.feedbackScore}] "${data.feedbackText}"`,
+            //         );
+            //         try {
+            //           await this.feedbackService.store(
+            //             agentId,
+            //             data.feedbackText,
+            //             data.feedbackCategory,
+            //             data.feedbackScore,
+            //           );
+            //           simpleUI.logMessage(
+            //             LogLevel.INFO,
+            //             `[Action storeFeedbackOutput for ${agentId}] Feedback stored successfully via storeFeedBack method.`,
+            //           );
+            //         } catch (error) {
+            //           simpleUI.logMessage(
+            //             LogLevel.ERROR,
+            //             `[Action storeFeedbackOutput for ${agentId}] Error calling storeFeedBack: ${error.message}`,
+            //           );
+            //           this.logger.error(
+            //             `Error storing feedback for ${agentId}:`,
+            //             error.stack,
+            //           );
+            //         }
+            //       } else if (data.detectedFeedback) {
+            //         simpleUI.logMessage(
+            //           LogLevel.WARN,
+            //           `[FeedbackOutput ${agentId}] Feedback detected, but full analysis missing. Not storing.`,
+            //         );
+            //       }
+            //       simpleUI.logAgentAction(
+            //         'AI Feedback Response',
+            //         `Valor (to ${agentId}): ${data.responseText}`,
+            //       );
+            //     },
+            //   }),
           },
         }),
       ],

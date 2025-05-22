@@ -14,9 +14,7 @@ export class FeedbackService {
   constructor(
     @InjectModel(UserFeedbackData.name)
     private readonly userFeedbackDataModel: Model<UserFeedbackData>,
-  ) {
-    
-  }
+  ) {}
 
   public async store(
     walletAddress: string,
