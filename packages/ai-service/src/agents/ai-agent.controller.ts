@@ -191,15 +191,15 @@ export class AiAgentController {
           baseValue: 50,
           rarityBonus: {
             common: 0,
-            great: 10,
-            rare: 20,
-            epic: 30,
+            great: 20,
+            rare: 50,
+            epic: 90,
           },
           itemCounts: itemCounts,
         },
         {
           minSellRatio: 0.5,
-          maxDiscount: 1.5,
+          maxDiscount: 0.01,
         },
         playerMoney.dicCommonResource.Coin,
       );
