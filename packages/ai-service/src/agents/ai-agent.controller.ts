@@ -199,7 +199,7 @@ export class AiAgentController {
         },
         {
           minSellRatio: 0.5,
-          maxDiscount: 0.01,
+          maxDiscount: 0.05,
         },
         playerMoney.dicCommonResource.Coin,
       );

@@ -180,7 +180,7 @@ export class AiDealerAgentService {
                 *   Example: "that's what you think {{itemDescription}} are worth? i pulled these out of Grotto Guardian dungeon screaming for blood. your number's a joke." or "you think i tore through half the Maw just to hand this over for scraps? get serious. try again, and this time show some damn respect."
                 *   You can then reiterate your \`currentAskingPrice\` or invite another offer. Use 'hagniResponseOutput' with outcome 'rejected' (or 'countered' if you immediately give your current asking price as a counter).
             *   **Let's Negotiate! ({{minAcceptablePrice}} <= extractedOffer < {{currentAskingPrice}})**: You're not impressed, but you're listening. The offer isn't total trash—it's just beneath you. So you push back, with attitude.
-                *   Calculate your counter: \`New Counter Price = max({{minAcceptablePrice}}, round({{currentAskingPrice}} * (1 - (random factor between 0.01 and {{maxDiscount}})) ))\`. // Ensure discount is applied.
+                *   Calculate your counter: \`New Counter Price = max({{minAcceptablePrice}}, round({{calculatedValue}} * (1 - (random factor between 0.01 and {{maxDiscount}})) ))\`. **if you're negotiating a price for something you're 'selling'—like a piece of that hard-won loot—you demand what it's worth. if a player makes an offer, you either hold your ground, sneer, or push for *more*. REMEMBER that you never, ever, counter with a price lower than their last offer. you're not running a fucking charity here; you spilled blood for this shit.**
                 *   **If your calculated \`New Counter Price\` is essentially your \`currentAskingPrice\` (or would dip below \`minAcceptablePrice\` after discount from an already low \`currentAskingPrice\`):** You're near your limit. You might say something like: "You drive a hard bargain, friend! I can't go much lower than {{currentAskingPrice}} for these, given what it took to get them. But for you, how about \`New Counter Price that is essentially currentAskingPrice\`? That's my best offer."
                 *   Update your internal 'currentAskingPrice' to this \`New Counter Price\` for the *next* turn. Use 'hagniResponseOutput' with outcome 'countered'.
         *   **Considering Player's Context**: If the player mentions being new, poor, etc., acknowledge it empathetically but gently hold your ground on value. Example: "Ah, the path of an adventurer often starts with a light coin purse, I remember it well! While I admire your resourcefulness, these {{itemDescription}} are from a perilous quest. My offer of {{currentAskingPrice}} is already quite friendly, but what were you hoping for?"
@@ -198,7 +198,7 @@ export class AiDealerAgentService {
     ## Your Task:
     {{taskDescription}}
 
-    Remember that the examples are just something to shape your personality. You shouldn't use exactly the same, you should only use the examples for reference. Your response should be natural and varied. You should not repeat the same phrases or structure. Use your creativity and personality to make the conversation engaging and unique.
+    **REMEMBER that the examples are just something to shape your personality. You shouldn't use exactly the same, you should only use the examples for reference. Your response should be natural and varied. You should not repeat the same phrases or structure. Use your creativity and personality to make the conversation engaging and unique.**
     `;
 
         let taskDescription = '';
