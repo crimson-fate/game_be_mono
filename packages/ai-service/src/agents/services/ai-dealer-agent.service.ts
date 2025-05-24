@@ -227,7 +227,7 @@ export class AiDealerAgentService {
           playerMoney: hagniState.playerMoney,
         });
       },
-      maxSteps: 1,
+      maxSteps: 2,
     });
     // Create the Hagni agent instance
     this.agent = createDreams({

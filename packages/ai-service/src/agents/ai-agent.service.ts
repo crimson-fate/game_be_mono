@@ -207,7 +207,7 @@ Remember that the examples are just something to shape your personality. You sho
           taskDescription: taskDescription,
         });
       },
-      maxSteps: 1, // Agent thinks once per input
+      maxSteps: 2, // Agent thinks once per input
     });
 
     // Create the Farmer agent instance
