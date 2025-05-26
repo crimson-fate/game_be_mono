@@ -15,8 +15,25 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const port = configuration().PORT.AI;
 
+  const whitelist = [
+    'https://crimsonfate.starkarcade.com',
+    'https://be-crimsonfate.starkarcade.com',
+    'https://ai-crimsonfate.crimsonfate.xyz',
+    'http://localhost:8001',
+    'http://localhost:8000',
+  ];
   app.enableCors({
-    origin: '*',
+    origin: function (origin, callback) {
+      if (!origin || whitelist.indexOf(origin) !== -1) {
+        console.log('AI Allowed cors for:', origin ? origin : 'Localhost');
+        callback(null, true);
+      } else {
+        console.log('blocked cors for:', origin);
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
   });
   app.use(json({ limit: '50mb' }));
   app.use(urlencoded({ extended: true, limit: '50mb' }));

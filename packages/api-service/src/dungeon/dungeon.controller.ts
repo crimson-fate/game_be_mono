@@ -1,9 +1,9 @@
-import { Controller, Get, Post, Body, Query } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { Controller, Get, Post, Body, Query, UsePipes } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
 import { DungeonService } from './dungeon.service';
 import { walletAddressDto } from './dto/WalletAddress.dto';
 import { CompleteWaveDto } from './dto/CompleteWave.dto';
-import { SeasonIdDto } from './dto/SeasonId.dto';
+import { GetCurrentRankDto, SeasonIdDto } from './dto/SeasonId.dto';
 import { BaseResult } from '@app/shared/utils/types';
 
 @Controller('dungeon')
@@ -63,5 +63,33 @@ export class DungeonController {
   async getLeaderboard(@Query() query: SeasonIdDto) {
     const result = await this.dungeonService.getLeaderboard(query);
     return new BaseResult(result);
+  }
+
+  @Get('current-rank') // New endpoint
+  @ApiOperation({
+    summary: 'Get current rank of a player by wallet address for a season',
+  })
+  @ApiQuery({
+    name: 'seasonId',
+    required: true,
+    type: String,
+    description: 'The ID of the season',
+  })
+  @ApiQuery({
+    name: 'walletAddress',
+    required: true,
+    type: String,
+    description: 'The wallet address of the player',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Player rank fetched successfully.',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Season or Player not found, or Player not ranked.',
+  })
+  async getCurrentRankByWalletAddress(@Query() query: GetCurrentRankDto) {
+    return this.dungeonService.getCurrentRankByWalletAddress(query);
   }
 }

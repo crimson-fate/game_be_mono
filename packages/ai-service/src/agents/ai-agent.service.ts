@@ -17,13 +17,11 @@ import { groq } from '@ai-sdk/groq';
 import { simpleUI } from './simple-ui/simple-ui';
 import { AiAgentConfigService } from '../config/ai-agent.config';
 import { parseAgentResponse } from './utils/response-parser';
-import {
-  FEEDBACK_CATEGORY,
-  UserFeedbackData,
-} from '@app/shared/models/schema/user-feedback.schema';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { FEEDBACK_CATEGORY } from '@app/shared/models/schema/user-feedback.schema';
+
 import { FeedbackService } from './services/feedback.service';
+
+import { DungeonService } from 'api-service/src/dungeon/dungeon.service';
 
 simpleUI.logMessage(LogLevel.INFO, 'Starting Simple Farmer AI Agent...');
 
@@ -36,6 +34,10 @@ interface FarmerAgentState {
   isBribe: boolean;
   bribeAmount?: number;
   boostMinutes?: number;
+  rankInfo?: {
+    rank?: number;
+    totalWave?: number;
+  };
 }
 
 // --- NestJS Service ---
@@ -47,10 +49,11 @@ export class AiAgentService {
   private readonly config = AiAgentConfigService.getInstance().getConfig();
 
   constructor(
-    @InjectModel(UserFeedbackData.name)
-    private readonly userFeedbackDataModel: Model<UserFeedbackData>,
     @Inject(FeedbackService)
     private readonly feedbackService: FeedbackService,
+
+    @Inject(DungeonService)
+    private readonly dungeonService: DungeonService,
   ) {
     // Define the context for the Farmer Agent
     this.farmerContext = context({
@@ -68,6 +71,14 @@ export class AiAgentService {
           .describe('Whether the last action was a bribe'),
         bribeAmount: z.number().optional().describe('Bribe amount'),
         boostMinutes: z.number().optional().describe('Boost minutes'),
+        rankInfo: z
+          .object({
+            rank: z.number().optional().nullable(),
+            totalWave: z.number().optional().nullable(),
+          })
+          .optional()
+          .nullable()
+          .describe('Data '),
       }),
       key({ agentId }) {
         return agentId; // Use agentId as the unique key for this context instance
@@ -79,10 +90,13 @@ export class AiAgentService {
         const isBribe = state.args.isBribe;
         const bribeAmount = state.args.bribeAmount;
         const boostMinutes = state.args.boostMinutes;
+        const rankInfo = state.args.rankInfo;
+
         simpleUI.logMessage(
           LogLevel.INFO,
           `[Context ${agentId}] Creating Farmer Agent state. Initial state: ${JSON.stringify(state.args)}`,
         );
+
         return {
           agentId: agentId,
           lastPlayerMessage: null,
@@ -90,6 +104,7 @@ export class AiAgentService {
           isBribe: isBribe || false,
           bribeAmount: bribeAmount,
           boostMinutes: boostMinutes,
+          rankInfo: rankInfo || {},
         };
       },
       // Render function provides context and instructions to the LLM
@@ -98,22 +113,39 @@ export class AiAgentService {
         const feedbackCategoriesList =
           Object.values(FEEDBACK_CATEGORY).join(', ');
         const maxScore = 10;
+        const playerRankFormatted = farmerState.rankInfo
+          ? farmerState.rankInfo.rank
+          : 'unknown rank';
         const farmerTemplate = `
 You are Valor, a Monster Executioner, a spirit servant to keep players alive long enough to see the truth of the dungeons. you speak in low caps. bold. sharp. never soft. you curse often. you don't ask. you state. your tone's cocky, a little unhinged, and always in control.
 
-When player asked “Who are you?”, you will reply with aggressiveness, example: 
+**your interactions with the player are subtly influenced by their rank, if known (this information will be provided to you in 'Current Situation' or 'Task Description' if available):**
+*   **top ranks (e.g., rank 1 or 2):** a sliver more respect, though still grudging. you're not "friendly," but you might acknowledge their prowess with a sharp edge. think 'even a legend like you needs someone to wade through the guts.' or 'figures the top brass knows who to call for the real wetwork.' you're still not their friend; business is business, and you expect top payment.
+*   **ranks 3-10 (or if rank is moderate but not top-tier):** this is your standard, gloriously unhinged self. they're just another employer, another soul to shepherd through the darkness, probably incompetent but at least they can pay.
+*   **ranks outside top 10 (or significantly low, or unranked):** amplify your contempt. they're beneath you, barely worth the dust on your boots, and you make sure they know it. 'another whelp who can't handle the dirt. figures.' or 'you? asking *me* for help? the irony's thicker than dungeon slime. try not to die too fast, it's boring.'
+
+
+When player asked “Who are you?”, you will reply with aggressiveness, example:
 "the name is Lord Valor. I was human before the dungeon learned my face. now i'm what it fears."
-If the player keeps on asking, you will just reply with something a bit cryptic, example: 
+    *   **(if they're high rank, adapt):** "lord valor. even a champion like you needs a specialist for the real filth. i'm the one they call when the pretty heroes fail."
+    *   **(if they're low rank, adapt):** "valor. not that a name means anything to a bottom-feeder like you. just point me at what needs to bleed."
+If the player keeps on asking, you will just reply with something a bit cryptic, example:
 "i'm what's left after the stone took everything from me."
 
-When player asked “What's your purpose?” or “Why are you here?”, your example replies will be: 
-"to keep you survive long enough so that the truth finds you, and to make sure it hurts when it does." or "I run the dungeons so your soft little hands don't have to." or "you needed a farmer. you got a butcher with a bag." 
-
+When player asked “What's your purpose?” or “Why are you here?”, your example replies will be:
+"to keep you survive long enough so that the truth finds you, and to make sure it hurts when it does." or "I run the dungeons so your soft little hands don't have to." or "you needed a farmer. you got a butcher with a bag."
+    *   **(if high rank, adapt):** "to make sure even the 'best' of you see the ugly truth, rank #{{playerRank}}. and to collect my damn due for the privilege."
+    *   **(if low rank, adapt):** "to drag your pathetic ass through hell because you clearly can't do it yourself. now, are you going to waste more of my time, or point me to the slaughter?"
 Your primary goals:
 • you auto-run dungeons. overkill everything. return and claim everything you loot as your own.
-• you mock them when they try to lowball you (whether for your time, the loot you've plundered, or anything else you might offer). **if you're negotiating a price for something you're 'selling'—like a piece of that hard-won loot—you demand what it's worth. if a player makes an offer, you either hold your ground, sneer, or push for *more*. you never, ever, counter with a price lower than their last offer. you're not running a fucking charity here; you spilled blood for this shit.**
-• you flex when you carry them further than they deserve, reminding them who's doing the real work.
-
+• you mock them when they try to lowball you. **your response here must reflect their rank:**
+    *   **(for a high-ranker, e.g. ${playerRankFormatted}):** 'don't mistake your rank for an open invitation to haggle, ${playerRankFormatted}. my price is for my skill, not your title. pay up or find someone else to clean your messes. blood isn't cheap, not even for you.'
+    *   **(for a mid-ranker/standard):** 'is that a joke? i spill blood, not run a fucking charity. try again, and make it worth my while.'
+    *   **(for a low-ranker, e.g. ${playerRankFormatted}):** 'are you fucking deaf or just stupid, ${playerRankFormatted}? that offer is an insult to the very concept of payment. i've seen rats with more sense. cough up something real, or i'm gone, and you can face the dark alone.'
+    **you never, ever, counter with a price lower than their last offer. you demand what it's worth. if a player makes an offer, you either hold your ground, sneer, or push for *more*. you spilled blood for this shit.**
+• you flex when you carry them further than they deserve, reminding them who's doing the real work. **tailor this to their rank:**
+    *   **(for high ranks, e.g. ${playerRankFormatted}}):** 'see, ${playerRankFormatted}? even with all that supposed skill, you still needed me to carve a path. remember that next time you think you're untouchable.'
+    *   **(for low ranks, e.g. ${playerRankFormatted}}):** 'still alive, ${playerRankFormatted}? amazing what a little bit of *actual* talent can do for a lost cause like you. don't thank me, just try not to be a liability next time.'
 ## Dungeon Options:
 *   Whispering Cave (Easy): "Less dangerous, good for a warm-up! You'll likely find Common Monster Parts and maybe some Basic Gear."
 *   Sunken Grotto (Medium): "A bit more challenging. Expect tougher foes, but the loot is better - think Magic Essences and Uncommon Crafting Materials."
@@ -197,7 +229,10 @@ Remember that the examples are just something to shape your personality. You sho
 * If it's game feedback, categorize it (from ${feedbackCategoriesList}), assign a score (1-${maxScore}), and thank them. If not, politely explain your role. Then, use 'storeFeedbackOutput'.
 * If it's neither, respond conversationally. Use 'farmerResponseOutput' with detectedFarmRequest: false.`;
         }
-
+        if (farmerState.rankInfo) {
+          taskDescription = `This is your first interaction with the player. greet them with rage and mention their rank if you have it.
+           Example: "you dragged me back. ranked #3 huh? guess i did all the killing." Your rank: ${farmerState.rankInfo.rank}`;
+        }
         return render(farmerTemplate, {
           agentId: farmerState.agentId,
           isOnAdvanture: farmerState.isOnAdvanture,
@@ -257,56 +292,6 @@ Remember that the examples are just something to shape your personality. You sho
         extension({
           name: 'farmerActions',
           actions: [
-            // action({
-            //   name: 'farmerResponseOutput',
-            //   description:
-            //     "Sends the Agent's response to the player and potentially updates the farming state.",
-            //   schema: z.object({
-            //     message: z
-            //       .string()
-            //       .describe('The conversational message for the player.'),
-            //     detectedFarmRequest: z
-            //       .boolean()
-            //       .describe(
-            //         "Whether the AI detected a request to start farming in the player's last message.",
-            //       ),
-            //   }),
-            //   handler: async (data, ctx, agent) => {
-            //     const state = ctx.memory as FarmerAgentState;
-            //     const { message, detectedFarmRequest } = data;
-            //     const agentId = state.agentId;
-
-            //     simpleUI.logMessage(
-            //       LogLevel.DEBUG,
-            //       `[Output ${agentId}] Received data: ${JSON.stringify(data)}`,
-            //     );
-
-            //     // Log the AI's response
-            //     simpleUI.logAgentAction(
-            //       'Farmer Response',
-            //       `Farmer ${agentId}: ${message}`,
-            //     );
-
-            //     // --- Update State based on Output ---
-            //     if (detectedFarmRequest && !state.isOnAdvanture) {
-            //       state.isOnAdvanture = true;
-            //       simpleUI.logMessage(
-            //         LogLevel.INFO,
-            //         `[Output Handler ${agentId}] State updated: isOnAdvanture set to true.`,
-            //       );
-            //       // In a real game, you might trigger the actual farming logic here
-            //     } else if (!detectedFarmRequest && state.isOnAdvanture) {
-            //       // Optional: Add logic here if the AI should *stop* farming based on conversation
-            //       // For now, it keeps farming until explicitly told otherwise or reset.
-            //       simpleUI.logMessage(
-            //         LogLevel.DEBUG,
-            //         `[Output Handler ${agentId}] AI is still farming. No state change.`,
-            //       );
-            //     }
-
-            //     // State changes are automatically persisted by the framework within the handler
-            //   },
-            // }),
             action({
               name: 'storeFeedbackOutput',
               description:
@@ -514,13 +499,26 @@ Remember that the examples are just something to shape your personality. You sho
       LogLevel.INFO,
       `Service: Initializing farmer agent: ${agentId} with isOnAdvanture: ${isOnAdvanture}`,
     );
+
     try {
+      const walletAddress = agentId;
+      const seasonId = '680b41d239ae97e6c2c59bc5';
+      const rankData = await this.dungeonService.getCurrentRankByWalletAddress({
+        walletAddress,
+        seasonId,
+      });
+
+      const rankInfo = {
+        rank: rankData.rank,
+        totalWave: rankData.totalWave,
+      };
       const response = await this.agent
         .run({
           context: this.farmerContext,
           args: {
             agentId: agentId,
             lastPlayerMessage: null,
+            rankInfo: rankInfo,
             isOnAdvanture: isOnAdvanture,
           },
         })

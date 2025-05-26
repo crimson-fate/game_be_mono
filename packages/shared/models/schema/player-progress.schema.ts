@@ -3,6 +3,7 @@ import { Document, SchemaTypes } from 'mongoose';
 import { Seasons } from './season.schema';
 import { Players } from './player.schema';
 
+export type PlayerProgressDocument = PlayerProgress & Document;
 @Schema()
 export class PlayerProgress extends Document {
   _id: string;

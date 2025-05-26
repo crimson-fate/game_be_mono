@@ -1,12 +1,12 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { walletAddressDto } from './dto/WalletAddress.dto';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { Seasons } from '@app/shared/models/schema/season.schema';
 import { Players } from '@app/shared/models/schema/player.schema';
 import { PlayerProgress } from '@app/shared/models/schema/player-progress.schema';
 import { CompleteWaveDto } from './dto/CompleteWave.dto';
-import { SeasonIdDto } from './dto/SeasonId.dto';
+import { GetCurrentRankDto, SeasonIdDto } from './dto/SeasonId.dto';
 import { v1 as uuidv1 } from 'uuid';
 import { PlayersService } from '../players/players.service';
 import { PlayerProgressDto } from './dto/PlayerProgress.dto';
@@ -344,5 +344,123 @@ export class DungeonService {
     ]);
 
     return leaderboard;
+  }
+
+  async getCurrentRankByWalletAddress(query: GetCurrentRankDto) {
+    const { seasonId, walletAddress } = query;
+
+    const seasonObjectId = new Types.ObjectId(seasonId);
+    const seasonDocument = await this.seasonModel.findById(seasonObjectId);
+    if (!seasonDocument) {
+      throw new HttpException('Season not found', HttpStatus.NOT_FOUND);
+    }
+
+    const player = await this.playerService.getOrCreeatePlayer(walletAddress);
+
+    const playerId = player._id;
+
+    const leaderboard = await this.playerProgressModel.aggregate([
+      {
+        $match: {
+          season: seasonObjectId,
+          isCompleted: true,
+        },
+      },
+      {
+        $group: {
+          _id: {
+            player: '$player',
+            gameId: '$gameId',
+          },
+          totalWave: { $sum: 1 },
+          startTime: { $first: '$startTime' },
+          endTime: { $last: '$endTime' },
+        },
+      },
+      {
+        $addFields: {
+          duration: { $subtract: ['$endTime', '$startTime'] },
+        },
+      },
+      {
+        $sort: {
+          '_id.player': 1,
+          totalWave: -1,
+          duration: 1,
+        },
+      },
+      {
+        $group: {
+          _id: '$_id.player',
+          bestGame: { $first: '$$ROOT' },
+        },
+      },
+      {
+        $sort: {
+          'bestGame.totalWave': -1,
+          'bestGame.duration': 1,
+        },
+      },
+      {
+        $sort: {
+          'bestGame.totalWave': -1,
+          'bestGame.duration': 1,
+        },
+      },
+      // Then assign ranks using only one field (e.g., totalWave)
+      {
+        $setWindowFields: {
+          sortBy: { 'bestGame.totalWave': -1 }, // Only one field allowed here
+          output: {
+            rank: { $documentNumber: {} },
+          },
+        },
+      },
+      {
+        $match: {
+          _id: playerId,
+        },
+      },
+      {
+        $lookup: {
+          from: 'players',
+          localField: '_id',
+          foreignField: '_id',
+          as: 'playerInfo',
+        },
+      },
+      {
+        $unwind: '$playerInfo',
+      },
+      {
+        $project: {
+          _id: 0,
+          rank: 1,
+          player: {
+            address: '$playerInfo.address',
+            username: '$playerInfo.username',
+          },
+          gameId: '$bestGame._id.gameId',
+          totalWave: '$bestGame.totalWave',
+          startTime: '$bestGame.startTime',
+          endTime: '$bestGame.endTime',
+          duration: '$bestGame.duration',
+        },
+      },
+    ]);
+
+    if (leaderboard.length === 0) {
+      return {
+        rank: null,
+        player: {
+          address: player.address,
+          username: player.username,
+        },
+        message:
+          'Player is not ranked for this season (no completed games or did not meet criteria).',
+      };
+    }
+
+    return leaderboard[0];
   }
 }

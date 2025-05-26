@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
+import { MongooseModule, Schema } from '@nestjs/mongoose';
 import { AiAgentController } from './ai-agent.controller';
 import { AiAgentService } from './ai-agent.service';
 import {
@@ -21,6 +21,14 @@ import {
   PlayerResource,
   PlayerResourceSchema,
 } from '@app/shared/models/schema/player-resource.schema';
+import {
+  PlayerProgress,
+  PlayerProgressSchema,
+} from '@app/shared/models/schema/player-progress.schema';
+import { DungeonService } from 'api-service/src/dungeon/dungeon.service';
+import { Seasons, SeasonSchema } from '@app/shared/models/schema/season.schema';
+import { Players, PlayerSchema } from '@app/shared/models/schema/player.schema';
+import { PlayersService } from 'api-service/src/players/players.service';
 
 @Module({
   imports: [
@@ -29,6 +37,9 @@ import {
       { name: AgentPlayerData.name, schema: AgentPlayerDataSchema },
       { name: UserFeedbackData.name, schema: UserFeedbackDataSchema },
       { name: PlayerResource.name, schema: PlayerResourceSchema },
+      { name: PlayerProgress.name, schema: PlayerProgressSchema },
+      { name: Seasons.name, schema: SeasonSchema },
+      { name: Players.name, schema: PlayerSchema },
     ]),
   ],
   controllers: [AiAgentController],
@@ -37,6 +48,8 @@ import {
     AiDealerAgentService,
     ChatHistoryService,
     FeedbackService,
+    DungeonService,
+    PlayersService,
   ],
   exports: [AiAgentService, AiDealerAgentService, FeedbackService],
 })
