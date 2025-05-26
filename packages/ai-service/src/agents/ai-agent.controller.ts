@@ -198,7 +198,7 @@ export class AiAgentController {
           itemCounts: itemCounts,
         },
         {
-          minSellRatio: 0.5,
+          minSellRatio: 0.85,
           maxDiscount: 0.05,
         },
         playerMoney.dicCommonResource.Coin,
