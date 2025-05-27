@@ -238,11 +238,13 @@ export class AiDealerAgentService {
           schema: z.object({
             uniqueNegotiationId: z.string(),
             playerMessage: z.string(), // Raw player message
+            playerCurrentBalance: z.number(),
           }),
           // Handler to update state *before* agent thinks (optional but useful)
           // This ensures the state reflects the message when the prompt is rendered
           handler: async (data, ctx) => {
             const state = ctx.memory as HagniNegotiationState;
+            state.playerMoney = data.playerCurrentBalance; // Update player's money
             if (
               state &&
               state.uniqueNegotiationId === data.uniqueNegotiationId
@@ -530,6 +532,7 @@ export class AiDealerAgentService {
           data: {
             uniqueNegotiationId: negotiationId,
             playerMessage: message,
+            playerCurrentBalance: playerMoney, // Pass player's money
           },
         },
       });
