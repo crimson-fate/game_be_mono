@@ -10,7 +10,7 @@ export class PlayerProgressDto {
     name: string;
     startDate: number;
     endDate: number;
-  };
+  } | null;
   startTime: number;
   endTime: number;
   isCompleted: boolean;

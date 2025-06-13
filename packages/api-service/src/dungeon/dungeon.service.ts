@@ -46,7 +46,7 @@ export class DungeonService {
     await this.playerProgressModel.updateMany(
       {
         player: player._id,
-        season: currentSeason._id,
+        season: currentSeason ? currentSeason._id : null,
         endTime: 0,
       },
       { $set: { endTime: now } },
@@ -72,12 +72,14 @@ export class DungeonService {
       },
       gameId: progress.gameId.toString(),
       wave: progress.wave,
-      season: {
-        id: progress.season._id,
-        name: progress.season.name,
-        startDate: progress.season.startDate,
-        endDate: progress.season.endDate,
-      },
+      season: progress.season
+        ? {
+            id: progress.season._id,
+            name: progress.season.name,
+            startDate: progress.season.startDate,
+            endDate: progress.season.endDate,
+          }
+        : null,
       startTime: progress.startTime,
       endTime: progress.endTime,
       isCompleted: progress.isCompleted,
@@ -100,15 +102,13 @@ export class DungeonService {
       .findOne(
         {
           player: player._id,
-          season: currentSeason._id,
+          season: currentSeason ? currentSeason._id : null,
           endTime: 0,
         },
         {},
-        { sort: { wave: -1 } },
+        { sort: { wave: -1, startTime: -1 } },
       )
       .populate(['player', 'season']);
-
-    console.log(playerProgress);
 
     if (!playerProgress) {
       return null;
@@ -121,12 +121,14 @@ export class DungeonService {
       },
       gameId: playerProgress.gameId.toString(),
       wave: playerProgress.wave,
-      season: {
-        id: playerProgress.season._id,
-        name: playerProgress.season.name,
-        startDate: playerProgress.season.startDate,
-        endDate: playerProgress.season.endDate,
-      },
+      season: playerProgress.season
+        ? {
+            id: playerProgress.season._id,
+            name: playerProgress.season.name,
+            startDate: playerProgress.season.startDate,
+            endDate: playerProgress.season.endDate,
+          }
+        : null,
       startTime: playerProgress.startTime,
       endTime: playerProgress.endTime,
       isCompleted: playerProgress.isCompleted,
@@ -149,10 +151,10 @@ export class DungeonService {
       {
         gameId,
         player: player._id,
-        season: currentSeason._id,
+        season: currentSeason ? currentSeason._id : null,
       },
       {},
-      { sort: { wave: -1 } },
+      { sort: { wave: -1, startTime: -1 } },
     );
 
     if (!playerProgress) {
@@ -190,12 +192,14 @@ export class DungeonService {
       },
       gameId: progress.gameId.toString(),
       wave: progress.wave,
-      season: {
-        id: progress.season._id,
-        name: progress.season.name,
-        startDate: progress.season.startDate,
-        endDate: progress.season.endDate,
-      },
+      season: currentSeason
+        ? {
+            id: progress.season._id,
+            name: progress.season.name,
+            startDate: progress.season.startDate,
+            endDate: progress.season.endDate,
+          }
+        : null,
       startTime: progress.startTime,
       endTime: progress.endTime,
       isCompleted: progress.isCompleted,
@@ -217,7 +221,7 @@ export class DungeonService {
       {
         gameId,
         player: player._id,
-        season: currentSeason._id,
+        season: currentSeason ? currentSeason._id : null,
       },
       {},
       { sort: { wave: -1 } },
@@ -248,12 +252,14 @@ export class DungeonService {
       },
       gameId: progress.gameId.toString(),
       wave: progress.wave,
-      season: {
-        id: progress.season._id,
-        name: progress.season.name,
-        startDate: progress.season.startDate,
-        endDate: progress.season.endDate,
-      },
+      season: currentSeason
+        ? {
+            id: progress.season._id,
+            name: progress.season.name,
+            startDate: progress.season.startDate,
+            endDate: progress.season.endDate,
+          }
+        : null,
       startTime: progress.startTime,
       endTime: progress.endTime,
       isCompleted: progress.isCompleted,
